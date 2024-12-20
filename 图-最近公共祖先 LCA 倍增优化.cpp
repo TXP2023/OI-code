@@ -50,10 +50,12 @@ inline void init()
 
 inline ll LCA(ll u, ll v)
 {
+    //如果两个是同一个点的话，那就是这个点本身
     if (u == v)
     {
         return u;
     }
+    //让u成为深度更大的那个点
     if (depth[u] < depth[v])
     {
         std::swap(u, v);
