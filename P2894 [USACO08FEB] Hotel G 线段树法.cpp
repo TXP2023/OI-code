@@ -101,6 +101,8 @@ inline void segment_tree::push_down(ll p) {
             tree[p * 2 + 1].max_length = right_lenght;
             tree[p * 2 + 1].left_length = right_lenght;
             tree[p * 2 + 1].right_length = right_lenght;
+            tree[p * 2].tag = 0;
+            tree[p * 2 + 1].tag = 0;
         }
         tree[p].tag = 0;
     }
@@ -116,7 +118,10 @@ inline void segment_tree::push_up(ll p) {
     if (tree[p * 2 + 1].right_length == tree[p * 2 + 1].rp - tree[p * 2 + 1].lp + 1) {
         tree[p].right_length += tree[p * 2].right_length;
     }
-    tree[p].max_length = std::max(tree[p * 2].right_length + tree[p * 2 + 1].left_length, std::max(tree[p].right_length, tree[p].left_length));
+    tree[p].max_length = std::max(
+        std::max(tree[p * 2].right_length + tree[p * 2 + 1].left_length/*最大值位于两个子节点中间*/,
+            std::max(tree[p * 2].max_length, tree[p * 2 + 1].max_length))/*最大值为两个子节点之间*/,
+        std::max(tree[p].right_length, tree[p].left_length)/*最大值为左边或右边*/);
     return;
 }
 
@@ -180,8 +185,6 @@ void segment_tree::up_data(ll left, ll right, ll operate/*1为住房 0为退房*/, ll 
     push_up(p);
     return;
 }
-
-
 
 ll n, m;
 
