@@ -16,6 +16,7 @@
 
 #define READ false
 #define MAX_INF 1e18
+#define MAX_NUM_SIZE 35
 
 typedef long long int ll;
 typedef unsigned long long int unill;
@@ -29,9 +30,14 @@ template< typename Type >
 inline Type readf(Type* p = NULL);
 #endif
 
+//快速输出函数
+template<typename Type>
+inline void writef(Type x);
+
+
 int main() {
     freopen("input.txt", "r", stdin);
-    
+
     return 0;
 }
 
@@ -67,3 +73,14 @@ inline Type readf(Type* p) {
     return sgn ? -ret : ret;
 }
 #endif
+
+template<typename Type>
+inline void writef(Type x) {
+    int sta[MAX_NUM_SIZE];
+    int top = 0;
+    do {
+        sta[top++] = x % 10, x /= 10;
+    } while (x);
+    while (top) putchar(sta[--top] + 48);  // 48 是 '0'
+    return;
+}
