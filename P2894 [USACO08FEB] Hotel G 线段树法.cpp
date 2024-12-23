@@ -194,7 +194,9 @@ void segment_tree::up_data(ll left, ll right, ll operate/*1为住房 0为退房*/, ll 
 ll n, m;
 
 int main() {
+#ifdef _FREOPEN
     freopen("input.txt", "r", stdin);
+#endif // _FREOPEN
 
     readf(&n), readf(&m);
 
