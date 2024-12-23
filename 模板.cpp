@@ -36,7 +36,9 @@ inline void writef(Type x);
 
 
 int main() {
+#ifdef _FREOPEN
     freopen("input.txt", "r", stdin);
+#endif // _FREOPEN
 
     return 0;
 }
