@@ -16,6 +16,7 @@
 
 #define READ false
 #define MAX_INF 1e18
+#define MAX_NUM_SIZE 35
 
 typedef long long int ll;
 typedef unsigned long long int unill;
@@ -29,148 +30,92 @@ template< typename Type >
 inline Type readf(Type* p = NULL);
 #endif
 
+//快速输出函数
+template<typename Type>
+inline void writef(Type x);
+
 class segment_tree {
 public:
-    segment_tree(ll size);
+    segment_tree(int _size, int _mod);
+    ~segment_tree();
 
-    inline ll query(ll x, ll p = 1);
+    void updata(ll x, int p = 1, int lp = 1, int rp = -1);
 
-    void up_data(ll left, ll right, ll operate/*1为住房 0为退房*/, ll p = 1);
+    ll query(int left, int right, int p = 1, int lp = 1, int rp = -1);
 
+    int t = 0, size = 0, length = 0, cnt = 1;
 private:
-    struct tree_node {
-        ll max_length;
-        ll left_length, right_length;
-        int lp, rp;
-        bool tag_bool = false;
-        int tag;
-    };
+    ll * tree;
 
-    std::vector< tree_node > tree;
-
-    void build_tree(ll p, ll lp, ll rp);
-
-    inline void push_down(ll p);
+    ll mod;
 
     inline void push_up(ll p);
-
-    inline void add_tag(ll p, ll operate);
 };
 
-segment_tree::segment_tree(ll size) {
-    tree.resize((size << 2) + 1);
-    build_tree(1, 1, size);
+segment_tree::segment_tree(int _size, int _mod) {
+    //tree.resize((_size << 2) + 1, 0);
+    //tree.shrink_to_fit();
+    tree = new ll[(_size << 2) + 1];
+    std::fill(tree, tree + (_size << 2) + 1, 0);
+    mod = _mod;
+    size = _size;
     return;
 }
 
-void segment_tree::build_tree(ll p, ll lp, ll rp) {
-    tree[p].lp = lp, tree[p].rp = rp;
-
-    if (lp == rp) {
-        tree[p].max_length = 1;
-        tree[p].left_length = 1;
-        tree[p].right_length = 1;
-        return;
-    }
-
-    ll mid = (lp + rp) >> 1;
-    build_tree(p * 2, lp, mid);
-    build_tree(p * 2 + 1, mid + 1, rp);
-    tree[p].max_length = rp - lp + 1;
-    tree[p].right_length = rp - lp + 1;
-    tree[p].left_length = rp - lp + 1;
-    return;
-}
-
-inline void segment_tree::push_down(ll p) {
-    if (tree[p].tag_bool) {
-        tree[p].tag_bool = false;
-        tree[p * 2].tag_bool = true;
-        tree[p * 2 + 1].tag_bool = true;
-        if (tree[p].tag == 1)/*全部住上人*/ {
-            tree[p * 2].tag = 1;
-            tree[p * 2].max_length = 0;
-            tree[p * 2].left_length = 0;
-            tree[p * 2].right_length = 0;
-            tree[p * 2 + 1].tag = 1;
-            tree[p * 2 + 1].max_length = 0;
-            tree[p * 2 + 1].left_length = 0;
-            tree[p * 2 + 1].right_length = 0;
-        }
-        else /*全部退房*/ {
-            ll left_length = tree[p * 2].rp - tree[p * 2].lp + 1;
-            ll right_lenght = tree[p * 2 + 1].rp - tree[p * 2 + 1].lp + 1;
-            tree[p * 2].max_length = left_length;
-            tree[p * 2].left_length = left_length;
-            tree[p * 2].right_length = left_length;
-            tree[p * 2 + 1].max_length = right_lenght;
-            tree[p * 2 + 1].left_length = right_lenght;
-            tree[p * 2 + 1].right_length = right_lenght;
-            tree[p * 2].tag = 0;
-            tree[p * 2 + 1].tag = 0;
-        }
-        tree[p].tag = 0;
-    }
+segment_tree::~segment_tree() {
+    delete[] tree;
     return;
 }
 
 inline void segment_tree::push_up(ll p) {
-    tree[p].left_length = tree[p * 2].left_length;
-    if (tree[p * 2].left_length == tree[p * 2].rp - tree[p * 2].lp + 1) {
-        tree[p].left_length += tree[p * 2 + 1].left_length;
-    }
-    tree[p].right_length = tree[p * 2 + 1].right_length;
-    if (tree[p * 2 + 1].right_length == tree[p * 2 + 1].rp - tree[p * 2 + 1].lp + 1) {
-        tree[p].right_length += tree[p * 2].right_length;
-    }
-    tree[p].max_length = std::max(
-        std::max(tree[p * 2].right_length + tree[p * 2 + 1].left_length/*最大值位于两个子节点中间*/,
-            std::max(tree[p * 2].max_length, tree[p * 2 + 1].max_length))/*最大值为两个子节点之间*/,
-        std::max(tree[p].right_length, tree[p].left_length)/*最大值为左边或右边*/);
+    tree[p] = std::max(tree[p * 2], tree[p * 2 + 1]);
+    tree[p] %= mod;
     return;
 }
 
-inline void segment_tree::add_tag(ll p, ll operate) {
-    tree[p].tag = operate;
-    tree[p].tag_bool = true;
-    if (operate) {
-        tree[p].max_length = 0;
-        tree[p].left_length = 0;
-        tree[p].right_length = 0;
+void segment_tree::updata(ll x, int p, int lp, int rp) {
+    if (rp == -1) {
+        rp = size;
     }
-    else {
-        tree[p].max_length = tree[p].rp - tree[p].lp + 1;
-        tree[p].left_length = tree[p].rp - tree[p].lp + 1;
-        tree[p].right_length = tree[p].rp - tree[p].lp + 1;
+
+    if (lp == rp && lp == cnt) {
+        tree[p] = x + t;
+        tree[p] %= mod;
+        length++;
+        return;
     }
+
+    int mid = (lp + rp) >> 1;
+    if (cnt <= mid) {
+        updata(x, p * 2, lp, mid);
+    }
+    if (cnt > mid) {
+        updata(x, p * 2 + 1, mid + 1, rp);
+    }
+
+    push_up(p);
     return;
 }
 
-inline ll segment_tree::query(ll x, ll p) {
-    if (tree[p].max_length < x) {
-        return -1;
+ll segment_tree::query(int left, int right, int p, int lp, int rp) {
+    if (rp == -1) {
+        rp = size;
     }
 
-    //五种可能
-    if (tree[p].left_length >= x) /*这个点的左端点连续x个*/ {
-        return tree[p].lp;
+    if (left <= lp && right >= rp) {
+        return tree[p];
     }
-    //在左子节点的内部
-    if (tree[p * 2].max_length >= x) {
-        return query(x, p * 2);
+
+    ll max = LLONG_MIN;
+    ll mid = (lp + rp) >> 1;
+    if (mid >= left) {
+        max = query(left, right, p * 2, lp, mid);
     }
-    /*在左右节点中间*/
-    if (tree[p * 2].right_length + tree[p * 2 + 1].left_length >= x) {
-        return tree[p * 2].rp - tree[p * 2].right_length + 1;
+    if (mid < right) {
+        max = std::max(query(left, right, p * 2 + 1, mid + 1, rp), max);
     }
-    //在右子节点内部有
-    if (tree[p * 2 + 1].max_length >= x) {
-        return query(x, p * 2 + 1);
-    }
-    //在当前节点的最左边
-    if (tree[p].right_length >= x) {
-        return tree[p].rp - tree[p].right_length + 1;
-    }
+
+    return max;
 }
 
 ll n, m;
@@ -182,27 +127,29 @@ int main() {
 
     readf(&n), readf(&m);
 
-    segment_tree hotel(n);
-    while (m--) {
-        int operate = readf< int >();
-        if (operate == 1) {
-            ll x = readf< ll >();
-            ll p = hotel.query(x);
-            if (p == -1) {
-                puts("0");
-            }
-            else {
-                printf("%lld\n", p);
-                hotel.up_data(p, p + x - 1, 1);
-            }
+    segment_tree tree(2e5, m);
 
-        }
-        else {
-            ll x = readf< ll >(), y = readf< ll >();
-            hotel.up_data(x, x + y - 1, 0);
+    while (n--) {
+        char ch[5];
+        scanf("%s", &ch);
+        int l, n;
+        switch (ch[0]) {
+        case 'Q':
+            if (tree.cnt == 1) {
+                puts("0");
+                continue;
+            }
+            l = readf<int>();
+            tree.t = tree.query(tree.length - l + 1, tree.length);
+            printf("%lld\n", tree.t);
+            break;
+        case 'A':
+            n = readf<int>();
+            tree.updata(n);
+            ++tree.cnt;
+            break;
         }
     }
-
     return 0;
 }
 
@@ -239,3 +186,13 @@ inline Type readf(Type* p) {
 }
 #endif
 
+template<typename Type>
+inline void writef(Type x) {
+    int sta[MAX_NUM_SIZE];
+    int top = 0;
+    do {
+        sta[top++] = x % 10, x /= 10;
+    } while (x);
+    while (top) putchar(sta[--top] + 48);  // 48 是 '0'
+    return;
+}
