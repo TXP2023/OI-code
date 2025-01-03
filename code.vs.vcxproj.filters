@@ -291,6 +291,12 @@
     <ClCompile Include="U508232 Iterators for Infinity.cpp">
       <Filter>源文件\已完成</Filter>
     </ClCompile>
+    <ClCompile Include="P3376 【模板】网络最大流.cpp">
+      <Filter>源文件\待完成</Filter>
+    </ClCompile>
+    <ClCompile Include="图-最大流-Edmonds-Karp.cpp">
+      <Filter>源文件\样例</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
