@@ -22,11 +22,11 @@
     <Filter Include="源文件\标准模板库实例">
       <UniqueIdentifier>{aba0ddfa-f740-413d-8bbc-62593051d392}</UniqueIdentifier>
     </Filter>
-    <Filter Include="源文件\已完成">
-      <UniqueIdentifier>{d56be3a9-9366-4fe7-bbaa-c26693c45ccd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="源文件\待完成">
       <UniqueIdentifier>{91749c47-440a-4ed6-9dda-ebcda1307ef7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\已完成的题目">
+      <UniqueIdentifier>{d56be3a9-9366-4fe7-bbaa-c26693c45ccd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -67,235 +67,235 @@
       <Filter>源文件\标准模板库实例</Filter>
     </ClCompile>
     <ClCompile Include="P1005 [NOIP2007 提高组] 矩阵取数游戏.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P1038 [NOIP2003 提高组] 神经网络.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P1073 [NOIP2009 提高组] 最优贸易.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P1102 A-B 数对.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P1155 [NOIP2008 提高组] 双栈排序.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P1196 [NOI2002] 银河英雄传说.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P1197 [JSOI2008] 星球大战.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P1198 [JSOI2008] 最大数.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P1199 [NOIP2010 普及组] 三国游戏.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P1253 扶苏的问题.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P1285 队员分组.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P1309 [NOIP2011 普及组] 瑞士轮.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P1351 [NOIP2014 提高组] 联合权值.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P1396 营救.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P1484 种树.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P1488 肥猫的游戏.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P1502 窗口的星星.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P1640 [SCOI2010] 连续攻击游戏.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P1774 最接近神的人.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P1892 [BOI2003] 团伙.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P1907 设计道路.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P1941 [NOIP2014 提高组] 飞扬的小鸟.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P1972 [SDOI2009] HH的项链.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P2055 [ZJOI2009] 假期的宿舍.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P2059 [JLOI2013] 卡牌游戏.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P2197 【模板】Nim 游戏.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P2415 集合求和.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P2640 神秘磁石.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P2894 [USACO08FEB] Hotel G 线段树法.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P2894 [USACO08FEB] Hotel G 颜色均摊堆.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P3076 [USACO13FEB] Taxi G.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P3128 [USACO15DEC] Max Flow P.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P3258 [JLOI2014] 松鼠的新家.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P3372 【模板】线段树 1.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P3373 【模板】线段树 2.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P3386 【模板】二分图最大匹配.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P3398 仓鼠找 sugar.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P3620 [CTSC2007] 数据备份.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P3740 [HAOI2014] 贴海报.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P3870 [TJOI2009] 开关.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P3871 [TJOI2010] 中位数.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P3967 [TJOI2014] 匹配.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P4014 分配问题.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P4427 [BJOI2018] 求和.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P4805 [CCC2016] 合并饭团.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P6577 【模板】二分图最大权完美匹配.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P6833 [Cnoi2020] 雷雨.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P6869 [COCI2019-2020#5] Putovanje.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P8796 [蓝桥杯 2022 国 AC] 替换字符.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P8805 [蓝桥杯 2022 国 B] 机房.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P8855 [POI2002] 商务旅行.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P9145 [THUPC 2023 初赛] 世界杯.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P9752 [CSP-S 2023] 密码锁.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P9753 [CSP-S 2023] 消消乐 区间dp方法.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P9754 [CSP-S 2023] 结构体.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P10115 [LMXOI Round 1] Placer.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P10448 组合型枚举.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P11227 [CSP-J 2024] 扑克牌（民间数据）.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P11228 [CSP-J 2024] 地图探险（民间数据）.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P11229 [CSP-J 2024] 小木棍 (民间数据)  规律法.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P11229 [CSP-J 2024] 小木棍（民间数据）暴力搜索方法.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P11231 [CSP-S 2024] 决斗 (官方数据).cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P11232 [CSP-S 2024] 超速检测(官方数据).cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P11233 [CSP-S 2024] 染色(官方数据).cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P11361 [NOIP2024] 编辑字符串（民间数据）.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P11362 [NOIP2024] 遗失的赋值.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="T366125 无穷的迭代器.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="T470314 纷飞的樱花雨.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="T472655 茫茫的不归路.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="T513396 西瓜最甜的芯.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="T532927 漫长的小纸带.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="T533391 界分数.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="T533662 喵喵喵幼儿园.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="T539331 排队.cpp">
-      <Filter>源文件\已完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="U508232 Iterators for Infinity.cpp">
-      <Filter>源文件\已完成</Filter>
-    </ClCompile>
-    <ClCompile Include="P3376 【模板】网络最大流.cpp">
-      <Filter>源文件\待完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="图-最大流-Edmonds-Karp.cpp">
       <Filter>源文件\样例</Filter>
+    </ClCompile>
+    <ClCompile Include="P3376 【模板】网络最大流.cpp">
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
