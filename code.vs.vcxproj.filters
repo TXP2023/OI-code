@@ -297,6 +297,12 @@
     <ClCompile Include="P3376 【模板】网络最大流.cpp">
       <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
+    <ClCompile Include="树链剖分LCA.cpp">
+      <Filter>源文件\样例</Filter>
+    </ClCompile>
+    <ClCompile Include="P3379 【模板】最近公共祖先（LCA） 树链剖分方法.cpp">
+      <Filter>源文件\已完成的题目</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
