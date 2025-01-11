@@ -88,6 +88,6 @@ inline void writef(Type x) {
     do {
         sta[top++] = x % 10, x /= 10;
     } while (x);
-    while (top) putchar(sta[--top] + 48);  // 48 ÊÇ '0'
+    while (top) putchar(sta[--top] + '0');  // 48 ÊÇ '0'
     return;
 }
