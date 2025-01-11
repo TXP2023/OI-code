@@ -223,6 +223,9 @@
     <ClCompile Include="P1774 最接近神的人.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="P1856 [IOI1998] [USACO5.5] 矩形周长Picture.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="P1892 [BOI2003] 团伙.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
@@ -307,6 +310,7 @@
     <ClCompile Include="P4805 [CCC2016] 合并饭团.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="P5490 【模板】扫描线 &amp; 矩形面积并.cpp" />
     <ClCompile Include="P6577 【模板】二分图最大权完美匹配.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
