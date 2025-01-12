@@ -315,6 +315,12 @@
     <ClCompile Include="P3384 【模板】重链剖分\P3384 【模板】重链剖分.cpp">
       <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
+    <ClCompile Include="P5200 [USACO19JAN] Sleepy Cow Sorting G.cpp">
+      <Filter>源文件\待完成</Filter>
+    </ClCompile>
+    <ClCompile Include="P3374 【模板】树状数组 1.cpp">
+      <Filter>源文件\已完成的题目</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
