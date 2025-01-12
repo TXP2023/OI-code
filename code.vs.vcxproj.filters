@@ -309,6 +309,12 @@
     <ClCompile Include="P5490 【模板】扫描线 &amp; 矩形面积并.cpp">
       <Filter>源文件\待完成</Filter>
     </ClCompile>
+    <ClCompile Include="树链剖分 线段树维护.cpp">
+      <Filter>源文件\样例</Filter>
+    </ClCompile>
+    <ClCompile Include="P3384 【模板】重链剖分\P3384 【模板】重链剖分.cpp">
+      <Filter>源文件\已完成的题目</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
