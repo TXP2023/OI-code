@@ -330,6 +330,9 @@
     <ClCompile Include="P1792 [国家集训队] 种树.cpp">
       <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
+    <ClCompile Include="SP1553 BACKUP - Backup Files.cpp">
+      <Filter>源文件\已完成的题目</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
