@@ -324,6 +324,9 @@
     <ClCompile Include="P2590 [ZJOI2008] 树的统计.cpp">
       <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
+    <ClCompile Include="P5838 [USACO19DEC] Milk Visits G.cpp">
+      <Filter>源文件\已完成的题目</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
