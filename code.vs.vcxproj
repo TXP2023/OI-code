@@ -250,6 +250,7 @@
     <ClCompile Include="P2415 集合求和.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="P2590 [ZJOI2008] 树的统计.cpp" />
     <ClCompile Include="P2640 神秘磁石.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
