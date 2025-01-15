@@ -34,45 +34,55 @@ inline Type readf(Type* p = NULL);
 template<typename Type>
 inline void writef(Type x);
 
-struct line {
-    ll y;
-    ll left_x, right_x;
-    int in_out;
-
-    bool operator <(const line other) const {
-        return y > other.y;
-    }
-};
-
-class Segnment_tree {
+template<typename T, typename _RanIt>
+class Sparse_table {
 public:
-    Segnment_tree(ll _size);
+    Sparse_table(size_t _size ,_RanIt _First, _RanIt _Last, T (*_func)(const T, const T));
     
-    inline ll sum();
-
-    void updata(ll _left, ll _right, ll _change, ll _p, ll _lp, ll _rp);
-
+    T query(size_t _Left, size_t _Right);
 private:
-    std::vector< ll > tree;
-    std::vector< bool > tag;
+    T (*func_)(const T, const T);
+    size_t size_;
+    std::vector< std::vector< T > > dp_;
 };
 
-std::vector< line > lines;
-std::vector< ll > x;
-ll n, num, ans;
 
-Segnment_tree::Segnment_tree(ll _size) {
-    tree.resize((_size << 2) + 1, 0);
-    tag.resize((_size << 2) + 1);
+std::vector< ll > v;
+ll n, m;
+
+template<typename T, typename _RanIt>
+Sparse_table<T, _RanIt>::Sparse_table(size_t _size, _RanIt _First, _RanIt _Last, T(*_func)(const T, const T)) {
+    func_ = _func;
+    size_ = _size;
+    ll* LOG = new ll[size_ + 1];
+    LOG[0] = -1;
+    for (size_t i = 1; i <= size_; i++) {
+        LOG[i] = LOG[i >> 1] + 1;
+    }
+    ll p = (int)(log(double(size_)) / log(2.0));
+    dp_.resize(n + 2, std::vector< ll >(p + 1, 0));
+    _RanIt it = _First;
+    for (size_t i = 1; i <= size_; i++, it++) {
+        dp_[i][0] = *it;
+    }
+    for (size_t i = 1; i <= p; i++) {
+        for (size_t j = 1; j + (1 << i) <= n + 1; j++) {
+            dp_[j][i] = (*func_)(dp_[j][i - 1], dp_[j + (1 << (i - 1))][i - 1]);
+        }
+    }
+    delete[] LOG;
+    return;
 
 }
 
-inline ll Segnment_tree::sum() {
-    return tree[1];
+template<typename T, typename _RanIt>
+T Sparse_table<T, _RanIt>::query(size_t _Left, size_t _Right) {
+    int k = (int)(log(double(_Right - _Left + 1)) / log(2.0));
+    return (*func_)(dp_[_Left][k], dp_[_Right - (1 << k) + 1][k]);  //
 }
 
-void Segnment_tree::updata(ll _left, ll _right, ll _change, ll _p, ll _lp, ll _rp) {
-    
+ll max(ll a, ll b) {
+    return (a > b) ? a : b;
 }
 
 int main() {
@@ -80,33 +90,18 @@ int main() {
     freopen("input.txt", "r", stdin);
 #endif // _FREOPEN
 
-    readf(&n);
+    readf(&n), readf(&m);
 
-    lines.resize((n << 1) + 1);
-    lines[0].y = 0;
-
+    v.resize(n);
     for (size_t i = 0; i < n; i++) {
-        ll x1 = readf< ll >(), y1 = readf< ll >(), x2 = readf< ll >(), y2 = readf< ll >();
-        lines[(i+1) * 2] = line{ y1, x1, x2, 1 };
-        x[(i + 1) * 2] = x1;
-        lines[(i + 1) * 2 + 1] = line{ y2, x1, x2, -1 };
-        x[(i + 1) * 2 + 1] = x2;
+        readf(&v[i]);
     }
+    
+    Sparse_table<ll, std::vector< ll >::iterator> st(size_t(n), v.begin(), v.end(), max);
 
-    std::sort(x.begin(), x.end());
-    std::sort(lines.begin(), lines.end());
-
-    x.erase(std::unique(x.begin(), x.end()), x.end());
-    num = x.size();
-
-    Segnment_tree tree(num);
-
-    for (size_t i = 1; i <= num; i++) {
-        ans += tree.sum() * (lines[i].y - lines[i - 1].y);
-        int l = std::lower_bound(x.begin(), x.end(), lines[i].left_x) - x.begin(),
-            r = std::lower_bound(x.begin(), x.end(), lines[i].right_x) - x.begin();
-
-
+    for (size_t i = 0; i < m; i++) {
+        size_t l = readf<size_t>(), r = readf<size_t>();
+        printf("%lld\n", st.query(l, r));
     }
 
     return 0;

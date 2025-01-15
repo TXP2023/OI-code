@@ -333,6 +333,9 @@
     <ClCompile Include="SP1553 BACKUP - Backup Files.cpp">
       <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
+    <ClCompile Include="P3865 【模板】ST 表 &amp;&amp; RMQ 问题.cpp">
+      <Filter>源文件\已完成的题目</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
@@ -517,6 +520,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="unsigned_large_int.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Sparse_table.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
