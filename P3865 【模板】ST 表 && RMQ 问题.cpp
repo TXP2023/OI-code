@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <algorithm>
 #include <ctype.h>
+#include <time.h>
 #include <cstdarg>
 #include <climits>
 #include <iostream>
@@ -88,7 +89,12 @@ ll max(ll a, ll b) {
 int main() {
 #ifdef _FREOPEN
     freopen("input.txt", "r", stdin);
+    
 #endif // _FREOPEN
+
+    freopen("C:\\Users\\bobi2\\source\\repos\\OI-code\\output.txt", "w", stdout);
+
+    clock_t start = clock();
 
     readf(&n), readf(&m);
 
@@ -102,8 +108,13 @@ int main() {
     for (size_t i = 0; i < m; i++) {
         size_t l = readf<size_t>(), r = readf<size_t>();
         printf("%lld\n", st.query(l, r));
+        //writef(st.query(l, r));
+       // puts("");
     }
 
+    freopen("CON", "w", stdout);
+    printf("%lld\n", clock() - start);
+    
     return 0;
 }
 

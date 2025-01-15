@@ -334,7 +334,7 @@
       <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P3865 【模板】ST 表 &amp;&amp; RMQ 问题.cpp">
-      <Filter>源文件\已完成的题目</Filter>
+      <Filter>源文件\待完成</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
