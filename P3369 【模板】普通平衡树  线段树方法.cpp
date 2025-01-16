@@ -49,9 +49,9 @@ struct operate {
     short opt;
 };
 
-class Segnment_tree {
+class Segment_tree {
 public:
-    Segnment_tree(ll _size);
+    Segment_tree(ll _size);
 
     void insert(ll _x, ll _p = 1, ll _lp = 1, ll _rp = -1);
 
@@ -94,25 +94,25 @@ inline void Discretization() /*¿Î…¢ªØ*/ {
     return;
 }
 
-Segnment_tree::Segnment_tree(ll _size) {
+Segment_tree::Segment_tree(ll _size) {
     tree.resize((_size << 2) + 1, 0);
     size = _size;
 }
 
-inline void Segnment_tree::push_up(ll _p) {
+inline void Segment_tree::push_up(ll _p) {
     tree[_p] = tree[ls(_p)] + tree[rs(_p)];
     return;
 }
 
-inline ll Segnment_tree::ls(ll x) {
+inline ll Segment_tree::ls(ll x) {
     return x << 1;
 }
 
-inline ll Segnment_tree::rs(ll x) {
+inline ll Segment_tree::rs(ll x) {
     return (x << 1) + 1;
 }
 
-inline void Segnment_tree::insert(ll _x, ll _p, ll _lp, ll _rp) {
+inline void Segment_tree::insert(ll _x, ll _p, ll _lp, ll _rp) {
     _rp = (_rp == -1) ? size : _rp;
 
     if (_lp == _x && _lp == _rp) {
@@ -132,7 +132,7 @@ inline void Segnment_tree::insert(ll _x, ll _p, ll _lp, ll _rp) {
     return;
 }
 
-inline void Segnment_tree::remove(ll _x, ll _p, ll _lp, ll _rp) {
+inline void Segment_tree::remove(ll _x, ll _p, ll _lp, ll _rp) {
     _rp = (_rp == -1) ? size : _rp;
 
     if (_lp == _x && _lp == _rp) {
@@ -152,7 +152,7 @@ inline void Segnment_tree::remove(ll _x, ll _p, ll _lp, ll _rp) {
     return;
 }
 
-ll Segnment_tree::query_position(ll _x, ll _cnt, ll _p, ll _lp, ll _rp) {
+ll Segment_tree::query_position(ll _x, ll _cnt, ll _p, ll _lp, ll _rp) {
     _rp = (_rp == -1) ? num : _rp;
     if (_lp == _rp && _lp == _x) {
         return _cnt + 1;
@@ -167,7 +167,7 @@ ll Segnment_tree::query_position(ll _x, ll _cnt, ll _p, ll _lp, ll _rp) {
     }
 }
 
-ll Segnment_tree::query_rank(ll _x, ll _p, ll _lp, ll _rp) {
+ll Segment_tree::query_rank(ll _x, ll _p, ll _lp, ll _rp) {
     _rp = (_rp == -1) ? num : _rp;
     if (_lp == _rp) {
         return dis_value[_lp - 1];
@@ -182,7 +182,7 @@ ll Segnment_tree::query_rank(ll _x, ll _p, ll _lp, ll _rp) {
     }
 }
 
-ll Segnment_tree::query_prodromal(ll _x, ll _p, ll _lp, ll _rp) {
+ll Segment_tree::query_prodromal(ll _x, ll _p, ll _lp, ll _rp) {
     _rp = (_rp == -1) ? num : _rp;
 
     if (_lp >= _x) {
@@ -204,7 +204,7 @@ ll Segnment_tree::query_prodromal(ll _x, ll _p, ll _lp, ll _rp) {
     return pre;
 }
 
-ll Segnment_tree::query_subsequent(ll _x, ll _p, ll _lp, ll _rp) /*∫ÛºÃ*/ {
+ll Segment_tree::query_subsequent(ll _x, ll _p, ll _lp, ll _rp) /*∫ÛºÃ*/ {
     
     _rp = (_rp == -1) ? num : _rp;
 
@@ -247,7 +247,7 @@ int main() {
     dis_value.erase(dis_value.begin() + cnt, dis_value.end());
     Discretization();
 
-    Segnment_tree tree(num);
+    Segment_tree tree(num);
     for (const operate ope : operates) {
         switch (ope.opt) {
         case INSTERT:
