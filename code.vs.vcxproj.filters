@@ -336,6 +336,9 @@
     <ClCompile Include="P3865 【模板】ST 表 &amp;&amp; RMQ 问题.cpp">
       <Filter>源文件\待完成</Filter>
     </ClCompile>
+    <ClCompile Include="P3369 【模板】普通平衡树  线段树方法.cpp">
+      <Filter>源文件\待完成</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
