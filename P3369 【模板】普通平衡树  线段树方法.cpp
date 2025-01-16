@@ -19,6 +19,14 @@
 #define READ false
 #define MAX_INF 1e18
 #define MAX_NUM_SIZE 35
+#define ERROR_INF -1
+
+#define INSTERT       1    //向 M 中插入一个数
+#define REMOVE        2    //从 M 中删除一个数x（若有多个相同的数，应只删除一个）
+#define Q_POSITION    3    //查询 M中有多少个数比 X小，并且将得到的答案加一。
+#define Q_RANK        4    // 查询如果将 M 从小到大排列后，排名位于第 X 位的数
+#define Q_PRODROMAL   5    //查询M中X的前驱
+#define Q_SUBSEQUENT  6    // 查询M中X 的后继
 
 typedef long long int ll;
 typedef unsigned long long int unill;
@@ -48,6 +56,15 @@ public:
     void insert(ll _x, ll _p = 1, ll _lp = 1, ll _rp = -1);
 
     void remove(ll _x, ll _p = 1, ll _lp = 1, ll _rp = -1);
+
+    ll query_position(ll _x, ll _cnt = 0, ll _p = 1, ll _lp = 1, ll _rp = -1);
+
+    ll query_rank(ll _x, ll _p = 1, ll _lp = 1, ll _rp = -1);
+
+    ll query_prodromal(ll _x, ll _p = 1, ll _lp = 1, ll _rp = -1);
+
+    //
+    ll query_subsequent(ll _x, ll _p = 1, ll _lp = 1, ll _rp = -1);
 
 private:
     static inline ll ls(ll x);
@@ -87,6 +104,13 @@ inline void Segnment_tree::push_up(ll _p) {
     return;
 }
 
+inline ll Segnment_tree::ls(ll x) {
+    return x << 1;
+}
+
+inline ll Segnment_tree::rs(ll x) {
+    return (x << 1) + 1;
+}
 
 inline void Segnment_tree::insert(ll _x, ll _p, ll _lp, ll _rp) {
     _rp = (_rp == -1) ? size : _rp;
@@ -128,6 +152,81 @@ inline void Segnment_tree::remove(ll _x, ll _p, ll _lp, ll _rp) {
     return;
 }
 
+ll Segnment_tree::query_position(ll _x, ll _cnt, ll _p, ll _lp, ll _rp) {
+    _rp = (_rp == -1) ? num : _rp;
+    if (_lp == _rp && _lp == _x) {
+        return _cnt + 1;
+    }
+
+    ll mid = (_lp + _rp) >> 1;
+    if (_x <= mid) {
+        return query_position(_x, _cnt, ls(_p), _lp, mid);
+    }
+    else {
+        return query_position(_x, _cnt + tree[ls(_p)], rs(_p), mid + 1, _rp);
+    }
+}
+
+ll Segnment_tree::query_rank(ll _x, ll _p, ll _lp, ll _rp) {
+    _rp = (_rp == -1) ? num : _rp;
+    if (_lp == _rp) {
+        return _lp;
+    }
+
+    ll mid = (_lp + _rp) >> 1;
+    if (tree[ls(_p)] <= _x) {
+        return query_rank(_x, ls(_p), _lp, mid);
+    }
+    else {
+        return query_rank(_x - tree[rs(_p)], rs(_p), _lp, mid);
+    }
+}
+
+ll Segnment_tree::query_prodromal(ll _x, ll _p, ll _lp, ll _rp) {
+    _rp = (_rp == -1) ? num : _rp;
+
+    if (_lp >= _x) {
+        return ERROR_INF;
+    }
+
+    if (_lp == _rp) {
+        return dis_value[_lp - 1];
+    }
+
+    ll pre = ERROR_INF, mid = (_lp + _rp) >> 1;
+    if (tree[rs(_p)]) {
+        pre = query_prodromal(_x, rs(_p), mid + 1, _rp);
+    }
+    if (tree[ls(_p)] && pre == ERROR_INF) {
+        pre = query_prodromal(_x, ls(_p), _lp, mid);
+    }
+
+    return pre;
+}
+
+ll Segnment_tree::query_subsequent(ll _x, ll _p, ll _lp, ll _rp) {
+    
+    _rp = (_rp == -1) ? num : _rp;
+
+    if (_rp <= _x) {
+        return ERROR_INF;
+    }
+
+    if (_lp == _rp) {
+        return dis_value[_lp - 1];
+    }
+
+    ll pre = ERROR_INF, mid = (_lp + _rp) >> 1;
+    if (tree[ls(_p)] ) {
+        pre = query_prodromal(_x, ls(_p), _lp, mid);
+    }
+    if (tree[rs(_p)] && pre == ERROR_INF) {
+        pre = query_prodromal(_x, rs(_p), mid + 1, _rp);
+    }
+    
+    return pre;
+}
+
 int main() {
 #ifdef _FREOPEN
     freopen("input.txt", "r", stdin);
@@ -148,20 +247,32 @@ int main() {
     dis_value.erase(dis_value.begin() + cnt, dis_value.end());
     Discretization();
 
+    Segnment_tree tree(num);
     for (const operate ope : operates) {
+        ll x = readf< short >();
         switch (ope.opt) {
-        case 1:
+        case INSTERT:
+            tree.insert(x);
+            break;
 
+        case REMOVE:
+            tree.remove(x);
             break;
-        case 2:
+
+        case Q_POSITION:
+            printf("%lld\n", tree.query_position(x));
             break;
-        case 3:
+
+        case Q_RANK:
+            printf("%lld\n", tree.query_rank(x));
             break;
-        case 4:
+
+        case Q_PRODROMAL:
+            printf("%lld\n", tree.query_prodromal(x));
             break;
-        case 5:
-            break;
-        case 6:
+
+        case Q_SUBSEQUENT:
+            printf("%lld\n", tree.query_subsequent(x));
             break;
         }
     }
