@@ -87,7 +87,7 @@ inline void Discretization() /*¿Î…¢ªØ*/ {
     dis_value.erase(std::unique(dis_value.begin(), dis_value.end()), dis_value.end());
     for (size_t i = 0; i < n; i++) {
         if (operates[i].opt != 4) {
-            operates[i].x = std::lower_bound(dis_value.begin(), dis_value.end(), operates[i].x) - dis_value.begin();
+            operates[i].x = std::lower_bound(dis_value.begin(), dis_value.end(), operates[i].x) - dis_value.begin() + 1;
         }
     }
     num = dis_value.size();
@@ -170,15 +170,15 @@ ll Segnment_tree::query_position(ll _x, ll _cnt, ll _p, ll _lp, ll _rp) {
 ll Segnment_tree::query_rank(ll _x, ll _p, ll _lp, ll _rp) {
     _rp = (_rp == -1) ? num : _rp;
     if (_lp == _rp) {
-        return _lp;
+        return dis_value[_lp - 1];
     }
 
     ll mid = (_lp + _rp) >> 1;
-    if (tree[ls(_p)] <= _x) {
+    if (tree[ls(_p)] >= _x) {
         return query_rank(_x, ls(_p), _lp, mid);
     }
     else {
-        return query_rank(_x - tree[rs(_p)], rs(_p), _lp, mid);
+        return query_rank(_x - tree[ls(_p)], rs(_p), mid + 1, _rp);
     }
 }
 
@@ -204,7 +204,7 @@ ll Segnment_tree::query_prodromal(ll _x, ll _p, ll _lp, ll _rp) {
     return pre;
 }
 
-ll Segnment_tree::query_subsequent(ll _x, ll _p, ll _lp, ll _rp) {
+ll Segnment_tree::query_subsequent(ll _x, ll _p, ll _lp, ll _rp) /*∫ÛºÃ*/ {
     
     _rp = (_rp == -1) ? num : _rp;
 
@@ -218,10 +218,10 @@ ll Segnment_tree::query_subsequent(ll _x, ll _p, ll _lp, ll _rp) {
 
     ll pre = ERROR_INF, mid = (_lp + _rp) >> 1;
     if (tree[ls(_p)] ) {
-        pre = query_prodromal(_x, ls(_p), _lp, mid);
+        pre = query_subsequent(_x, ls(_p), _lp, mid);
     }
     if (tree[rs(_p)] && pre == ERROR_INF) {
-        pre = query_prodromal(_x, rs(_p), mid + 1, _rp);
+        pre = query_subsequent(_x, rs(_p), mid + 1, _rp);
     }
     
     return pre;
@@ -249,30 +249,29 @@ int main() {
 
     Segnment_tree tree(num);
     for (const operate ope : operates) {
-        ll x = readf< short >();
         switch (ope.opt) {
         case INSTERT:
-            tree.insert(x);
+            tree.insert(ope.x);
             break;
 
         case REMOVE:
-            tree.remove(x);
+            tree.remove(ope.x);
             break;
 
         case Q_POSITION:
-            printf("%lld\n", tree.query_position(x));
+            printf("%lld\n", tree.query_position(ope.x));
             break;
 
         case Q_RANK:
-            printf("%lld\n", tree.query_rank(x));
+            printf("%lld\n", tree.query_rank(ope.x));
             break;
 
         case Q_PRODROMAL:
-            printf("%lld\n", tree.query_prodromal(x));
+            printf("%lld\n", tree.query_prodromal(ope.x));
             break;
 
         case Q_SUBSEQUENT:
-            printf("%lld\n", tree.query_subsequent(x));
+            printf("%lld\n", tree.query_subsequent(ope.x));
             break;
         }
     }
