@@ -93,9 +93,9 @@ void tree_init_chain(ll _u, ll _father, ll _top) {
     return;
 }
 
-class Segnment_tree {
+class Segment_tree {
 public:
-    Segnment_tree(ll _size);
+    Segment_tree(ll _size);
 
     ll query_lca_path_sum(ll _u, ll _v);
 
@@ -133,7 +133,7 @@ private:
 
 };
 
-Segnment_tree::Segnment_tree(ll _size) {
+Segment_tree::Segment_tree(ll _size) {
     tree_.resize((_size << 2) + 1);
     //tag.resize((_size << 2) + 1, { 0, false });
 
@@ -142,28 +142,28 @@ Segnment_tree::Segnment_tree(ll _size) {
     return;
 }
 
-inline void Segnment_tree::push_up(ll _p) {
+inline void Segment_tree::push_up(ll _p) {
     tree_[_p].sum_w = tree_[_p * 2].sum_w + tree_[_p * 2 + 1].sum_w;
     tree_[_p].max_w = std::max(tree_[_p * 2].max_w, tree_[_p * 2 + 1].max_w);
     return;
 }
 
-ll Segnment_tree::max_query(ll _p) {
+ll Segment_tree::max_query(ll _p) {
     return tree_[_p].max_w;
 }
 
-ll Segnment_tree::sum_query(ll _p) {
+ll Segment_tree::sum_query(ll _p) {
     return tree_[_p].sum_w;
 }
 
-inline void Segnment_tree::add_tag(ll _p, ll _lp, ll _rp, ll _t) {
+inline void Segment_tree::add_tag(ll _p, ll _lp, ll _rp, ll _t) {
     //tag[_p].t = true;
     //tag[_p].value = _t;
     tree_[_p] = { _t, (_rp - _lp + 1) * _t };
     return;
 }
 
-//inline void Segnment_tree::push_down(ll _p, ll _lp, ll _rp) {
+//inline void Segment_tree::push_down(ll _p, ll _lp, ll _rp) {
 //    if (tag[_p].t) {
 //        tag[_p * 2] = tag[_p];
 //        tag[_p * 2 + 1] = tag[_p];
@@ -176,7 +176,7 @@ inline void Segnment_tree::add_tag(ll _p, ll _lp, ll _rp, ll _t) {
 //    return;
 //}
 
-void Segnment_tree::build_tree(ll _p, ll _lp, ll _rp) {
+void Segment_tree::build_tree(ll _p, ll _lp, ll _rp) {
     if (_lp == _rp) {
         tree_[_p].max_w = newWeight[_lp - 1];
         tree_[_p].sum_w = newWeight[_lp - 1];
@@ -191,7 +191,7 @@ void Segnment_tree::build_tree(ll _p, ll _lp, ll _rp) {
     return;
 }
 
-ll Segnment_tree::query_lca_path_max(ll _u, ll _v) {
+ll Segment_tree::query_lca_path_max(ll _u, ll _v) {
     ll ret = LLONG_MIN;
     while (chain_top[_u] != chain_top[_v]) {
         if (deep[chain_top[_u]] < deep[chain_top[_v]]) {
@@ -207,7 +207,7 @@ ll Segnment_tree::query_lca_path_max(ll _u, ll _v) {
     return std::max(ret, query_max(id[_u] + 1, id[_v] + 1, 1, 1, n));
 }
 
-ll Segnment_tree::query_lca_path_sum(ll _u, ll _v) {
+ll Segment_tree::query_lca_path_sum(ll _u, ll _v) {
     ll ret = 0;
     while (chain_top[_u] != chain_top[_v]) {
         if (deep[chain_top[_u]] < deep[chain_top[_v]]) {
@@ -223,7 +223,7 @@ ll Segnment_tree::query_lca_path_sum(ll _u, ll _v) {
     return ret + query_sum(id[_u] + 1, id[_v] + 1, 1, 1, n);
 }
 
-ll Segnment_tree::query_sum(ll _left, ll _right, ll _p, ll _lp, ll _rp) {
+ll Segment_tree::query_sum(ll _left, ll _right, ll _p, ll _lp, ll _rp) {
     if (_left <= _lp && _right >= _rp) {
         return tree_[_p].sum_w;
     }
@@ -240,7 +240,7 @@ ll Segnment_tree::query_sum(ll _left, ll _right, ll _p, ll _lp, ll _rp) {
     return ret;
 }
 
-ll Segnment_tree::query_max(ll _left, ll _right, ll _p, ll _lp, ll _rp) {
+ll Segment_tree::query_max(ll _left, ll _right, ll _p, ll _lp, ll _rp) {
     if (_left <= _lp && _right >= _rp) {
         return tree_[_p].max_w;
     }
@@ -257,7 +257,7 @@ ll Segnment_tree::query_max(ll _left, ll _right, ll _p, ll _lp, ll _rp) {
     return ret;
 }
 
-void Segnment_tree::updata(ll _u, ll _t, ll _p, ll _lp, ll _rp) {
+void Segment_tree::updata(ll _u, ll _t, ll _p, ll _lp, ll _rp) {
     if (_lp == _rp && _lp == _u) {
         add_tag(_p, _lp, _rp, _t);
         return;
@@ -299,7 +299,7 @@ int main() {
     tree_init(0, 0, 1);
     tree_init_chain(0, 0, 0);
 
-    Segnment_tree tree(n);
+    Segment_tree tree(n);
 
     readf(&q);
     while (q--) {

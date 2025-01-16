@@ -91,9 +91,9 @@ void tree_init_chain(ll _u, ll _father, ll _top) {
     return;
 }
 
-class Segnment_tree {
+class Segment_tree {
 public:
-    Segnment_tree(ll _size);
+    Segment_tree(ll _size);
     
     inline bool query_path(ll _u, ll _v, ll _b);
 private:
@@ -105,7 +105,7 @@ private:
 
     std::vector< std::set< ll > >  tree_;
 };
-void Segnment_tree::build_tree(ll _p, ll _lp, ll _rp) {
+void Segment_tree::build_tree(ll _p, ll _lp, ll _rp) {
     if (_lp == _rp ) {
         tree_[_p].insert(breed[_lp - 1]);
         return;
@@ -119,7 +119,7 @@ void Segnment_tree::build_tree(ll _p, ll _lp, ll _rp) {
     return;
 }
 
-inline void Segnment_tree::push_up(ll _p) {
+inline void Segment_tree::push_up(ll _p) {
     std::set_union(
         tree_[_p * 2].begin(), tree_[_p * 2].end(), 
         tree_[_p * 2 + 1].begin(), tree_[_p * 2 + 1].end(), 
@@ -128,7 +128,7 @@ inline void Segnment_tree::push_up(ll _p) {
     return;
 }
 
-Segnment_tree::Segnment_tree(ll _size) {
+Segment_tree::Segment_tree(ll _size) {
     tree_.resize((_size << 2) + 1);
 
     build_tree(1, 1, n);
@@ -136,7 +136,7 @@ Segnment_tree::Segnment_tree(ll _size) {
     return;
 }
 
-inline bool Segnment_tree::query_path(ll _u, ll _v, ll _b) {
+inline bool Segment_tree::query_path(ll _u, ll _v, ll _b) {
     while (chain_top[_u] != chain_top[_v]) {
         if (deep[chain_top[_u]] < deep[chain_top[_v]]) {
             std::swap(_u, _v);
@@ -152,7 +152,7 @@ inline bool Segnment_tree::query_path(ll _u, ll _v, ll _b) {
     
     return query(id[_u] + 1, id[_v] + 1, _b, 1, 1, n); 
 }
-inline bool Segnment_tree::query(ll _left, ll _right, ll _x, ll _p, ll _lp, ll _rp) {
+inline bool Segment_tree::query(ll _left, ll _right, ll _x, ll _p, ll _lp, ll _rp) {
     if (_left <= _lp && _right >= _rp) {
         return tree_[_p].count(_x);
     }
@@ -197,7 +197,7 @@ int main() {
         breed[id[i]] = oldBreed[i];
     }
 
-    Segnment_tree farm(n);
+    Segment_tree farm(n);
 
     while (m--) {
         ll u = readf< ll >() - 1, v = readf< ll >() - 1, w = readf< ll >();
