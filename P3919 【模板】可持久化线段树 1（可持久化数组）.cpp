@@ -148,8 +148,6 @@ int main() {
         case QUERY:
             tree.root[i] = tree.root[version];
             printf("%lld\n", tree.query(tree.root[version], 1, n, loc));
-            //writef(tree.query(tree.root[version], 1, n, loc));
-            //puts("");
             break;
         }
     }
