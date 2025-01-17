@@ -110,8 +110,11 @@ int main() {
     freopen("input.txt", "r", stdin);
 #endif // _FREOPEN
 
+#ifdef _RUN_TIME
     clock_t start = clock();
+#endif // _RUN_TIME
 
+ 
     readf(&n), readf(&m);
 
     vec.resize(n);
@@ -131,8 +134,10 @@ int main() {
 
     }
 
-
-    printf("%ld\n",clock() - start);
+#ifdef _RUN_TIME
+    printf("The running duration is not less than %ld ms\n",clock() - start);
+#endif // _RUN_TIME
+    
     return 0;
 }
 
