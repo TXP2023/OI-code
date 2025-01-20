@@ -36,6 +36,7 @@ template<typename Type>
 inline void writef(Type x);
 
 
+
 int main() {
 #ifdef _FREOPEN
     freopen("input.txt", "r", stdin);
@@ -46,6 +47,8 @@ int main() {
 #endif // _RUN_TIME
 
     //TODO
+
+
 
 
 
@@ -81,7 +84,7 @@ inline Type readf(Type* p) {
         sgn |= ch == '-', ch = getchar();
     }
     while (isdigit(ch)) ret = ret * 10 + ch - '0', ch = getchar();
-    if (p != NULL){
+    if (p != NULL) {
         *p = Type(sgn ? -ret : ret);
     }
     return sgn ? -ret : ret;
@@ -98,26 +101,3 @@ inline void writef(Type x) {
     while (top) putchar(sta[--top] + '0');  // 48 是 '0'
     return;
 }
-
-
-
-/***
- *              ,----------------,              ,---------,
- *         ,-----------------------,          ,"        ,"|
- *       ,"                      ,"|        ,"        ,"  |
- *      +-----------------------+  |      ,"        ,"    |
- *      |  .-----------------.  |  |     +---------+      |
- *      |  |                 |  |  |     | -==----'|      |
- *      |  |  希望此代码无bug|  |  |     |         |      |
- *      |  |                 |  |  |/----|`---=    |      |
- *      |  |  C:\>_          |  |  |   ,/|==== ooo |      ;
- *      |  |                 |  |  |  // |(((( [33]|    ,"
- *      |  `-----------------'  |," .;'| |((((     |  ,"
- *      +-----------------------+  ;;  | |         |,"
- *         /_)______________(_/  //'   | +---------+
- *    ___________________________/___  `,
- *   /  oooooooooooooooo  .o.  oooo /,   \,"-----------
- *  / ==ooooooooooooooo==.o.  ooo= //   ,`\--{)B     ,"
- * /_==__==========__==_ooo__ooo=_/'   /___________,"
- *
- */

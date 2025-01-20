@@ -1,11 +1,36 @@
+
+//
+//  我是罪人啊！！
+//  I am a sinner!!
+//  
+//  我危害OI啊！！
+//  I'm endangering OI!!
+// 
+//  我辜负洛谷啊！！！
+//  I failed Luogu!!
+// 
+//  我对着题解复制粘贴啊！！
+//  I copy and paste the question answer!!
+// 
+//  我愿抛开估值！！！
+//  I am willing to put aside value!!!!
+//  
+//  消除AC记录！！！
+//  Erase AC records!!
+// 
+//  归于真我啊！！！
+//  Belong to me!!
+///
+// 
 //+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 //
-//      By txp2024 www.luogu.com.cn  TXP2023 www.github.com
+//      ???????????????????????????????????????????????????
 // 
 //+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 #pragma once
 #include <vector>
 #include <map>
+#include <math.h>
 #include <stdio.h>
 #include <algorithm>
 #include <ctype.h>
@@ -19,6 +44,7 @@
 #define READ false
 #define MAX_INF 1e18
 #define MAX_NUM_SIZE 35
+#define MAXN 100007
 
 typedef long long int ll;
 typedef unsigned long long int unill;
@@ -42,90 +68,79 @@ struct question {
     ll l, r, k;
 };
 
-class Segment_tree {
-public:
-    Segment_tree(ll _size);
-    ~Segment_tree();
-
-private:
-    const ll ROOT_SIZE = 1e10;
-    
-    ll build_tree(ll _pre, ll _lp, ll _rp);
-
-    struct tree_node {
-        ll l, r;
-        ll data;
-    };
-
-    tree_node tree[100000000];
-    std::vector< ll > root;
-
-    ll tree_cnt;
+struct tree_node{
+    int data;
+    int ls, rs;
 };
-
-Segment_tree::Segment_tree(ll _size) {
-    
-    
-    
-}
-
-Segment_tree::~Segment_tree() {
-}
-
-class Binary_indexed_tree {
-public:
-    Binary_indexed_tree(ll _size);
-    
-    inline void add(ll _x);
-
-private:
-    std::vector<Segment_tree> tree_;
-
-    ll size_;
-
-    template<typename lowbit_Type>
-    inline lowbit_Type lowbit(lowbit_Type x);
-
-
-};
-
-
 
 std::vector< question > questions;
 std::vector< ll > dis_vec; //离散化数组
-std::map< ll, ll > dis_map;
 std::vector< ll > vec;
-ll n, m, num;
 
-Binary_indexed_tree::Binary_indexed_tree(ll _size) {
-    tree_.resize(_size + 1);
-    size_ = _size;
+tree_node seg_tree[MAXN * 400];
+int root[MAXN], t1[MAXN], t2[MAXN];
+int n, m, num, Top, n1, n2;
 
-}
-
-template<typename lowbit_Type>
-inline lowbit_Type Binary_indexed_tree::lowbit(lowbit_Type x) {
-    return lowbit_Type(x & -x);
-}
-
-inline void Binary_indexed_tree::add(ll _x) {
-    while (_x <= size_) {
-        
-    }
-}
-
-
+//离散化
 inline void discretization() {
     std::sort(dis_vec.begin(), dis_vec.end());
     dis_vec.erase(std::unique(dis_vec.begin(), dis_vec.end()), dis_vec.end());
-    for (size_t i = 0; i < dis_vec.size(); i++) {
-        dis_map[dis_vec[i]] = i;
-    }
     num = dis_vec.size();
     return;
 }
 
+template<typename T>
+inline T lowbit(T x) {
+    return x & -x;
+}
 
+void Add(int& rt, int l, int r, int ind, int c) {
+    if (!rt) rt = ++Top;
+    seg_tree[rt].data += c;
+    if (l == r) return;
+    int m = (l + r) >> 1;
+    if (ind <= m) Add(seg_tree[rt].ls, l, m, ind, c);
+    else Add(seg_tree[rt].rs, m + 1, r, ind, c);
+}
+
+void Change(int ind, int val) {
+    int x = std::lower_bound(dis_vec.begin(), dis_vec.end(), vec[ind - 1]) - dis_vec.begin() + 1;
+    for (int i = ind; i <= n; i += lowbit(i))
+        Add(root[i], 1, num, x, val);
+}
+
+int Kth(int l, int r, int k) { //求第 k 大
+    // printf("%d %d %d\n", l, r, k);
+    if (l == r) return l;
+    int m = (l + r) >> 1, sum = 0;
+    for (int i = 1; i <= n2; ++i)
+        sum += seg_tree[seg_tree[t2[i]].ls].data;
+    for (int i = 1; i <= n1; ++i)
+        sum -= seg_tree[seg_tree[t1[i]].ls].data;
+    if (sum >= k) {
+        for (int i = 1; i <= n1; ++i) //所有树的节点保持对应
+            t1[i] = seg_tree[t1[i]].ls;
+        for (int i = 1; i <= n2; ++i)
+            t2[i] = seg_tree[t2[i]].ls;
+        return Kth(l, m, k);
+    }
+    else {
+        for (int i = 1; i <= n1; ++i)
+            t1[i] = seg_tree[t1[i]].rs;
+        for (int i = 1; i <= n2; ++i)
+            t2[i] = seg_tree[t2[i]].rs;
+        return Kth(m + 1, r, k - sum);
+    }
+}
+
+int Kth_pre(int l, int r, int k) {
+    n1 = n2 = 0;
+    for (int i = l - 1; i >= 1; i -= lowbit(i)) //处理出需要求和的 n1 棵树
+        t1[++n1] = root[i];
+    for (int i = r; i >= 1; i -= lowbit(i))
+        t2[++n2] = root[i];
+    return Kth(1, num, k);
+}
 
 int main() {
 #ifdef _FREOPEN
@@ -149,24 +164,36 @@ int main() {
 
     for (size_t i = 0; i < m; i++) {
         char ch[3];
-        ll x, y;
+        ll x, y, k;
         scanf("%s", &ch);
         readf(&x), readf(&y);
         switch (ch[0]) {
         case 'Q':
-            ll k = readf<ll>();
+            k = readf<ll>();
             questions[i] = { ll(i), 'Q', x, y, k };
-            dis_vec.push_back(k);
             break;
 
         case 'C':
-            questions[i] = { ll(i), 'Q', x, y, -1 };
+            questions[i] = { ll(i), 'C', x, y, -1 };
+            dis_vec.push_back(y);
             break;
         }
     }
 
     discretization();
-
+    for (int i = 1; i <= n; ++i)
+        Change(i, 1);
+    //处理操作&询问
+    for (int i = 0; i < m; ++i) {
+        if (questions[i].operate == 'Q') {
+            printf("%d\n", dis_vec[Kth_pre(questions[i].l, questions[i].r, questions[i].k) - 1]);
+        }
+        else {
+            Change(questions[i].l, -1);
+            vec[questions[i].l - 1] = questions[i].r;
+            Change(questions[i].l, 1);
+        }
+    }
 
 
 
