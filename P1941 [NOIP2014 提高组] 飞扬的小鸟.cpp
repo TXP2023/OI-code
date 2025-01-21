@@ -48,7 +48,6 @@ int main() {
     //输入操作数据
     opers.resize(n);
     for (ull i = 0; i < n; i++) {
-        //scanf("%lld%lld", &opers[i].up, &opers[i].down);
         opers[i].up = readf< ll >(),
         opers[i].down = readf< ll >();
     }

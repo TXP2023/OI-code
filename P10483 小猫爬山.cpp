@@ -35,6 +35,30 @@ inline Type readf(Type* p = NULL);
 template<typename Type>
 inline void writef(Type x);
 
+std::vector< ll > vec;
+std::vector< ll > gondola;
+ll n, m, ans = LLONG_MAX;
+
+void dfs(ll cnt, ll money) {
+    if (money >= ans) {
+        return;
+    } 
+    if (cnt == n) {
+        ans = std::min(ans, money);
+        return;
+    }
+    for (int i = 0; i < money; i++) {
+        if (gondola[i] >= vec[cnt]) {
+            gondola[i] -= vec[cnt];
+            dfs(cnt + 1, money);
+            gondola[i] += vec[cnt];
+        }
+    }
+    gondola[money] = m - vec[cnt];
+    dfs(cnt + 1, money + 1);
+    gondola[money] = m;
+    return;
+}
 
 int main() {
 #ifdef _FREOPEN
@@ -46,7 +70,18 @@ int main() {
 #endif // _RUN_TIME
 
     //TODO
+    readf(&n), readf(&m);
 
+    vec.resize(n);
+    gondola.resize(n, m);
+    for (size_t i = 0; i < n; i++) {
+        readf(&vec[i]);
+    }
+    std::sort(vec.begin(), vec.end(), [](const ll a, const ll b) ->bool {return a > b; });
+
+    dfs(0, 0);
+
+    printf("%lld\n", ans);
 
 
 #ifdef _RUN_TIME
@@ -81,7 +116,7 @@ inline Type readf(Type* p) {
         sgn |= ch == '-', ch = getchar();
     }
     while (isdigit(ch)) ret = ret * 10 + ch - '0', ch = getchar();
-    if (p != NULL){
+    if (p != NULL) {
         *p = Type(sgn ? -ret : ret);
     }
     return sgn ? -ret : ret;
@@ -115,7 +150,7 @@ inline void writef(Type x) {
  *      |  `-----------------'  | /      |((((     |  ,"
  *      +-----------------------+/       |         |,"
  *         /_)______________(_/          +---------+
- *    _______________________________    
+ *    _______________________________
  *   /  oooooooooooooooo  .o.  oooo /,   /-----------
  *  / ==ooooooooooooooo==.o.  ooo= //   /\--{)B     ,"
  * /_==__==========__==_ooo__ooo=_/'   /___________,"
