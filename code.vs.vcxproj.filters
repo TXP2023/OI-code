@@ -360,6 +360,15 @@
     <ClCompile Include="P10483 小猫爬山.cpp">
       <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
+    <ClCompile Include="P1958 上学路线.cpp">
+      <Filter>源文件\待完成</Filter>
+    </ClCompile>
+    <ClCompile Include="P4092 [HEOI2016 TJOI2016] 树.cpp">
+      <Filter>源文件\待完成</Filter>
+    </ClCompile>
+    <ClCompile Include="P2824 [HEOI2016  TJOI2016] 排序.cpp">
+      <Filter>源文件\待完成</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
