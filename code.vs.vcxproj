@@ -275,9 +275,10 @@
     <ClCompile Include="P2640 神秘磁石.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="P2824 [HEOI2016  TJOI2016] 排序.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    <ClCompile Include="P2824 [HEOI2016  TJOI2016] 排序 暴力模拟方法.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="P2824 [HEOI2016 TJOI2016] 排序  线段树方法.cpp" />
     <ClCompile Include="P2894 [USACO08FEB] Hotel G 线段树法.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>

@@ -366,7 +366,10 @@
     <ClCompile Include="P4092 [HEOI2016 TJOI2016] 树.cpp">
       <Filter>源文件\待完成</Filter>
     </ClCompile>
-    <ClCompile Include="P2824 [HEOI2016  TJOI2016] 排序.cpp">
+    <ClCompile Include="P2824 [HEOI2016  TJOI2016] 排序 暴力模拟方法.cpp">
+      <Filter>源文件\待完成</Filter>
+    </ClCompile>
+    <ClCompile Include="P2824 [HEOI2016 TJOI2016] 排序  线段树方法.cpp">
       <Filter>源文件\待完成</Filter>
     </ClCompile>
   </ItemGroup>
