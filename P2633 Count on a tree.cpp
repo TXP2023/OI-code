@@ -148,7 +148,8 @@ ll query(ll _U, ll _V, ll _Lca, ll _Lca_father, ll _Left, ll _Right, ll _K) {
     if (_Left == _Right) {
         return _Left;
     }
-    ll mid = (_Left + _Right) >> 1, sum = segment_tree[segment_tree[_U].l].sum + segment_tree[segment_tree[_V].l].sum - segment_tree[segment_tree[_Lca].l].sum - segment_tree[segment_tree[_Lca_father].l].sum;
+    ll mid = (_Left + _Right) >> 1;
+    ll sum = segment_tree[segment_tree[_U].l].sum + segment_tree[segment_tree[_V].l].sum - segment_tree[segment_tree[_Lca].l].sum - segment_tree[segment_tree[_Lca_father].l].sum;
     if (_K <= sum) {
         return query(segment_tree[_U].l, segment_tree[_V].l, segment_tree[_Lca].l, segment_tree[_Lca_father].l, _Left, mid, _K);
     }
@@ -200,7 +201,7 @@ int main() {
     for (size_t i = 0; i < m; i++) {
         ll u = readf<ll>() xor last, v = readf<ll>(), k = readf<ll>();
         ll Lca = lca(u - 1, v - 1) + 1;
-        printf("%lld\n", last = dis_array[query(u, v, Lca, father[Lca] == -1 ? 0 : father[Lca], 1, num, k) - 1]);
+        printf("%lld\n", last = dis_array[query(root[u], root[v], root[Lca], root[father[Lca]] == -1 ? 0 : root[father[Lca]], 1, num, k) - 1]);
     }
 
 
