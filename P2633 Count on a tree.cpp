@@ -15,9 +15,10 @@
 #include <stdint.h>
 #include <time.h>
 
-#define READ false
-#define MAX_INF 1e18
+#define READ         false
+#define MAX_INF      1e18
 #define MAX_NUM_SIZE 35
+#define MAXN         50000005
 
 typedef long long int ll;
 typedef unsigned long long int unill;
@@ -35,7 +36,126 @@ inline Type readf(Type* p = NULL);
 template<typename Type>
 inline void writef(Type x);
 
+struct Segment_tree_node {
+    ll l, r;
+    ll sum;
+};
 
+std::vector< ll > father, deep, heavy_son, node_num, chain_top;
+std::vector< std::vector< ll > > edge;
+std::vector< ll > array, old_array;
+std::vector< ll > dis_array;
+std::vector< ll > root;
+Segment_tree_node segment_tree[MAXN];
+ll n, m, last = 0, num, tree_cnt = 0;
+
+template<typename Type>
+inline Type lowbit(Type _x) {
+    return _x & -_x;
+}
+
+inline void init() {
+    deep.resize(n);
+    father.resize(n);
+    heavy_son.resize(n, -1);
+    node_num.resize(n);
+    chain_top.resize(n);
+    edge.resize(n);
+    root.resize(n + 1, 0); //root[0]为初始树
+    root.shrink_to_fit();
+    array.resize(n);
+    array.shrink_to_fit();
+    old_array.resize(n);
+    old_array.shrink_to_fit();
+    segment_tree[tree_cnt++] = { 0, 0, 0 };
+    return;
+}
+
+inline ll/*返回值是节点p为根节点的子树的节点数量*/ tree_init(ll _p, ll _deep, ll _father) {
+    deep[_p] = _deep;
+    father[_p] = _father;
+    if (edge[_p].size() == 1 && _p != 0) {
+        node_num[_p] = 1;
+        return 1;
+    }
+    ll sum = 0;
+    ll num = -1;
+    for (size_t i = 0; i < edge[_p].size(); i++) {
+        if (edge[_p][i] != _father) {
+            sum += tree_init(edge[_p][i], _deep + 1, _p);
+        }
+    }
+    heavy_son[_p] = edge[_p].front();
+    for (size_t i = 1; i < edge[_p].size(); i++) {
+        if (edge[_p][i] != _father && node_num[heavy_son[_p]] < node_num[edge[_p][i]]) {
+            heavy_son[_p] = edge[_p][i];
+        }
+    }
+
+    return node_num[_p] = sum + 1;
+}
+
+inline void tree_init_2(ll _p, ll _father) {
+    chain_top[_p] = _father;
+    if (heavy_son[_p] == -1) {
+        return;
+    }
+    tree_init_2(heavy_son[_p], _father);
+    for (size_t i = 0; i < edge[_p].size(); i++) {
+        if (edge[_p][i] != father[_p] && heavy_son[_p] != edge[_p][i]) {
+            tree_init_2(edge[_p][i], edge[_p][i]);
+        }
+    }
+    return;
+}
+
+inline ll lca(ll _u, ll _v) {
+    while (chain_top[_u] != chain_top[_v]) {
+        if (deep[chain_top[_u]] < deep[chain_top[_v]]) {
+            std::swap(_u, _v);
+        }
+        _u = father[chain_top[_u]];
+    }
+    return (deep[_u] < deep[_v]) ? _u : _v;
+}
+
+inline void discretization() {
+    dis_array = old_array;
+    std::sort(dis_array.begin(), dis_array.end());
+    dis_array.erase(std::unique(dis_array.begin(), dis_array.end()), dis_array.end());
+    num = dis_array.size();
+    return;
+}
+
+inline ll segment_tree_updata(ll _Index, ll _Pre, ll _Lp, ll _Rp) {
+    ll _P = tree_cnt++;
+    segment_tree[_P] = segment_tree[_Pre];
+    ++segment_tree[_P].sum;
+    ll mid = (_Lp + _Rp) >> 1;
+    if (_Lp != _Rp) {
+        if (_Index <= mid) {
+            segment_tree[_P].l = segment_tree_updata(_Index, segment_tree[_Pre].l, _Lp, mid);
+        }
+        else {
+            segment_tree[_P].r = segment_tree_updata(_Index, segment_tree[_Pre].l, mid + 1, _Rp);
+        }
+    }
+    
+    return _P;
+}
+
+ll query(ll _U, ll _V, ll _Lca, ll _Lca_father, ll _Left, ll _Right, ll _K) {
+    if (_Left == _Right) {
+        return _Left;
+    }
+    ll mid = (_Left + _Right) >> 1, sum = segment_tree[segment_tree[_U].l].sum + segment_tree[segment_tree[_V].l].sum - segment_tree[segment_tree[_Lca].l].sum - segment_tree[segment_tree[_Lca_father].l].sum;
+    if (_K <= sum) {
+        return query(segment_tree[_U].l, segment_tree[_V].l, segment_tree[_Lca].l, segment_tree[_Lca_father].l, _Left, mid, _K);
+    }
+    else {
+        return query(segment_tree[_U].r, segment_tree[_V].r, segment_tree[_Lca].r, segment_tree[_Lca_father].r, mid + 1, _Right, _K);
+    }
+}
 
 int main() {
 #ifdef _FREOPEN
@@ -47,9 +167,33 @@ int main() {
 #endif // _RUN_TIME
 
     //TODO
+    readf(&n), readf(&m);
 
+    init();
 
+    for (size_t i = 0; i < n; i++) {
+        readf(&old_array[i]);
+    }
 
+    for (size_t i = 0; i < n - 1; i++) {
+        ll u = readf<ll>() - 1, v = readf<ll>() - 1;
+        edge[u].push_back(v);
+        edge[v].push_back(u);
+    }
+
+    discretization();
+    tree_init(0, 1, -1);
+    tree_init_2(0, 0);
+
+    for (size_t i = 0; i < n; i++) {
+        root[i + 1] = segment_tree_updata(array[i] + 1, root[father[i] + 1], 1, num);
+    }
+
+    for (size_t i = 0; i < m; i++) {
+        ll u = readf<ll>() xor last, v = readf<ll>(), k = readf<ll>();
+        ll Lca = lca(u - 1, v - 1) + 1;
+        printf("%lld\n", last = dis_array[query(u, v, Lca, father[Lca] == -1 ? 0 : father[Lca], 1, num, k) - 1]);
+    }
 
 
 #ifdef _RUN_TIME
@@ -101,3 +245,26 @@ inline void writef(Type x) {
     while (top) putchar(sta[--top] + '0');  // 48 是 '0'
     return;
 }
+
+
+
+/**
+ *              ,----------------,              ,---------,
+ *         ,-----------------------,          ,"        ,"|
+ *       ,"                      ,"|        ,"        ,"  |
+ *      +-----------------------+  |      ,"        ,"    |
+ *      |  .-----------------.  |  |     +---------+      |
+ *      |  |                 |  |  |     | -==----'|      |
+ *      |  |  希望此代码无bug|  |  |     |         |      |
+ *      |  |                 |  |  |     |`---=    |      |
+ *      |  |  C:\>_          |  |  |     |==== ooo |      ;
+ *      |  |                 |  |  |     |(((( [33]|    ,"
+ *      |  `-----------------'  | /      |((((     |  ,"
+ *      +-----------------------+/       |         |,"
+ *         /_)______________(_/          +---------+
+ *    _______________________________
+ *   /  oooooooooooooooo  .o.  oooo /,   /-----------
+ *  / ==ooooooooooooooo==.o.  ooo= //   /\--{)B     ,"
+ * /_==__==========__==_ooo__ooo=_/'   /___________,"
+ *
+ */
