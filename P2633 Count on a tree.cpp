@@ -201,7 +201,7 @@ int main() {
     for (size_t i = 0; i < m; i++) {
         ll u = readf<ll>() xor last, v = readf<ll>(), k = readf<ll>();
         ll Lca = lca(u - 1, v - 1) + 1;
-        printf("%lld\n", last = dis_array[query(root[u], root[v], root[Lca], root[father[Lca]] == -1 ? 0 : root[father[Lca]], 1, num, k) - 1]);
+        printf("%lld\n", last = dis_array[query(root[u], root[v], root[Lca], root[father[Lca - 1] + 1] == -1 ? 0 : root[father[Lca - 1] + 1], 1, num, k) - 1]);
     }
 
 
