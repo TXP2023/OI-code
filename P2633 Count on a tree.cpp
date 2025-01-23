@@ -157,6 +157,16 @@ ll query(ll _U, ll _V, ll _Lca, ll _Lca_father, ll _Left, ll _Right, ll _K) {
     }
 }
 
+void dfs_build(ll _u, ll _father) {
+    root[_u] = segment_tree_updata(std::lower_bound(dis_array.begin(), dis_array.end(), old_array[_u]) - dis_array.begin() + 1, root[father[_u] + 1] == -1 ? 0 : root[father[_u] + 1], 1, num);
+    for (ll i : edge[_u]) {
+        if (i != _father) {
+            dfs_build(i, _u);
+        }
+    }
+    return;
+}
+
 int main() {
 #ifdef _FREOPEN
     freopen("input.txt", "r", stdin);
@@ -185,9 +195,7 @@ int main() {
     tree_init(0, 1, -1);
     tree_init_2(0, 0);
 
-    for (size_t i = 0; i < n; i++) {
-        root[i + 1] = segment_tree_updata(array[i] + 1, root[father[i] + 1], 1, num);
-    }
+    dfs_build(0, -1);
 
     for (size_t i = 0; i < m; i++) {
         ll u = readf<ll>() xor last, v = readf<ll>(), k = readf<ll>();
