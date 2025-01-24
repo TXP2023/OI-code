@@ -1,9 +1,3 @@
-//+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
-//
-//      By txp2024 www.luogu.com.cn  TXP2023 www.github.com
-// 
-//+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
-#pragma once
 #include <vector>
 #include <stdio.h>
 #include <algorithm>
@@ -32,21 +26,16 @@ template< typename Type >
 inline Type readf(Type* p = NULL);
 #endif
 
-//快速输出函数
-template<typename Type>
-inline void writef(Type x);
-
 struct Segment_tree_node {
     ll l, r;
     ll sum;
-    ll lp, rp;
 };
 
-std::vector< ll > father, deep, heavy_son, node_num, chain_top;
+ll father[MAXN], deep[MAXN], heavy_son[MAXN], node_num[MAXN], chain_top[MAXN];
 std::vector< std::vector< ll > > edge;
-std::vector< ll > array, old_array;
+std::vector< ll > old_array;
 std::vector< ll > dis_array;
-std::vector< ll > root;
+ll root[MAXN];
 Segment_tree_node segment_tree[MAXN];
 ll n, m, last = 0, num, tree_cnt = 0;
 
@@ -56,19 +45,21 @@ inline Type lowbit(Type _x) {
 }
 
 inline void init() {
-    deep.resize(n);
-    father.resize(n);
-    heavy_son.resize(n, -1);
-    node_num.resize(n);
-    chain_top.resize(n);
+    //deep.resize(n);
+    //father.resize(n);
+    //heavy_son.resize(n, -1);
+    std::fill(heavy_son, heavy_son + n, -1);
+    //node_num.resize(n);
+    //chain_top.resize(n);
     edge.resize(n);
-    root.resize(n + 1, 0); //root[0]为初始树
-    root.shrink_to_fit();
-    array.resize(n);
-    array.shrink_to_fit();
+    //root.resize(n + 1, 0); //root[0]为初始树
+    std::fill(root, root + n + 1, 0);
+    //array.resize(n);
     old_array.resize(n);
-    old_array.shrink_to_fit();
-    segment_tree[tree_cnt++] = { 0, 0, 0 };
+    segment_tree[tree_cnt].l = 0;
+    segment_tree[tree_cnt].r = 0;
+    segment_tree[tree_cnt].sum = 0;
+    tree_cnt++;
     return;
 }
 
@@ -131,8 +122,6 @@ inline void discretization() {
 inline ll segment_tree_updata(ll _Index, ll _Pre, ll _Lp, ll _Rp) {
     ll _P = tree_cnt++;
     segment_tree[_P] = segment_tree[_Pre];
-    segment_tree[_P].lp = _Lp;
-    segment_tree[_P].rp = _Rp;
     ++segment_tree[_P].sum;
     ll mid = (_Lp + _Rp) >> 1;
     if (_Lp != _Rp) {
@@ -143,7 +132,7 @@ inline ll segment_tree_updata(ll _Index, ll _Pre, ll _Lp, ll _Rp) {
             segment_tree[_P].r = segment_tree_updata(_Index, segment_tree[_Pre].r, mid + 1, _Rp);
         }
     }
-    
+
     return _P;
 }
 
@@ -163,22 +152,15 @@ ll query(ll _U, ll _V, ll _Lca, ll _Lca_father, ll _Left, ll _Right, ll _K) {
 
 void dfs_build(ll _u, ll _father) {
     root[_u + 1] = segment_tree_updata(std::lower_bound(dis_array.begin(), dis_array.end(), old_array[_u]) - dis_array.begin() + 1, root[father[_u] + 1], 1, num);
-    for (ll i : edge[_u]) {
-        if (i != _father) {
-            dfs_build(i, _u);
+    for (int i = 0; i < edge[_u].size(); i++) {
+        if (edge[_u][i] != _father) {
+            dfs_build(edge[_u][i], _u);
         }
     }
     return;
 }
 
 int main() {
-#ifdef _FREOPEN
-    freopen("input.txt", "r", stdin);
-#endif // _FREOPEN
-
-#ifdef _RUN_TIME
-    clock_t start = clock();
-#endif // _RUN_TIME
 
     //TODO
     readf(&n), readf(&m);
@@ -202,35 +184,14 @@ int main() {
     dfs_build(0, -1);
 
     for (size_t i = 0; i < m; i++) {
-        ll u = readf<ll>() xor last, v = readf<ll>(), k = readf<ll>();
+        ll u = readf<ll>(), v = readf<ll>(), k = readf<ll>();
         ll Lca = lca(u - 1, v - 1) + 1;
-        printf("%lld\n", last = dis_array[query(root[u], root[v], root[Lca], root[father[Lca - 1] + 1] == -1 ? 0 : root[father[Lca - 1] + 1], 1, num, k) - 1]);
+        printf("%lld\n", dis_array[query(root[u], root[v], root[Lca], root[father[Lca - 1] + 1] == -1 ? 0 : root[father[Lca - 1] + 1], 1, num, k) - 1]);
     }
-
-
-#ifdef _RUN_TIME
-    printf("The running duration is not less than %ld ms\n", clock() - start);
-#endif // _RUN_TIME
     return 0;
 }
 
 #if READ
-template< typename T >
-inline T readf() {
-#if false
-    T sum = 0;
-    char ch = getchar();
-    while (ch > '9' || ch < '0') ch = getchar();
-    while (ch >= '0' && ch <= '9') sum = sum * 10 + ch - 48, ch = getchar();
-    return sum;
-#else
-    T ret = 0, sgn = 0, ch = getchar();
-    while (!isdigit(ch)) {
-        sgn |= ch == '-', ch = getchar();
-    }
-    while (isdigit(ch)) ret = ret * 10 + ch - '0', ch = getchar();
-    return sgn ? -ret : ret;
-#endif
 }
 #else
 template< typename Type >
@@ -246,37 +207,3 @@ inline Type readf(Type* p) {
     return sgn ? -ret : ret;
 }
 #endif
-
-template<typename Type>
-inline void writef(Type x) {
-    int sta[MAX_NUM_SIZE];
-    int top = 0;
-    do {
-        sta[top++] = x % 10, x /= 10;
-    } while (x);
-    while (top) putchar(sta[--top] + '0');  // 48 是 '0'
-    return;
-}
-
-
-
-/**
- *              ,----------------,              ,---------,
- *         ,-----------------------,          ,"        ,"|
- *       ,"                      ,"|        ,"        ,"  |
- *      +-----------------------+  |      ,"        ,"    |
- *      |  .-----------------.  |  |     +---------+      |
- *      |  |                 |  |  |     | -==----'|      |
- *      |  |  希望此代码无bug|  |  |     |         |      |
- *      |  |                 |  |  |     |`---=    |      |
- *      |  |  C:\>_          |  |  |     |==== ooo |      ;
- *      |  |                 |  |  |     |(((( [33]|    ,"
- *      |  `-----------------'  | /      |((((     |  ,"
- *      +-----------------------+/       |         |,"
- *         /_)______________(_/          +---------+
- *    _______________________________
- *   /  oooooooooooooooo  .o.  oooo /,   /-----------
- *  / ==ooooooooooooooo==.o.  ooo= //   /\--{)B     ,"
- * /_==__==========__==_ooo__ooo=_/'   /___________,"
- *
- */

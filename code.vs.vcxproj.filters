@@ -351,9 +351,6 @@
     <ClCompile Include="P2617 Dynamic Rankings.cpp">
       <Filter>源文件\待完成</Filter>
     </ClCompile>
-    <ClCompile Include="P2633 Count on a tree.cpp">
-      <Filter>源文件\待完成</Filter>
-    </ClCompile>
     <ClCompile Include="P3157 [CQOI2011] 动态逆序对.cpp">
       <Filter>源文件\待完成</Filter>
     </ClCompile>
@@ -370,6 +367,12 @@
       <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P2824 [HEOI2016  TJOI2016] 排序 暴力模拟方法.cpp">
+      <Filter>源文件\已完成的题目</Filter>
+    </ClCompile>
+    <ClCompile Include="SP10628  Count on a tree.cpp">
+      <Filter>源文件\已完成的题目</Filter>
+    </ClCompile>
+    <ClCompile Include="P2633 Count on a tree.cpp">
       <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
   </ItemGroup>
