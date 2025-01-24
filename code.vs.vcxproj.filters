@@ -351,17 +351,8 @@
     <ClCompile Include="P2617 Dynamic Rankings.cpp">
       <Filter>源文件\待完成</Filter>
     </ClCompile>
-    <ClCompile Include="P3157 [CQOI2011] 动态逆序对.cpp">
-      <Filter>源文件\待完成</Filter>
-    </ClCompile>
     <ClCompile Include="P10483 小猫爬山.cpp">
       <Filter>源文件\已完成的题目</Filter>
-    </ClCompile>
-    <ClCompile Include="P1958 上学路线.cpp">
-      <Filter>源文件\待完成</Filter>
-    </ClCompile>
-    <ClCompile Include="P4092 [HEOI2016 TJOI2016] 树.cpp">
-      <Filter>源文件\待完成</Filter>
     </ClCompile>
     <ClCompile Include="P2824 [HEOI2016 TJOI2016] 排序  线段树方法.cpp">
       <Filter>源文件\已完成的题目</Filter>
@@ -376,6 +367,15 @@
       <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P2470 [SCOI2007] 压缩.cpp">
+      <Filter>源文件\已完成的题目</Filter>
+    </ClCompile>
+    <ClCompile Include="P1958 上学路线.cpp">
+      <Filter>源文件\已完成的题目</Filter>
+    </ClCompile>
+    <ClCompile Include="P4092 [HEOI2016 TJOI2016] 树.cpp">
+      <Filter>源文件\已完成的题目</Filter>
+    </ClCompile>
+    <ClCompile Include="P3157 [CQOI2011] 动态逆序对.cpp">
       <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
   </ItemGroup>

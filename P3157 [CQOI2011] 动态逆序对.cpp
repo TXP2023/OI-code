@@ -17,8 +17,8 @@
 
 #define READ         false
 #define MAX_INF      1e18
-#define MAX_NUM_SIZE 3e5
-#define MAXN         100000 
+#define MAX_NUM_SIZE 35
+#define MAXN         10000000
 #define lowbit(x)    x&-x
 
 typedef long long int ll;
@@ -57,11 +57,11 @@ inline void init() {
     return;
 }
 
-void Segment_tree_add(ll _Index, ll _Value, ll &_Pre, ll _Left, ll _Right) {
+void Segment_tree_add(ll _Index, ll _Value, ll& _Pre, ll _Left, ll _Right) {
     if (!_Pre) {
         _Pre = tree_cnt++;
     }
-    
+
     segment_tree[_Pre].data += _Value;
     if (_Left != _Right) {
         ll mid = (_Left + _Right) >> 1;
@@ -79,7 +79,7 @@ void Segment_tree_add(ll _Index, ll _Value, ll &_Pre, ll _Left, ll _Right) {
 
 //找比_Index小的数的个数
 ll segment_query(ll _P, ll _Lp, ll _Rp, ll _value_Begin, ll _value_End) {
-    if (segment_tree[_P].data == 0 ) {
+    if (segment_tree[_P].data == 0) {
         return 0;
     }
     if (_Lp >= _value_Begin && _Rp <= _value_End) {
@@ -104,7 +104,7 @@ inline ll query(ll range_Left, ll range_Rright, ll value_Begin, ll value_End) {
     }
 
     ll sum = 0;
-    for (ll i = range_Rright; i > 0; i-=lowbit(i)) {
+    for (ll i = range_Rright; i > 0; i -= lowbit(i)) {
         sum += segment_query(root[i], 1, n, value_Begin, value_End);
     }
     for (ll i = range_Left - 1; i > 0; i -= lowbit(i)) {
@@ -142,7 +142,7 @@ int main() {
 
     //TODO
     readf(&n), readf(&m);
-    
+
     init();
 
     for (size_t i = 0; i < n; i++) {
@@ -156,7 +156,7 @@ int main() {
         ll value = readf<ll>();
         remove(value_index[value - 1], value);
     }
-    
+
 #ifdef _RUN_TIME
     printf("The running duration is not less than %ld ms\n", clock() - start);
 #endif // _RUN_TIME
