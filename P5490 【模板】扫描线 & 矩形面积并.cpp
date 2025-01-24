@@ -15,9 +15,11 @@
 #include <stdint.h>
 #include <initializer_list>
 
-#define READ false
-#define MAX_INF 1e18
-#define MAX_NUM_SIZE 35
+#define READ          false
+#define MAX_INF       1e18
+#define MAX_NUM_SIZE  35
+#define ls(x)         x << 1
+#define rs(x)         x << 1 | 1
 
 typedef long long int ll;
 typedef unsigned long long int unill;
@@ -41,34 +43,14 @@ struct line {
     ll in_out;
 };
 
-class Segment_tree {
-public:
-    Segment_tree(ll _Size);
-    
-    inline void updata(ll _Left, ll _Right, ll _P, ll _Lp, ll _Rp, ll _InOut);
-
-    inline ll sum();
-private:
-    struct tag_data {
-        bool tag_bool;
-        ll in_out;
-    };
-    
-    std::vector< ll > tree;
-    std::vector< tag_data > tag;
-
-    inline ll ls(ll _P);
-
-    inline ll rs(ll _P);
-
-    inline void add_tag(ll _P, ll _Lp, ll _Rp, ll _InOut);
-
-    inline void push_down(ll _P, ll _Lp, ll _Rp);
-
-    inline void push_up(ll _P);
+struct tree_node {
+    ll l, r;
+    ll sum; //被覆盖的次数
+    ll lenght; //所代表区间的长度
 };
 
 std::deque< line > lines;
+std::vector< tree_node > seg_tree;
 std::vector< ll > x;
 ll n, size, ans = 0;
 
@@ -84,69 +66,45 @@ inline void discretization() {
     return;
 }
 
-Segment_tree::Segment_tree(ll _Size) {
-    tree.resize((_Size << 2) + 1, 0);
-    tag.resize((_Size << 2) + 1, { false, 0 });
-}
-
-inline ll Segment_tree::ls(ll _P) {
-    return _P << 1;
-}
-
-inline ll Segment_tree::rs(ll _P) {
-    return (_P << 1) + 1;
-}
-
-inline void Segment_tree::push_down(ll _P, ll _Lp, ll _Rp) {
-    if (tag[_P].tag_bool) {
-        ll mid = (_Lp + _Rp) >> 1;
-        add_tag(ls(_P), _Lp, mid, tag[_P].in_out);
-        add_tag(rs(_P), mid + 1, _Rp, tag[_P].in_out);
-        tag[_P].tag_bool = false;
-        tag[_P].in_out = 0;
+inline void push_up(ll _P) {
+    if (seg_tree[_P].sum) {
+        seg_tree[_P].lenght = x[seg_tree[_P].r + 1] - x[seg_tree[_P].l];
+    }
+    else {
+        seg_tree[_P].lenght = seg_tree[ls(_P)].lenght + seg_tree[rs(_P)].lenght;
     }
     return;
 }
 
-inline void Segment_tree::push_up(ll _P) {
-    tree[_P] = tree[ls(_P)] + tree[rs(_P)];
+void build_tree(ll _P, ll _Lp, ll _Rp) {
+    seg_tree[_P].l = _Lp;
+    seg_tree[_P].r = _Rp;
+    if (_Lp == _Rp) {
+        return;
+    }
+    ll mid = (_Lp + _Rp) >> 1;
+    build_tree(ls(_P), _Lp, mid);
+    build_tree(rs(_P), mid + 1, _Rp);
     return;
 }
 
-
-inline void Segment_tree::updata(ll _Left, ll _Right, ll _P, ll _Lp, ll _Rp, ll _InOut) {
-    if (_Left <= _Lp && _Right >= _Rp) {
-        add_tag(_P, _Lp, _Rp, _InOut);
+void updata(ll _P, ll _Left, ll _Right, ll _Value) {
+    if (_Left  <= seg_tree[_P].l && seg_tree[_P].r <= _Right) {
+        seg_tree[_P].sum += _Value;
+        push_up(_P);
         return;
     }
 
-    push_down(_P, _Lp, _Rp);
-    ll mid = (_Lp + _Rp) >> 1;
+    ll mid = (seg_tree[_P].l + seg_tree[_P].r) >> 1;
     if (_Left <= mid) {
-        updata(_Left, _Right, ls(_P), _Lp, mid, _InOut);
+        updata(ls(_P), seg_tree[_P].l, mid, _Value);
     }
     if (_Right > mid) {
-        updata(_Left, _Right, rs(_P), mid + 1, _Rp, _InOut);
+        updata(rs(_P), mid + 1, seg_tree[_P].r, _Value);
     }
     push_up(_P);
-}
-
-inline void Segment_tree::add_tag(ll _p, ll _Lp, ll _Rp, ll _InOut) {
-    tag[_p].tag_bool = true;
-    tag[_p].in_out += _InOut;
-    if (tag[_p].in_out) {
-        tree[_p] = x[_Rp] - x[_Lp - 1];
-    }
-    else {
-        tree[_p] = 0;
-    }
     return;
 }
-
-inline ll Segment_tree::sum() {
-    return tree[1];
-}
-
 
 int main() {
 #ifdef _FREOPEN
@@ -166,23 +124,24 @@ int main() {
         x[i * 2] = x2;
     }
 
+
+    
     std::sort(lines.begin(), lines.end(), [](line a, line b) ->bool {return a.y < b.y; });
     discretization();
     
-
-    Segment_tree tree(size);
-
-
-    //开始扫描
-    lines[0] = { 0,0,0 };
-    for (size_t i = 1; i <= n * 2; i++) {
-        ans += tree.sum() * (lines[i].y - lines[i - 1].y);
-        ll L = std::lower_bound(x.begin(), x.end(), lines[i].left_x) - x.begin() + 1,
-           R = std::lower_bound(x.begin(), x.end(), lines[i].right_x) - x.begin();
-
-        tree.updata(L, R, 1, 1, size, lines[i].in_out);
-
+    lines[0] = {0, 0, 0};
+    seg_tree.resize(((x.size() - 1) << 2) + 1 );
+    build_tree(1, 1, x.size() - 1);
+    for (size_t i = 1; i < lines.size(); i++) {
+        ans *= seg_tree[1].lenght * (lines[i].y - lines[i - 1].y);
+        updata(
+            1, 
+            std::lower_bound(x.begin(), x.end(), lines[i].left_x) - x.begin() + 1, 
+            std::lower_bound(x.begin(), x.end(), lines[i].right_x) - x.begin() + 1, 
+            lines[i].in_out
+        );
     }
+    
 
     printf("%lld\n", ans);
     return 0;
