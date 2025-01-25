@@ -57,10 +57,10 @@ ll n, size, ans = 0;
 inline void discretization() {
     std::sort(x.begin(), x.end());
     x.erase(std::unique(x.begin(), x.end()), x.end());
-    //for (size_t i = 0; i < lines.size(); i++) {
-    //    lines[i].left_x = std::lower_bound(x.begin(), x.end(), lines[i].left_x) - x.begin();
-    //    lines[i].right_x = std::lower_bound(x.begin(), x.end(), lines[i].right_x) - x.begin();
-    //}
+    for (size_t i = 0; i < lines.size(); i++) {
+        lines[i].left_x = std::lower_bound(x.begin(), x.end(), lines[i].left_x) - x.begin();
+        lines[i].right_x = std::lower_bound(x.begin(), x.end(), lines[i].right_x) - x.begin();
+    }
     x.erase(x.begin());
     size = x.size();
     return;
@@ -68,7 +68,7 @@ inline void discretization() {
 
 inline void push_up(ll _P) {
     if (seg_tree[_P].sum) {
-        seg_tree[_P].lenght = x[seg_tree[_P].r + 1] - x[seg_tree[_P].l];
+        seg_tree[_P].lenght = x[seg_tree[_P].r] - x[seg_tree[_P].l - 1];
     }
     else {
         seg_tree[_P].lenght = seg_tree[ls(_P)].lenght + seg_tree[rs(_P)].lenght;
@@ -89,7 +89,7 @@ void build_tree(ll _P, ll _Lp, ll _Rp) {
 }
 
 void updata(ll _P, ll _Left, ll _Right, ll _Value) {
-    if (_Left  <= seg_tree[_P].l && seg_tree[_P].r <= _Right) {
+    if (_Left <= seg_tree[_P].l && seg_tree[_P].r <= _Right) {
         seg_tree[_P].sum += _Value;
         push_up(_P);
         return;
@@ -97,10 +97,10 @@ void updata(ll _P, ll _Left, ll _Right, ll _Value) {
 
     ll mid = (seg_tree[_P].l + seg_tree[_P].r) >> 1;
     if (_Left <= mid) {
-        updata(ls(_P), seg_tree[_P].l, mid, _Value);
+        updata(ls(_P), _Left, _Right, _Value);
     }
     if (_Right > mid) {
-        updata(rs(_P), mid + 1, seg_tree[_P].r, _Value);
+        updata(rs(_P), _Left, _Right, _Value);
     }
     push_up(_P);
     return;
@@ -125,23 +125,23 @@ int main() {
     }
 
 
-    
-    std::sort(lines.begin(), lines.end(), [](line a, line b) ->bool {return a.y < b.y; });
+
+    std::sort(lines.begin(), lines.end(), [](const line a, const line b) ->bool {return a.y < b.y; });
     discretization();
-    
-    lines[0] = {0, 0, 0};
-    seg_tree.resize(((x.size() - 1) << 2) + 1 );
+
+    lines[0] = { 0, 0, 0 };
+    seg_tree.resize(((x.size() - 1) << 2) + 1);
     build_tree(1, 1, x.size() - 1);
     for (size_t i = 1; i < lines.size(); i++) {
-        ans *= seg_tree[1].lenght * (lines[i].y - lines[i - 1].y);
+        ans += seg_tree[1].lenght * (lines[i].y - lines[i - 1].y);
         updata(
-            1, 
-            std::lower_bound(x.begin(), x.end(), lines[i].left_x) - x.begin() + 1, 
-            std::lower_bound(x.begin(), x.end(), lines[i].right_x) - x.begin() + 1, 
+            1,
+            lines[i].left_x,
+            lines[i].right_x,
             lines[i].in_out
         );
     }
-    
+
 
     printf("%lld\n", ans);
     return 0;
