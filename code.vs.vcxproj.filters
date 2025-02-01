@@ -378,6 +378,9 @@
     <ClCompile Include="P3157 [CQOI2011] 动态逆序对.cpp">
       <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
+    <ClCompile Include="P1505 [国家集训队] 旅游.cpp">
+      <Filter>源文件\待完成</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">

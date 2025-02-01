@@ -20,6 +20,7 @@
 #define MAX_NUM_SIZE  35
 #define ls(x)         x << 1
 #define rs(x)         x << 1 | 1
+#define DEBUG         true
 
 typedef long long int ll;
 typedef unsigned long long int unill;
@@ -54,17 +55,32 @@ std::vector< tree_node > seg_tree;
 std::vector< ll > x;
 ll n, size, ans = 0;
 
+#if DEBUG
 inline void discretization() {
     std::sort(x.begin(), x.end());
     x.erase(std::unique(x.begin(), x.end()), x.end());
-    for (size_t i = 0; i < lines.size(); i++) {
+    for (size_t i = 1; i < lines.size(); i++) {
         lines[i].left_x = std::lower_bound(x.begin(), x.end(), lines[i].left_x) - x.begin();
-        lines[i].right_x = std::lower_bound(x.begin(), x.end(), lines[i].right_x) - x.begin();
+        lines[i].right_x = std::lower_bound(x.begin(), x.end(), lines[i].right_x) - x.begin() - 1;
     }
     x.erase(x.begin());
     size = x.size();
     return;
 }
+#else
+inline void discretization() {
+    std::sort(x.begin(), x.end());
+    x.erase(std::unique(x.begin(), x.end()), x.end()); // 正确去重
+    for (size_t i = 0; i < lines.size(); i++) {
+        lines[i].left_x = std::lower_bound(x.begin(), x.end(), lines[i].left_x) - x.begin();
+        lines[i].right_x = std::lower_bound(x.begin(), x.end(), lines[i].right_x) - x.begin();
+    }
+    size = x.size(); // 正确的size为离散化后的数组大小
+    return;
+}
+#endif
+
+#if DEBUG
 
 inline void push_up(ll _P) {
     if (seg_tree[_P].sum) {
@@ -75,7 +91,20 @@ inline void push_up(ll _P) {
     }
     return;
 }
+#else
+inline void push_up(ll _P) {
+    if (seg_tree[_P].sum) {
+        seg_tree[_P].lenght = x[seg_tree[_P].r + 1] - x[seg_tree[_P].l]; // 修正长度计算
+    }
+    else {
+        seg_tree[_P].lenght = seg_tree[ls(_P)].lenght + seg_tree[rs(_P)].lenght;
+    }
+    return;
+}
+#endif
 
+
+#if DEBUG
 void build_tree(ll _P, ll _Lp, ll _Rp) {
     seg_tree[_P].l = _Lp;
     seg_tree[_P].r = _Rp;
@@ -87,6 +116,21 @@ void build_tree(ll _P, ll _Lp, ll _Rp) {
     build_tree(rs(_P), mid + 1, _Rp);
     return;
 }
+#else
+void build_tree(ll _P, ll _Lp, ll _Rp) {
+    seg_tree[_P].l = _Lp;
+    seg_tree[_P].r = _Rp;
+    if (_Lp == _Rp) {
+        // 初始化叶子节点的length为0，因为初始时未被覆盖
+        seg_tree[_P].lenght = 0;
+        return;
+    }
+    ll mid = (_Lp + _Rp) >> 1;
+    build_tree(ls(_P), _Lp, mid);
+    build_tree(rs(_P), mid + 1, _Rp);
+    // 不需要在这里push_up，因为初始时sum为0，length由子节点决定
+}
+#endif
 
 void updata(ll _P, ll _Left, ll _Right, ll _Value) {
     if (_Left <= seg_tree[_P].l && seg_tree[_P].r <= _Right) {
@@ -132,14 +176,14 @@ int main() {
     lines[0] = { 0, 0, 0 };
     seg_tree.resize(((x.size() - 1) << 2) + 1);
     build_tree(1, 1, x.size() - 1);
-    for (size_t i = 1; i < lines.size(); i++) {
-        ans += seg_tree[1].lenght * (lines[i].y - lines[i - 1].y);
+    for (size_t i = 1; i < lines.size() - 1; i++) {
         updata(
             1,
             lines[i].left_x,
             lines[i].right_x,
             lines[i].in_out
         );
+        ans += seg_tree[1].lenght * (lines[i + 1].y - lines[i].y);
     }
 
 
