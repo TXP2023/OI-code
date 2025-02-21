@@ -16,7 +16,7 @@
 #include <initializer_list>
 
 #define READ          false
-#define MAX_INF       100000
+#define MAX_INF       200000
 #define MAX_NUM_SIZE  35
 //#define ls(x)         x << 1
 //#define rs(x)         x << 1 | 1
