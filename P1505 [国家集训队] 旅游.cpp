@@ -104,7 +104,7 @@ inline void push_up(ll _P, ll _Lp, ll _Rp) {
     if (_Lp != mid || (_Lp == mid && mid != 1)) {
         tree[_P].sum += tree[ls(_P)].sum;
         tree[_P].max_value = std::max(tree[ls(_P)].max_value, tree[_P].max_value);
-        tree[_P].min_value = std::max(tree[ls(_P)].min_value, tree[_P].min_value);
+        tree[_P].min_value = std::min(tree[ls(_P)].min_value, tree[_P].min_value);
     }
     return; 
 }
@@ -207,7 +207,7 @@ ll seg_query_sum(ll _Left, ll _Right, ll _P, ll _Lp, ll _Rp) {
 
 ll seg_query_max(ll _Left, ll _Right, ll _P, ll _Lp, ll _Rp) {
     if (_Left <= _Lp && _Right >= _Rp) {
-        return tree[_P].sum;
+        return tree[_P].max_value;
     }
 
 
@@ -226,7 +226,7 @@ ll seg_query_max(ll _Left, ll _Right, ll _P, ll _Lp, ll _Rp) {
 
 ll seg_query_min(ll _Left, ll _Right, ll _P, ll _Lp, ll _Rp) {
     if (_Left <= _Lp && _Right >= _Rp) {
-        return tree[_P].sum;
+        return tree[_P].min_value;
     }
 
 
@@ -294,11 +294,11 @@ inline ll query_max(ll _u, ll _v) {
     if (deep[_u] > deep[_v]) {
         std::swap(_u, _v);
     }
-    return std::max(seg_query_max(id[_u] + 1, id[_v] + 1, 1, 1, n), max);;
+    return std::max(seg_query_max(id[_u] + 1, id[_v] + 1, 1, 1, n), max);
 }
 
 inline ll query_min(ll _u, ll _v) {
-    ll min = LLONG_MIN;
+    ll min = LLONG_MAX;
     while (chain_top[_u] != chain_top[_v]) {
         //在跳的过程中 存在点u和点v不再一个树链上 故要将点u移动至点u所在树链的链头的父节点，即向上提一个重链
         if (deep[chain_top[_u]] < deep[chain_top[_v]]) {
@@ -327,12 +327,14 @@ int main() {
     //TODO
     readf(&n);
 
+    graph.resize(n);
     for (size_t i = 0; i < n - 1; i++) {
-        edges[i] = edge{ readf<ll>() - 1, readf<ll>() - 1 , readf<ll>() };
+        edges[i] = edge{ readf<ll>(), readf<ll>() , readf<ll>() };
         graph[edges[i].u].push_back(edges[i].v);
         graph[edges[i].v].push_back(edges[i].u);
     }
 
+    std::fill(heavy_son, heavy_son + n, -1);
     tree_init(0, -1, 1);
     tree_init_heavy_chain(0, 0, -1, cnt);
 
@@ -356,22 +358,22 @@ int main() {
 
     readf(&m);
     for (size_t i = 0; i < m; i++) {
-        std::string ch;
+        std::string str;
         ll u, v;
-        std::cin >> ch;
-        if (ch == "C") {
-            ll i = readf<ll>(), w = readf<ll>();
-            seg_updata_opposite(edge_id[i], edge_id[i], 1, 1, n);
+        std::cin >> str;
+        if (str == "C") {
+            ll i = readf<ll>() - 1, w = readf<ll>();
+            point_updata(edge_id[i] + 1, w, 1, 1, n);
         }
-        else if (ch == "N") {
+        else if (str == "N") {
             readf(&u), readf(&v);
             updata(u, v);
         }
-        else if(ch == "SUM") {
+        else if(str == "SUM") {
             readf(&u), readf(&v);
             printf("%lld\n", query_sum(u, v));
         }
-        else if (ch == "MAX") {
+        else if (str == "MAX") {
             readf(&u), readf(&v);
             printf("%lld\n", query_max(u, v));
         }
