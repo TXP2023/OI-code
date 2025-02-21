@@ -17,9 +17,10 @@
 
 #define READ          false
 #define MAX_INF       1e18
+#define MAXN          200000
 #define MAX_NUM_SIZE  35
-#define ls(x)  x << 1 
-#define rs(x)  x << 1 | 1
+#define ls(x)  (x) << 1 
+#define rs(x)  (x) << 1 | 1
 
 typedef long long int ll;
 typedef unsigned long long int unill;
@@ -30,7 +31,7 @@ template< typename T >
 inline T readf();
 #else
 template< typename Type >
-inline Type readf(Type* p = NULL);
+inline Type readf(Type* p = nullptr);
 #endif
 
 //快速输出函数
@@ -44,15 +45,15 @@ struct edge {
 struct tree_node {
     ll max_value, min_value;
     ll sum;
-    std::pair< bool/*是否存在tag*/, short/*tag的值*/> tag = {false, 0};
+    bool tag = false;
 };
 
-std::vector< ll > deep, father, heavy_son, chain_top, node_num, id;
+ll deep[MAXN], father[MAXN], heavy_son[MAXN], chain_top[MAXN], node_num[MAXN], id[MAXN];
 std::vector< std::vector< ll > > graph;
-std::vector< tree_node > tree;
-std::vector< edge > edges;
-std::vector< ll > edge_id;
-std::vector< ll > array;
+tree_node tree[MAXN << 2];
+edge edges[MAXN];
+ll edge_id[MAXN]; //edge_id[i]为第i条边所连接的2点中的子节点
+ll array[MAXN]; //arry为每条边的初始权值 设arry[0]为0
 ll n, m, cnt = 0;
 
 
@@ -95,7 +96,7 @@ inline void tree_init_heavy_chain(ll _u, ll _top, ll _father, ll& _cnt) {
 
 inline void push_up(ll _P, ll _Lp, ll _Rp) {
     ll mid = (_Lp + _Rp) >> 1;
-    //不存在区间[1~1]在右子节点的情况
+    //右子节点的情况 不存在区间[1~1]
     tree[_P].sum = tree[rs(_P)].sum;
     tree[_P].max_value = tree[rs(_P)].max_value;
     tree[_P].min_value = tree[rs(_P)].min_value;
@@ -109,9 +110,10 @@ inline void push_up(ll _P, ll _Lp, ll _Rp) {
 }
 
 inline void push_down(ll _P) {
-    if (tree[_P].tag.first && tree[_P].tag.second) {
-        tree[ls(_P)].tag.second = 1;
-        tree[rs(_P)].tag.second = 1;
+    if (tree[_P].tag) {
+        tree[_P].tag = false;
+        tree[ls(_P)].tag ^= 1;
+        tree[rs(_P)].tag ^= 1;
         tree[ls(_P)].sum *= -1;
         tree[rs(_P)].sum *= -1;
         std::swap(tree[ls(_P)].max_value, tree[ls(_P)].min_value);
@@ -157,17 +159,18 @@ void point_updata(ll _Index, ll _Value, ll _P, ll _Lp, ll _Rp) {
     else {
         point_updata(_Index, _Value, rs(_P), mid + 1, _Rp);
     }
+    push_up(_P, _Lp, _Rp);
     return;
 }
 
+//对_Left ~ _Right 区间的所有标记取反
 void seg_updata_opposite(ll _Left, ll _Right, ll _P, ll _Lp, ll _Rp) {
     if (_Left <= _Lp && _Right >= _Rp) {
-        tree[_P].tag.second ^= 1;
-        tree[_P].tag.first = true;
+        tree[_P].tag ^= 1;
         std::swap(tree[_P].max_value, tree[_P].min_value);
         tree[_P].max_value *= -1;
         tree[_P].min_value *= -1;
-        tree[_P].max_value *= -1;
+        tree[_P].sum *= -1;
         return;
     }
 
@@ -240,6 +243,7 @@ ll seg_query_min(ll _Left, ll _Right, ll _P, ll _Lp, ll _Rp) {
     return min;
 }
 
+//针对树上_u ~ _v路径上的点的权值更新为相反数
 inline void updata(ll _u, ll _v) {
     while (chain_top[_u] != chain_top[_v]) {
         //在跳的过程中 存在点u和点v不再一个树链上 故要将点u移动至点u所在树链的链头的父节点，即向上提一个重链
@@ -255,6 +259,60 @@ inline void updata(ll _u, ll _v) {
     }
     seg_updata_opposite(id[_u] + 1, id[_v] + 1, 1, 1, n); //此时u和v在同一条重链上 那就直接区间加
     return;
+}
+
+inline ll query_sum(ll _u, ll _v) {
+    ll sum = 0;
+    while (chain_top[_u] != chain_top[_v]) {
+        //在跳的过程中 存在点u和点v不再一个树链上 故要将点u移动至点u所在树链的链头的父节点，即向上提一个重链
+        if (deep[chain_top[_u]] < deep[chain_top[_v]]) {
+            std::swap(_u, _v);
+        }
+        //seg_updata_opposite(id[chain_top[_u]] + 1, id[_u] + 1, 1, 1, n);
+        sum += seg_query_sum(id[chain_top[_u]] + 1, id[_u] + 1, 1, 1, n);
+        //注意更新原来点u所在的重链
+        _u = father[chain_top[_u]];
+    }
+    if (deep[_u] > deep[_v]) {
+        std::swap(_u, _v);
+    }
+    return sum + seg_query_sum(id[_u] + 1, id[_v] + 1, 1, 1, n);
+}
+
+inline ll query_max(ll _u, ll _v) {
+    ll max = LLONG_MIN;
+    while (chain_top[_u] != chain_top[_v]) {
+        //在跳的过程中 存在点u和点v不再一个树链上 故要将点u移动至点u所在树链的链头的父节点，即向上提一个重链
+        if (deep[chain_top[_u]] < deep[chain_top[_v]]) {
+            std::swap(_u, _v);
+        }
+        //seg_updata_opposite(id[chain_top[_u]] + 1, id[_u] + 1, 1, 1, n);
+        max = std::max(seg_query_max(id[chain_top[_u]] + 1, id[_u] + 1, 1, 1, n), max);
+        //注意更新原来点u所在的重链
+        _u = father[chain_top[_u]];
+    }
+    if (deep[_u] > deep[_v]) {
+        std::swap(_u, _v);
+    }
+    return std::max(seg_query_max(id[_u] + 1, id[_v] + 1, 1, 1, n), max);;
+}
+
+inline ll query_min(ll _u, ll _v) {
+    ll min = LLONG_MIN;
+    while (chain_top[_u] != chain_top[_v]) {
+        //在跳的过程中 存在点u和点v不再一个树链上 故要将点u移动至点u所在树链的链头的父节点，即向上提一个重链
+        if (deep[chain_top[_u]] < deep[chain_top[_v]]) {
+            std::swap(_u, _v);
+        }
+        //seg_updata_opposite(id[chain_top[_u]] + 1, id[_u] + 1, 1, 1, n);
+        min = std::min(seg_query_min(id[chain_top[_u]] + 1, id[_u] + 1, 1, 1, n), min);
+        //注意更新原来点u所在的重链
+        _u = father[chain_top[_u]];
+    }
+    if (deep[_u] > deep[_v]) {
+        std::swap(_u, _v);
+    }
+    return std::min(seg_query_min(id[_u] + 1, id[_v] + 1, 1, 1, n), min);
 }
 
 int main() {
@@ -282,6 +340,7 @@ int main() {
     for (size_t i = 0; i < n - 1; i++) {
         ll u = edges[i].u, v = edges[i].v, w = edges[i].w;
         
+        //u为v的子节点
         if (father[u] == v) {;
             array[id[u]] = w;
             edge_id[i] = id[u];
@@ -292,23 +351,33 @@ int main() {
         }
     }
 
-    tree.resize((n << 2) + 1);
+    //tree.resize((n << 2) + 1);
     build_tree(1, 1, n);
 
     readf(&m);
     for (size_t i = 0; i < m; i++) {
-        char ch[5];
-        scanf("%s", &ch);
-        switch (ch[0]) {
-        case 'C':
-
-            break;
-        case 'N':
-            break;
-        case 'S':
-            break;
-        case 'M':
-            break;
+        std::string ch;
+        ll u, v;
+        std::cin >> ch;
+        if (ch == "C") {
+            ll i = readf<ll>(), w = readf<ll>();
+            seg_updata_opposite(edge_id[i], edge_id[i], 1, 1, n);
+        }
+        else if (ch == "N") {
+            readf(&u), readf(&v);
+            updata(u, v);
+        }
+        else if(ch == "SUM") {
+            readf(&u), readf(&v);
+            printf("%lld\n", query_sum(u, v));
+        }
+        else if (ch == "MAX") {
+            readf(&u), readf(&v);
+            printf("%lld\n", query_max(u, v));
+        }
+        else { //MIN
+            readf(&u), readf(&v);
+            printf("%lld\n", query_min(u, v));
         }
     }
 #ifdef _RUN_TIME
