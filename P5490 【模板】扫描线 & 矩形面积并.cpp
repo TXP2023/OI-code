@@ -16,7 +16,7 @@
 #include <initializer_list>
 
 #define READ          false
-#define MAX_INF       1000005
+#define MAX_N       1000005
 #define MAX_NUM_SIZE  35
 //#define ls(x)         x << 1
 //#define rs(x)         x << 1 | 1
@@ -50,9 +50,9 @@ struct tree_node {
     ll lenght; //所代表区间的长度
 };
 
-line lines[(MAX_INF * 2)];
-tree_node seg_tree[(MAX_INF * 2) << 2];
-ll x[MAX_INF * 2];
+line lines[(MAX_N * 2)];
+tree_node seg_tree[(MAX_N * 2) << 2];
+ll x[MAX_N * 2];
 ll n, size, ans = 0, cnt = 0;
 
 inline ll ls(ll x) {
