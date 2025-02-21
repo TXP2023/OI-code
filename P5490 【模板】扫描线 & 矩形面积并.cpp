@@ -16,10 +16,10 @@
 #include <initializer_list>
 
 #define READ          false
-#define MAX_INF       1e18
+#define MAX_INF       100000
 #define MAX_NUM_SIZE  35
-#define ls(x)         x << 1
-#define rs(x)         x << 1 | 1
+//#define ls(x)         x << 1
+//#define rs(x)         x << 1 | 1
 #define DEBUG         true
 
 typedef long long int ll;
@@ -50,26 +50,32 @@ struct tree_node {
     ll lenght; //所代表区间的长度
 };
 
-std::deque< line > lines;
-std::vector< tree_node > seg_tree;
-std::vector< ll > x;
-ll n, size, ans = 0;
+line lines[(MAX_INF * 2)];
+tree_node seg_tree[(MAX_INF * 2) << 2];
+ll x[MAX_INF * 2];
+ll n, size, ans = 0, cnt = 0;
 
-inline void discretization() {
-    std::sort(x.begin(), x.end());
-    x.erase(std::unique(x.begin(), x.end()), x.end());
-    for (size_t i = 1; i < lines.size(); i++) {
-        lines[i].left_x = std::lower_bound(x.begin(), x.end(), lines[i].left_x) - x.begin();
-        lines[i].right_x = std::lower_bound(x.begin(), x.end(), lines[i].right_x) - x.begin() - 1;
+inline ll ls(ll x) {
+    return x << 1;
+}
+
+inline ll rs(ll x) {
+    return x << 1 | 1;
+}
+
+inline void discretization(ll &_cnt) {
+    std::sort(x + 1, x + _cnt + 1);
+    _cnt = std::unique(x + 1, x + _cnt + 1) - x;
+    for (size_t i = 1; i < n * 2; i++) {
+        lines[i].left_x = std::lower_bound(x, x + _cnt, lines[i].left_x) - x;
+        lines[i].right_x = std::lower_bound(x, x + _cnt, lines[i].right_x) - x - 1;
     }
-    x.erase(x.begin());
-    size = x.size();
     return;
 }
 
 inline void push_up(ll _P) {
     if (seg_tree[_P].sum) {
-        seg_tree[_P].lenght = x[seg_tree[_P].r] - x[seg_tree[_P].l - 1];
+        seg_tree[_P].lenght = x[seg_tree[_P].r + 1] - x[seg_tree[_P].l];
     }
     else {
         seg_tree[_P].lenght = seg_tree[ls(_P)].lenght + seg_tree[rs(_P)].lenght;
@@ -114,8 +120,8 @@ int main() {
 
     readf(&n);
 
-    lines.resize(n * 2 + 1);
-    x.resize(n * 2 + 1);
+    //lines.resize(n * 2 + 1);
+    //x.resize(n * 2 + 1);
 
     for (size_t i = 1; i <= n; i++) {
         ll x1 = readf<ll>(), y1 = readf<ll>(), x2 = readf<ll>(), y2 = readf<ll>();
@@ -124,16 +130,16 @@ int main() {
         x[i * 2 - 1] = x1;
         x[i * 2] = x2;
     }
+    cnt = n * 2;
 
 
-
-    std::sort(lines.begin(), lines.end(), [](const line a, const line b) ->bool {return a.y < b.y; });
-    discretization();
+    std::sort(lines + 1, lines + 2 * n + 1, [](const line a, const line b) ->bool {return a.y < b.y; });
+    discretization(cnt);
 
     lines[0] = { 0, 0, 0 };
-    seg_tree.resize(((x.size() - 1) << 2) + 1);
-    build_tree(1, 1, x.size() - 1);
-    for (size_t i = 1; i < lines.size() - 1; i++) {
+    //seg_tree.resize(((x.size() - 1) << 2) + 1);
+    build_tree(1, 1, cnt - 1);
+    for (size_t i = 1; i < n * 2; i++) {
         updata(
             1,
             lines[i].left_x,
