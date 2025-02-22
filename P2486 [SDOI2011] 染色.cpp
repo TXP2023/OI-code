@@ -22,7 +22,7 @@
 //#define ls(x)        (x) << 2
 //#define rs(x)        (x) << 2 | 1
 
-typedef long long int ll;
+typedef int ll;
 typedef unsigned long long int unill;
 
 //¿ì¶Áº¯ÊıÉùÃ÷
@@ -219,7 +219,7 @@ inline ll query(ll _u, ll _v) {
             std::swap(_u, _v);
         }
         sum += seg_query(id[chain_top[_u]] + 1, id[_u] + 1, 1, 1, n);
-        if (id[father[chain_top[_u]]] + 1 != 0 && 
+        if (id[father[chain_top[_u]]] + 1 != 0 &&
             seg_point_color_query(id[chain_top[_u]] + 1, 1, 1, n) == seg_point_color_query(id[father[chain_top[_u]]] + 1, 1, 1, n)) {
             --sum;
         }
