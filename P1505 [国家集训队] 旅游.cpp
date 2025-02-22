@@ -212,14 +212,14 @@ ll seg_query_max(ll _Left, ll _Right, ll _P, ll _Lp, ll _Rp) {
 
 
     push_down(_P);
-    ll mid = (_Lp + _Rp) >> 1, max = 0;
+    ll mid = (_Lp + _Rp) >> 1, max = LLONG_MIN;
     if (_Left <= mid) {
         if (!(_Left == mid && mid == 1)) {
-            max = std::max(seg_query_sum(_Left, _Right, ls(_P), _Lp, mid), max);
+            max = std::max(seg_query_max(_Left, _Right, ls(_P), _Lp, mid), max);
         }
     }
     if (_Right > mid) {
-        max = std::max(seg_query_sum(_Left, _Right, rs(_P), mid + 1, _Rp), max);
+        max = std::max(seg_query_max(_Left, _Right, rs(_P), mid + 1, _Rp), max);
     }
     return max;
 }
@@ -231,7 +231,7 @@ ll seg_query_min(ll _Left, ll _Right, ll _P, ll _Lp, ll _Rp) {
 
 
     push_down(_P);
-    ll mid = (_Lp + _Rp) >> 1, min = 0;
+    ll mid = (_Lp + _Rp) >> 1, min = LLONG_MAX;
     if (_Left <= mid) {
         if (!(_Left == mid && mid == 1)) {
             min = std::min(seg_query_min(_Left, _Right, ls(_P), _Lp, mid), min);
@@ -257,7 +257,7 @@ inline void updata(ll _u, ll _v) {
     if (deep[_u] > deep[_v]) {
         std::swap(_u, _v);
     }
-    seg_updata_opposite(id[_u] + 1, id[_v] + 1, 1, 1, n); //此时u和v在同一条重链上 那就直接区间加
+    seg_updata_opposite(id[_u] + 2, id[_v] + 1, 1, 1, n); //此时u和v在同一条重链上 那就直接区间加
     return;
 }
 
@@ -276,7 +276,10 @@ inline ll query_sum(ll _u, ll _v) {
     if (deep[_u] > deep[_v]) {
         std::swap(_u, _v);
     }
-    return sum + seg_query_sum(id[_u] + 1, id[_v] + 1, 1, 1, n);
+    if (id[_u] + 1 != id[_v] + 1) /*还存在一条边*/ {
+        return sum + seg_query_sum(id[_u] + 2, id[_v] + 1, 1, 1, n);
+    }
+    return sum;
 }
 
 inline ll query_max(ll _u, ll _v) {
@@ -294,7 +297,10 @@ inline ll query_max(ll _u, ll _v) {
     if (deep[_u] > deep[_v]) {
         std::swap(_u, _v);
     }
-    return std::max(seg_query_max(id[_u] + 1, id[_v] + 1, 1, 1, n), max);
+    if (id[_u] + 1 != id[_v] + 1) /*还存在一条边*/ {
+        return std::max(seg_query_max(id[_u] + 2, id[_v] + 1, 1, 1, n), max);
+    }
+    return max;
 }
 
 inline ll query_min(ll _u, ll _v) {
@@ -312,7 +318,11 @@ inline ll query_min(ll _u, ll _v) {
     if (deep[_u] > deep[_v]) {
         std::swap(_u, _v);
     }
-    return std::min(seg_query_min(id[_u] + 1, id[_v] + 1, 1, 1, n), min);
+    //return std::min(seg_query_min(id[_u] + 1, id[_v] + 1, 1, 1, n), min);
+    if (id[_u] + 1 != id[_v] + 1) /*还存在一条边*/ {
+        return std::min(seg_query_min(id[_u] + 2, id[_v] + 1, 1, 1, n), min);
+    }
+    return min;
 }
 
 int main() {
