@@ -382,7 +382,7 @@
       <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P2486 [SDOI2011] 染色.cpp">
-      <Filter>源文件\待完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

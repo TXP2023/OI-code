@@ -15,8 +15,8 @@
 #include <stdint.h>
 #include <time.h>
 
-#define READ false
-#define MAX_INF 1e18
+#define READ        false
+#define MAX_INF     1e18
 #define MAX_NUM_SIZE 35
 
 typedef long long int ll;
@@ -28,7 +28,7 @@ template< typename T >
 inline T readf();
 #else
 template< typename Type >
-inline Type readf(Type* p = NULL);
+inline Type readf(Type* p = nullptr);
 #endif
 
 //快速输出函数
