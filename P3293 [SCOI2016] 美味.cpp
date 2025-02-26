@@ -19,7 +19,7 @@
 #define READ        false
 #define MAX_INF     1e18
 #define MAX_NUM_SIZE 35
-#define MAXN        200005
+#define MAXN        5
 
 typedef long long int ll;
 typedef unsigned long long int unill;
@@ -47,20 +47,21 @@ ll root[MAXN];
 tree_data tree[MAXN << 2];
 ll n, m, tree_cnt;
 
-void insert(ll root, ll _Left, ll _Right, ll _Value) {
-    tree[++tree_cnt] = tree[root];
-    tree[++tree_cnt].sum++;
+ll insert(ll root, ll _Left, ll _Right, ll _Value) {
+    ll P = ++tree_cnt;
+    tree[P] = tree[root];
+    tree[P].sum++;
     if (_Left == _Right) {
-        return;
+        return P;
     }
     ll mid = (_Left + _Right) >> 1;
     if (_Value <= mid) {
-        insert(tree[root].l, _Left, mid, _Value);
+        tree[P].l = insert(tree[root].l, _Left, mid, _Value);
     }
     else {
-        insert(tree[root].r, mid + 1, _Right, _Value);
+        tree[P].r = insert(tree[root].r, mid + 1, _Right, _Value);
     }
-    return;
+    return P;
 }
 
 bool query(ll _Left_Root, ll _Right_Root, ll _Left, ll _Right, ll _Value_min, ll _Value_max) {
@@ -94,10 +95,10 @@ int main() {
     //TODO
     readf(&n), readf(&m);
 
-    for (size_t i = 0; i < n; i++) {
+    for (size_t i = 1; i <= n; i++) {
         //readf(&appraise[i]);
         ll value = readf<ll>();
-        insert(root[i] = ++tree_cnt, 0, MAXN, value);
+        root[i] = insert(root[i - 1], 0, MAXN, value);
     }
 
     for (size_t i = 0; i < m; i++) {
@@ -118,8 +119,6 @@ int main() {
         }
         printf("%lld\n", ans);
     }
-
-
 
 #ifdef _RUN_TIME
     printf("The running duration is not less than %ld ms\n", clock() - start);
