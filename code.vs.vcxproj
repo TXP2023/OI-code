@@ -105,7 +105,7 @@
     <ClCompile>
       <WarningLevel>Level2</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_FREOPEN;_RUN_TIME;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_FREOPEN;_RUN_TIME;_MSVC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <Optimization>Disabled</Optimization>
@@ -236,9 +236,6 @@
     <ClCompile Include="P1792 [国家集训队] 种树.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="P1856 [IOI1998] [USACO5.5] 矩形周长Picture.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="P1892 [BOI2003] 团伙.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
@@ -308,6 +305,7 @@
     <ClCompile Include="P3258 [JLOI2014] 松鼠的新家.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="P3293 [SCOI2016] 美味.cpp" />
     <ClCompile Include="P3369 【模板】普通平衡树  线段树方法.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>

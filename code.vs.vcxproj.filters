@@ -303,9 +303,6 @@
     <ClCompile Include="P3379 【模板】最近公共祖先（LCA） 树链剖分方法.cpp">
       <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
-    <ClCompile Include="P1856 [IOI1998] [USACO5.5] 矩形周长Picture.cpp">
-      <Filter>源文件\待完成</Filter>
-    </ClCompile>
     <ClCompile Include="树链剖分 线段树维护.cpp">
       <Filter>源文件\样例</Filter>
     </ClCompile>
@@ -383,6 +380,9 @@
     </ClCompile>
     <ClCompile Include="P2486 [SDOI2011] 染色.cpp">
       <Filter>源文件\已完成的题目</Filter>
+    </ClCompile>
+    <ClCompile Include="P3293 [SCOI2016] 美味.cpp">
+      <Filter>源文件\待完成</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
