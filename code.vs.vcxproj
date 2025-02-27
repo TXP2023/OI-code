@@ -365,6 +365,7 @@
     <ClCompile Include="P4092 [HEOI2016 TJOI2016] 树.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="P4315 月下“毛景树”.cpp" />
     <ClCompile Include="P4427 [BJOI2018] 求和.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>

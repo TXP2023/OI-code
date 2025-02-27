@@ -15,9 +15,9 @@
 #include <stdint.h>
 #include <time.h>
 
-#define READ        false
-#define MAX_INF     1e18
-#define MAX_NUM_SIZE 35
+#define READ          false
+#define MAX_INF       1e18
+#define MAX_NUM_SIZE  35
 
 typedef long long int ll;
 typedef unsigned long long int unill;

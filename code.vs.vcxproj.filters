@@ -384,6 +384,9 @@
     <ClCompile Include="P3293 [SCOI2016] 美味.cpp">
       <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
+    <ClCompile Include="P4315 月下“毛景树”.cpp">
+      <Filter>源文件\待完成</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
