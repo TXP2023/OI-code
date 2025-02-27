@@ -305,7 +305,9 @@
     <ClCompile Include="P3258 [JLOI2014] 松鼠的新家.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="P3293 [SCOI2016] 美味.cpp" />
+    <ClCompile Include="P3293 [SCOI2016] 美味.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="P3369 【模板】普通平衡树  线段树方法.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
