@@ -19,7 +19,7 @@
 #define READ        false
 #define MAX_INF     1e18
 #define MAX_NUM_SIZE 35
-#define MAXN        5
+#define MAXN         200005LL
 
 typedef long long int ll;
 typedef unsigned long long int unill;
@@ -47,19 +47,19 @@ ll root[MAXN];
 tree_data tree[MAXN << 2];
 ll n, m, tree_cnt;
 
-ll insert(ll root, ll _Left, ll _Right, ll _Value) {
+ll insert(ll _Root, ll _Left, ll _Right, ll _Value) {
     ll P = ++tree_cnt;
-    tree[P] = tree[root];
+    tree[P] = tree[_Root];
     tree[P].sum++;
     if (_Left == _Right) {
         return P;
     }
     ll mid = (_Left + _Right) >> 1;
     if (_Value <= mid) {
-        tree[P].l = insert(tree[root].l, _Left, mid, _Value);
+        tree[P].l = insert(tree[_Root].l, _Left, mid, _Value);
     }
     else {
-        tree[P].r = insert(tree[root].r, mid + 1, _Right, _Value);
+        tree[P].r = insert(tree[_Root].r, mid + 1, _Right, _Value);
     }
     return P;
 }
@@ -69,16 +69,16 @@ bool query(ll _Left_Root, ll _Right_Root, ll _Left, ll _Right, ll _Value_min, ll
         return false;
     }
 
-    if (_Left <= _Value_min && _Value_max <= _Right) {
+    if (_Value_min <= _Left && _Right <= _Value_max) {
         return true;
     }
 
     ll mid = (_Left + _Right) >> 1, ret = 0;
     if (_Value_min <= mid) {
-        ret += query(tree[_Left_Root].l, tree[_Right_Root].l, _Left, mid, _Value_min, mid);
+        ret += query(tree[_Left_Root].l, tree[_Right_Root].l, _Left, mid, _Value_min, _Value_max);
     }
     if (_Value_max > mid) {
-        ret += query(tree[_Left_Root].r, tree[_Right_Root].r, mid + 1, _Right, mid + 1, _Value_max);
+        ret += query(tree[_Left_Root].r, tree[_Right_Root].r, mid + 1, _Right, _Value_min, _Value_max);
     }
     return ret;
 }
@@ -110,14 +110,14 @@ int main() {
                 value_min = ans, value_max = ans + ((1 << j) - 1), sum = 0;
             }
             else {
-                value_min = ans + (1 << j), value_max = ans + (1 << (j + 1) - 1), sum = 1;
+                value_min = ans + (1 << j), value_max = ans + ((1 << (j + 1)) - 1), sum = 1;
             }
-            if (!query(root[Left - 1], root[Right], 0, MAXN, value_min, value_max)) {
+            if (!query(root[Left - 1], root[Right], 0, MAXN, std::max(value_min - x, 0LL), std::min(value_max - x, MAXN))) {
                 sum ^= 1;
             }
             ans += (sum << j);
         }
-        printf("%lld\n", ans);
+        printf("%lld\n", ans ^ b);
     }
 
 #ifdef _RUN_TIME
