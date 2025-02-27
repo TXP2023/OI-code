@@ -141,8 +141,22 @@ void build_tree(ll _P, ll _Lp, ll _Rp) {
     return;
 }
 
+ll segment_query(ll _P, ll _Lp, ll _Rp, ll _Left, ll _Right) {
+    if (_Left <= _Lp && _Rp <= _Right) {
+        return tree[_P].sum;
+    }
 
-
+    push_down(_P, _Lp, _Rp);
+    ll mid = (_Lp + _Rp) >> 1, ret = 0;
+    if (_Left <= mid) {
+        ret += segment_query(ls(_P), _Lp, mid, _Left, _Right);
+    }
+    if (_Right > mid) {
+        ret += segment_query(rs(_P), mid, _Rp, _Left, _Right);
+    }
+    return ret;
+}
+ 
 int main() {
 #ifdef _FREOPEN
     freopen("input.txt", "r", stdin);
