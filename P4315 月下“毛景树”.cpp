@@ -43,12 +43,12 @@ struct edge{
 };
 
 struct Tag {
-    int b;
+    int b; //0为无tag 1为改变 2为怎加
     ll value;
 };
 
 struct tree_data {
-    ll sum;
+    ll max;
     Tag tag = {0, 0};
 };
 
@@ -103,16 +103,16 @@ inline void add_tag(ll _P, ll _Lp, ll _Rp,  Tag _Tag) {
     }
     tree[_P].tag = _Tag;
     if (tree[_P].tag.b == 1) {
-        tree[_P].sum = (_Rp - _Lp + 1) * tree[_P].tag.value;
+        tree[_P].max = tree[_P].tag.value;
     }
     else {
-        tree[_P].sum += (_Rp - _Lp + 1) * tree[_P].tag.value;
+        tree[_P].max += tree[_P].tag.value;
     }
     return;
 }
 
 inline void push_up(ll _P) {
-    tree[_P].sum = tree[ls(_P)].sum + tree[rs(_P)].sum;
+    tree[_P].max = std::max(tree[ls(_P)].max, tree[rs(_P)].max);
     return;
 }
 
@@ -130,7 +130,7 @@ inline void push_down(ll _P, ll _Lp, ll _Rp) {
 
 void build_tree(ll _P, ll _Lp, ll _Rp) {
     if (_Lp = _Rp) {
-        tree[_P].sum = array[_Lp - 1];
+        tree[_P].max = array[_Lp - 1];
         return;
     }
 
@@ -143,7 +143,7 @@ void build_tree(ll _P, ll _Lp, ll _Rp) {
 
 ll segment_query(ll _P, ll _Lp, ll _Rp, ll _Left, ll _Right) {
     if (_Left <= _Lp && _Rp <= _Right) {
-        return tree[_P].sum;
+        return tree[_P].max;
     }
 
     push_down(_P, _Lp, _Rp);
@@ -155,6 +155,104 @@ ll segment_query(ll _P, ll _Lp, ll _Rp, ll _Left, ll _Right) {
         ret += segment_query(rs(_P), mid, _Rp, _Left, _Right);
     }
     return ret;
+}
+
+void segment_updata_add(ll _P, ll _Lp, ll _Rp, ll _Left, ll _Right, ll _Value) {
+    if (_Left <= _Lp && _Rp <= _Right) {
+        add_tag(_P, _Lp, _Rp, Tag{ 2, _Value });
+        return;
+    }
+
+    push_down(_P, _Lp, _Rp);
+    ll mid = (_Lp + _Rp) >> 1;
+    if (_Left <= mid) {
+        segment_updata_add(ls(_P), _Lp, mid, _Left, _Right, _Value);
+    }
+    if (_Right > mid) {
+        segment_updata_add(rs(_P), mid + 1, _Rp, _Left, _Right, _Value);
+    }
+    push_up(_P);
+    return;
+}
+
+void segment_updata_change(ll _P, ll _Lp, ll _Rp, ll _Left, ll _Right, ll _Value) {
+    if (_Left <= _Lp && _Rp <= _Right) {
+        add_tag(_P, _Lp, _Rp, Tag{ 1, _Value });
+        return;
+    }
+
+    push_down(_P, _Lp, _Rp);
+    ll mid = (_Lp + _Rp) >> 1;
+    if (_Left <= mid) {
+        segment_updata_change(ls(_P), _Lp, mid, _Left, _Right, _Value);
+    }
+    if (_Right > mid) {
+        segment_updata_change(rs(_P), mid + 1, _Rp, _Left, _Right, _Value);
+    }
+    push_up(_P);
+    return;
+}
+
+inline void add(ll _u, ll _v, ll _Value) {
+    while (chain_top[_u] != chain_top[_v]) {
+        //在跳的过程中 存在点u和点v不再一个树链上 故要将点u移动至点u所在树链的链头的父节点，即向上提一个重链
+        if (deep[chain_top[_u]] < deep[chain_top[_v]]) {
+            std::swap(_u, _v);
+        }
+        segment_updata_add(1, 1, n, id[chain_top[_u]] + 1, id[_u] + 1, _Value);
+        //注意更新原来点u所在的重链
+        _u = father[chain_top[_u]];
+    }
+    if (deep[_u] > deep[_v]) {
+        std::swap(_u, _v);
+    }
+    segment_updata_add(1, 1, n, id[_u] + 2, id[_v] + 1, _Value); //此时u和v在同一条重链上 那就直接区间加
+    return;
+}
+
+inline void cover(ll _u, ll _v, ll _Value) {
+    while (chain_top[_u] != chain_top[_v]) {
+        //在跳的过程中 存在点u和点v不再一个树链上 故要将点u移动至点u所在树链的链头的父节点，即向上提一个重链
+        if (deep[chain_top[_u]] < deep[chain_top[_v]]) {
+            std::swap(_u, _v);
+        }
+        segment_updata_change(1, 1, n, id[chain_top[_u]] + 1, id[_u] + 1, _Value);
+        //注意更新原来点u所在的重链
+        _u = father[chain_top[_u]];
+    }
+    if (deep[_u] > deep[_v]) {
+        std::swap(_u, _v);
+    }
+    segment_updata_change(1, 1, n, id[_u] + 2, id[_v] + 1, _Value); //此时u和v在同一条重链上 那就直接区间加
+    return;
+}
+
+inline void change(ll _k, ll _Value) {
+    ll u = edges[_k].u, v = edges[_k].v;
+    //deep[v]要小于deep[u]
+    if (deep[v] > deep[u]) {
+        std::swap(u, v);
+    }
+    segment_updata_change(1, 1, n, id[v] + 2, id[u] + 1, _Value); //此时u和v在同一条重链上 那就直接区间加
+    return;
+}
+
+inline ll query(ll _u, ll _v) {
+    ll max = LLONG_MIN;
+    while (chain_top[_u] != chain_top[_v]) {
+        //在跳的过程中 存在点u和点v不再一个树链上 故要将点u移动至点u所在树链的链头的父节点，即向上提一个重链
+        if (deep[chain_top[_u]] < deep[chain_top[_v]]) {
+            std::swap(_u, _v);
+        }
+        max = std::max(max, segment_query(1, 1, n, id[chain_top[_u]] + 1, id[_u] + 1));
+        //注意更新原来点u所在的重链
+        _u = father[chain_top[_u]];
+    }
+    if (deep[_u] > deep[_v]) {
+        std::swap(_u, _v);
+    }
+    max = std::max(max, segment_query(1, 1, n, id[_u] + 2, id[_v] + 1)); //此时u和v在同一条重链上 那就直接区间加
+    return max;
 }
  
 int main() {
@@ -187,7 +285,24 @@ int main() {
         }
     }
 
-
+    std::string str;
+    std::cin >> str;    
+    while (str != "Stop") {
+        if (str == "Change") {
+            change(readf<ll>() - 1, readf<ll>());
+        }
+        else if(str == "Cover") {
+            cover(readf<ll>() - 1, readf<ll>() - 1, readf<ll>());
+        }
+        else if(str == "Add") {
+            add(readf<ll>() - 1, readf<ll>() - 1, readf<ll>());
+        }
+        else {
+            printf("%lld\n", query(readf<ll>() - 1, readf<ll>() - 1));
+        }
+        
+        std::cin >> str;
+    }
 
 #ifdef _RUN_TIME
     printf("The running duration is not less than %ld ms\n", clock() - start);
