@@ -19,8 +19,6 @@
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
 #define MAXN          200000
-#define ls(x)         (x) << 1
-#define rs(x)         (x) << 1 | 1
 
 typedef long long int ll;
 typedef unsigned long long int unill;
@@ -42,15 +40,10 @@ struct edge{
     ll u, v, w;
 };
 
-struct Tag {
-    ll change; //0为无tag 1为改变 2为怎加
-    ll add;
-    bool b;
-};
-
 struct tree_data {
     ll max;
-    Tag tag = {0, 0};
+    bool add_bool = false, change_bool = false;
+    ll tag_add, tag_change;
 };
 
 std::vector<ll> graph[MAXN];
@@ -97,12 +90,14 @@ inline void tree_init_heavy_chain(ll _u, ll _top, ll _father, ll& _cnt) {
     return;
 }
 
-inline void push_down(ll _P, ll _Lp, ll _Rp);
+template<typename Type>
+inline Type ls(Type _x) {
+    return _x << 1;
+}
 
-inline void add_tag(ll _P, ll _Lp, ll _Rp,  Tag _Tag) {
-    tree[_P].tag = _Tag;
-    tree[_P].max = tree[_P].tag.change + tree[_P].tag.add;
-    return;
+template<typename Type>
+inline Type rs(Type _x) {
+    return _x << 1 | 1;
 }
 
 inline void push_up(ll _P) {
@@ -111,11 +106,28 @@ inline void push_up(ll _P) {
 }
 
 inline void push_down(ll _P, ll _Lp, ll _Rp) {
-    if (tree[_P].tag.b){
+    if (tree[_P].change_bool || tree[_P].add_bool) {
         ll mid = (_Lp + _Rp) >> 1;
-        add_tag(ls(_P), _Lp, mid, tree[_P].tag);
-        add_tag(rs(_P), mid + 1, _Rp, tree[_P].tag);
-        tree[_P].tag.b = false;
+        if (tree[_P].change_bool) {
+            tree[ls(_P)].max = tree[_P].tag_change;
+            tree[ls(_P)].change_bool = true;
+            tree[ls(_P)].tag_change = tree[_P].tag_change;
+            tree[rs(_P)].max = tree[_P].tag_change;
+            tree[rs(_P)].change_bool = true;
+            tree[rs(_P)].tag_change = tree[_P].tag_change;
+        }
+        if (tree[_P].add_bool) {
+            tree[ls(_P)].max += tree[_P].tag_add;
+            tree[ls(_P)].add_bool = true;
+            tree[ls(_P)].tag_add = tree[_P].tag_add;
+            tree[rs(_P)].max += tree[_P].tag_add;
+            tree[rs(_P)].add_bool = true;
+            tree[rs(_P)].tag_add = tree[_P].tag_add;
+        }
+        tree[_P].add_bool = false;
+        tree[_P].change_bool = false;
+        tree[_P].tag_add = 0;
+        tree[_P].tag_change = 0;
     }
     return;
 }
@@ -134,28 +146,31 @@ void build_tree(ll _P, ll _Lp, ll _Rp) {
 }
 
 ll segment_query(ll _P, ll _Lp, ll _Rp, ll _Left, ll _Right) {
-    push_down(_P, _Lp, _Rp);
     if (_Left <= _Lp && _Rp <= _Right) {
         return tree[_P].max;
     }
-    
+
+    push_down(_P, _Lp, _Rp);
     ll mid = (_Lp + _Rp) >> 1, ret = LLONG_MIN;
     if (_Left <= mid) {
-        ret = std::max( segment_query(ls(_P), _Lp, mid, _Left, _Right), ret);
+        ret = std::max(segment_query(ls(_P), _Lp, mid, _Left, _Right), ret);
     }
     if (_Right > mid) {
         ret = std::max(segment_query(rs(_P), mid + 1, _Rp, _Left, _Right), ret);
     }
+    push_up(_P);
     return ret;
 }
 
 void segment_updata_add(ll _P, ll _Lp, ll _Rp, ll _Left, ll _Right, ll _Value) {
-    push_down(_P, _Lp, _Rp);
     if (_Left <= _Lp && _Rp <= _Right) {
-        add_tag(_P, _Lp, _Rp, Tag{ 2, _Value });
+        tree[_P].tag_add += _Value;
+        tree[_P].add_bool = true;
+        tree[_P].max += _Value;
         return;
     }
-    
+
+    push_down(_P, _Lp, _Rp);
     ll mid = (_Lp + _Rp) >> 1;
     if (_Left <= mid) {
         segment_updata_add(ls(_P), _Lp, mid, _Left, _Right, _Value);
@@ -168,12 +183,16 @@ void segment_updata_add(ll _P, ll _Lp, ll _Rp, ll _Left, ll _Right, ll _Value) {
 }
 
 void segment_updata_change(ll _P, ll _Lp, ll _Rp, ll _Left, ll _Right, ll _Value) {
-    push_down(_P, _Lp, _Rp);
     if (_Left <= _Lp && _Rp <= _Right) {
-        add_tag(_P, _Lp, _Rp, Tag{ 1, _Value });
+        tree[_P].tag_add = 0;
+        tree[_P].add_bool = false;
+        tree[_P].tag_change = _Value;
+        tree[_P].change_bool = true;
+        tree[_P].max = _Value;
         return;
     }
-    
+
+    push_down(_P, _Lp, _Rp);
     ll mid = (_Lp + _Rp) >> 1;
     if (_Left <= mid) {
         segment_updata_change(ls(_P), _Lp, mid, _Left, _Right, _Value);
