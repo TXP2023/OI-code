@@ -96,6 +96,8 @@ inline void tree_init_heavy_chain(ll _u, ll _top, ll _father, ll& _cnt) {
     return;
 }
 
+inline void push_down(ll _P, ll _Lp, ll _Rp);
+
 inline void add_tag(ll _P, ll _Lp, ll _Rp,  Tag _Tag) {
     if (tree[_P].tag.b && _Lp != _Rp) {
         push_down(_P, _Lp, _Rp);
