@@ -18,9 +18,9 @@
 #define READ          false
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
-#define MAXN          100005
-#define ls(x)         (x) << 2
-#define rs(x)         (x) << 2 | 1
+#define MAXN          200000
+#define ls(x)         (x) << 1
+#define rs(x)         (x) << 1 | 1
 
 typedef long long int ll;
 typedef unsigned long long int unill;
@@ -43,8 +43,9 @@ struct edge{
 };
 
 struct Tag {
-    int b; //0为无tag 1为改变 2为怎加
-    ll value;
+    ll change; //0为无tag 1为改变 2为怎加
+    ll add;
+    bool b;
 };
 
 struct tree_data {
@@ -99,17 +100,8 @@ inline void tree_init_heavy_chain(ll _u, ll _top, ll _father, ll& _cnt) {
 inline void push_down(ll _P, ll _Lp, ll _Rp);
 
 inline void add_tag(ll _P, ll _Lp, ll _Rp,  Tag _Tag) {
-    if (tree[_P].tag.b && _Lp != _Rp) {
-        push_down(_P, _Lp, _Rp);
-        return;
-    }
     tree[_P].tag = _Tag;
-    if (tree[_P].tag.b == 1) {
-        tree[_P].max = tree[_P].tag.value;
-    }
-    else {
-        tree[_P].max += tree[_P].tag.value;
-    }
+    tree[_P].max = tree[_P].tag.change + tree[_P].tag.add;
     return;
 }
 
@@ -119,19 +111,17 @@ inline void push_up(ll _P) {
 }
 
 inline void push_down(ll _P, ll _Lp, ll _Rp) {
-    ll mid = (_Lp + _Rp) >> 1;
-    if (!tree[_P].tag.b) {
-        return;
+    if (tree[_P].tag.b){
+        ll mid = (_Lp + _Rp) >> 1;
+        add_tag(ls(_P), _Lp, mid, tree[_P].tag);
+        add_tag(rs(_P), mid + 1, _Rp, tree[_P].tag);
+        tree[_P].tag.b = false;
     }
-
-    add_tag(ls(_P), _Lp, mid, tree[_P].tag);
-    add_tag(rs(_P), mid + 1, _Rp, tree[_P].tag);
-    tree[_P].tag.b = 0;
     return;
 }
 
 void build_tree(ll _P, ll _Lp, ll _Rp) {
-    if (_Lp = _Rp) {
+    if (_Lp == _Rp) {
         tree[_P].max = array[_Lp - 1];
         return;
     }
@@ -144,28 +134,28 @@ void build_tree(ll _P, ll _Lp, ll _Rp) {
 }
 
 ll segment_query(ll _P, ll _Lp, ll _Rp, ll _Left, ll _Right) {
+    push_down(_P, _Lp, _Rp);
     if (_Left <= _Lp && _Rp <= _Right) {
         return tree[_P].max;
     }
-
-    push_down(_P, _Lp, _Rp);
-    ll mid = (_Lp + _Rp) >> 1, ret = 0;
+    
+    ll mid = (_Lp + _Rp) >> 1, ret = LLONG_MIN;
     if (_Left <= mid) {
-        ret += segment_query(ls(_P), _Lp, mid, _Left, _Right);
+        ret = std::max( segment_query(ls(_P), _Lp, mid, _Left, _Right), ret);
     }
     if (_Right > mid) {
-        ret += segment_query(rs(_P), mid, _Rp, _Left, _Right);
+        ret = std::max(segment_query(rs(_P), mid + 1, _Rp, _Left, _Right), ret);
     }
     return ret;
 }
 
 void segment_updata_add(ll _P, ll _Lp, ll _Rp, ll _Left, ll _Right, ll _Value) {
+    push_down(_P, _Lp, _Rp);
     if (_Left <= _Lp && _Rp <= _Right) {
         add_tag(_P, _Lp, _Rp, Tag{ 2, _Value });
         return;
     }
-
-    push_down(_P, _Lp, _Rp);
+    
     ll mid = (_Lp + _Rp) >> 1;
     if (_Left <= mid) {
         segment_updata_add(ls(_P), _Lp, mid, _Left, _Right, _Value);
@@ -178,12 +168,12 @@ void segment_updata_add(ll _P, ll _Lp, ll _Rp, ll _Left, ll _Right, ll _Value) {
 }
 
 void segment_updata_change(ll _P, ll _Lp, ll _Rp, ll _Left, ll _Right, ll _Value) {
+    push_down(_P, _Lp, _Rp);
     if (_Left <= _Lp && _Rp <= _Right) {
         add_tag(_P, _Lp, _Rp, Tag{ 1, _Value });
         return;
     }
-
-    push_down(_P, _Lp, _Rp);
+    
     ll mid = (_Lp + _Rp) >> 1;
     if (_Left <= mid) {
         segment_updata_change(ls(_P), _Lp, mid, _Left, _Right, _Value);
@@ -235,7 +225,7 @@ inline void change(ll _k, ll _Value) {
     if (deep[v] > deep[u]) {
         std::swap(u, v);
     }
-    segment_updata_change(1, 1, n, id[v] + 2, id[u] + 1, _Value); //此时u和v在同一条重链上 那就直接区间加
+    segment_updata_change(1, 1, n, id[u] + 1, id[u] + 1, _Value); //此时u和v在同一条重链上 那就直接区间加
     return;
 }
 
@@ -269,17 +259,19 @@ int main() {
     //TODO
     readf(&n);
     for (size_t i = 0; i < n - 1; i++) {
-        edges[i] = edge{ readf<ll>() - 1, readf<ll>() - 1, readf<ll>() };
+        ll u = readf<ll>() - 1, v = readf<ll>() - 1, w = readf<ll>();
+        edges[i] = edge{ u, v, w };
         graph[edges[i].u].push_back(edges[i].v);
         graph[edges[i].v].push_back(edges[i].u);
     }
 
-    tree_init(-1, 1, 0);
+    std::fill(heavy_son, heavy_son + n, -1);
+    tree_init(0, -1, 0);
     tree_init_heavy_chain(0, 0, -1, chain_cnt);
 
     //将边的权值转移到这个边所连接的深度较深的节点上
     for (size_t i = 0; i < n - 1; i++) {
-        if (father[edges[i].u] = edges[i].v) {
+        if (deep[edges[i].u] > deep[edges[i].v]) {
             array[id[edges[i].u]] = edges[i].w;
         }
         else {
@@ -287,20 +279,25 @@ int main() {
         }
     }
 
+    build_tree(1, 1, n);
     std::string str;
     std::cin >> str;    
     while (str != "Stop") {
         if (str == "Change") {
-            change(readf<ll>() - 1, readf<ll>());
+            ll x = readf<ll>() - 1, value = readf<ll>();
+            change(x, value);
         }
         else if(str == "Cover") {
-            cover(readf<ll>() - 1, readf<ll>() - 1, readf<ll>());
+            ll u = readf<ll>() - 1, v = readf<ll>() - 1, value = readf<ll>();
+            cover(u, v, value);
         }
         else if(str == "Add") {
-            add(readf<ll>() - 1, readf<ll>() - 1, readf<ll>());
+            ll u = readf<ll>() - 1, v = readf<ll>() - 1, value = readf<ll>();
+            add(u, v, value);
         }
         else {
-            printf("%lld\n", query(readf<ll>() - 1, readf<ll>() - 1));
+            ll u = readf<ll>() - 1, v = readf<ll>() - 1;
+            printf("%lld\n", query(u, v));
         }
         
         std::cin >> str;
