@@ -120,9 +120,13 @@ inline void push_down(ll _P, ll _Lp, ll _Rp) {
             tree[ls(_P)].max = tree[_P].tag_change;
             tree[ls(_P)].change_bool = true;
             tree[ls(_P)].tag_change = tree[_P].tag_change;
+            tree[ls(_P)].add_bool = false;
+            tree[ls(_P)].tag_add = 0;
             tree[rs(_P)].max = tree[_P].tag_change;
             tree[rs(_P)].change_bool = true;
             tree[rs(_P)].tag_change = tree[_P].tag_change;
+            tree[rs(_P)].add_bool = false;
+            tree[rs(_P)].tag_add = 0;
         }
         if (tree[_P].add_bool) {
             tree[ls(_P)].max += tree[_P].tag_add;
