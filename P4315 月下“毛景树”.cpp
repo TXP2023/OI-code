@@ -119,10 +119,10 @@ inline void push_down(ll _P, ll _Lp, ll _Rp) {
         if (tree[_P].add_bool) {
             tree[ls(_P)].max += tree[_P].tag_add;
             tree[ls(_P)].add_bool = true;
-            tree[ls(_P)].tag_add = tree[_P].tag_add;
+            tree[ls(_P)].tag_add += tree[_P].tag_add;
             tree[rs(_P)].max += tree[_P].tag_add;
             tree[rs(_P)].add_bool = true;
-            tree[rs(_P)].tag_add = tree[_P].tag_add;
+            tree[rs(_P)].tag_add += tree[_P].tag_add;
         }
         tree[_P].add_bool = false;
         tree[_P].change_bool = false;
@@ -217,6 +217,9 @@ inline void add(ll _u, ll _v, ll _Value) {
     if (deep[_u] > deep[_v]) {
         std::swap(_u, _v);
     }
+    if (_u == _v && _u == 0) {
+        return;
+    }
     segment_updata_add(1, 1, n, id[_u] + 2, id[_v] + 1, _Value); //此时u和v在同一条重链上 那就直接区间加
     return;
 }
@@ -233,6 +236,9 @@ inline void cover(ll _u, ll _v, ll _Value) {
     }
     if (deep[_u] > deep[_v]) {
         std::swap(_u, _v);
+    }
+    if (_u == _v && _u == 0) {
+        return;
     }
     segment_updata_change(1, 1, n, id[_u] + 2, id[_v] + 1, _Value); //此时u和v在同一条重链上 那就直接区间加
     return;
@@ -261,6 +267,9 @@ inline ll query(ll _u, ll _v) {
     }
     if (deep[_u] > deep[_v]) {
         std::swap(_u, _v);
+    }
+    if (_u == _v && _u == 0) {
+        return max;
     }
     max = std::max(max, segment_query(1, 1, n, id[_u] + 2, id[_v] + 1)); //此时u和v在同一条重链上 那就直接区间加
     return max;
