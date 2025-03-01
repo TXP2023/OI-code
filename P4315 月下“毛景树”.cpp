@@ -44,6 +44,14 @@ struct tree_data {
     ll max;
     bool add_bool = false, change_bool = false;
     ll tag_add, tag_change;
+    tree_data() {
+        add_bool = false;
+        change_bool = false;
+        tag_add = 0;
+        tag_change = 0;
+        max = 0;
+        return;
+    }
 };
 
 std::vector<ll> graph[MAXN];
