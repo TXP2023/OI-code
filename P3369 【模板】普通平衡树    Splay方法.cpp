@@ -216,7 +216,8 @@ inline ll get_Value_By_Rank(ll _Rank) {
 inline void remove(ll _Value) {
     //首先将 x 旋转到根的位置。
     get_Rank_By_Value(_Value);
-
+    tree[root].cnt--;
+    return;
 }
 
 inline ll precursor(ll _Value) {
