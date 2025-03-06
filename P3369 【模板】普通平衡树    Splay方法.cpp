@@ -107,7 +107,8 @@ void rotate(ll _Index) {
     //如果原来的 y 还有父亲 z，那么把 z 的某个儿子（原来 y 所在的儿子位置）指向 x，且 x 的父亲指向 z。
     tree[_Index].father = v;
     if (v){
-        tree[v].child[get_child(u)] = _Index;
+        //tree[v].child[get_child(u)] = _Index;
+        tree[v].child[u == tree[v].child[1]] = _Index;
     }
     update_size(_Index);
     update_size(u);
