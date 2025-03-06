@@ -118,7 +118,7 @@ void rotate(ll _Index) {
 void Splay(ll _Index) {
     //Splay 操作规定：每访问一个节点 x 后都要强制将其旋转到根节点。
     //
-    for (ll i = tree[_Index].father; i = tree[_Index].father, i ; rotate(i)) {
+    for (ll i = tree[_Index].father; i = tree[_Index].father, i ; rotate(_Index)) {
         if (tree[i].father) {
             rotate(get_child(_Index) == get_child(i) ? i : _Index);
         }
@@ -139,11 +139,10 @@ inline void insert(ll _Value) {
     //代码实现如下
     //如果树空了，则直接插入根并退出。
     if (!root) {
-        tree[++node_num].father = 0;
+        tree[++node_num].value = _Value;
         tree[node_num].cnt++;
-        tree[node_num].value = _Value;
         root = node_num;
-        update_size(node_num);
+        update_size(root);
         return;
     }
     ll _Index = root, father = 0;
@@ -192,17 +191,18 @@ inline ll get_Rank_By_Value(ll _Value) {
             _Index = tree[_Index].child[1];
         }
     }
+    return ret;
 }
 
 //查询排名 rank 的数
 inline ll get_Value_By_Rank(ll _Rank) {
     ll _Index = root;
     while (1) {
-        if (tree[_Index].child[0] && tree[_Index].size > _Rank) {
+        if (tree[_Index].child[0] && tree[_Index].size <= _Rank) {
             _Index = tree[_Index].child[0];
         }
         else {
-            _Rank -= tree[_Index].size + tree[_Index].cnt;
+            _Rank -= tree[tree[_Index].child[0]].size + tree[_Index].cnt;
             if (_Rank <= 0) {
                 Splay(_Index);
                 return tree[_Index].value;
@@ -210,28 +210,33 @@ inline ll get_Value_By_Rank(ll _Rank) {
             _Index = tree[_Index].child[1];
         }
     }
-    return;
 }
 
 //查询根节点的前驱的下标
 inline ll _pre_of_root() {
     ll _Index = tree[root].child[0];
-    if (_Index) {
-        while (tree[_Index].child[1]) {
-            _Index = tree[_Index].child[1];
-        }
+    if (!_Index) {
+        return _Index;
     }
+    
+    while (tree[_Index].child[1]) {
+        _Index = tree[_Index].child[1];
+    }
+
     Splay(_Index);
     return _Index;
 }
 
 inline ll _next_of_root() {
     ll _Index = tree[root].child[1];
-    if (_Index) {
-        while (tree[_Index].child[0]) {
-            _Index = tree[_Index].child[0];
-        }
+    if (!_Index) {
+        return _Index;
     }
+
+    while (tree[_Index].child[0]) {
+        _Index = tree[_Index].child[0];
+    }
+
     Splay(_Index);
     return _Index;
 }
@@ -304,7 +309,35 @@ int main() {
 #endif // _RUN_TIME
 
     //TODO
-    printf("%lld\n", MAXN);
+    for (ll i = readf<ll>(); i > 0; --i) {
+        ll operate = readf<ll>(), x = readf<ll>();
+        switch (operate) {
+        //向 M 中插入一个数 x
+        case 1:
+            insert(x);
+            break;
+        //从 M 中删除一个数 x（若有多个相同的数，应只删除一个）
+        case 2:
+            remove(x);
+            break;
+        //查询 M 中有多少个数比 x 小，并且将得到的答案加一。
+        case 3:
+            printf("%lld\n", get_Rank_By_Value(x));
+            break;
+        //查询如果将 M 从小到大排列后，排名位于第 x 位的数。
+        case 4:
+            printf("%lld\n", get_Value_By_Rank(x));
+            break;
+        //查询 M 中 x 的前驱
+        case 5:
+            printf("%lld\n", pre(x));
+            break;
+        //查询 M 中 x 的后继
+        case 6:
+            printf("%lld\n", next(x));
+            break;
+        }
+    }
 
 
 #ifdef _RUN_TIME
