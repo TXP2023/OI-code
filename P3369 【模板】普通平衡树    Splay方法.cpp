@@ -213,23 +213,85 @@ inline ll get_Value_By_Rank(ll _Rank) {
     return;
 }
 
-inline void remove(ll _Value) {
-    //首先将 x 旋转到根的位置。
-    get_Rank_By_Value(_Value);
-    tree[root].cnt--;
-    return;
-}
-
-inline ll precursor(ll _Value) {
-    insert(_Value);
+//查询根节点的前驱的下标
+inline ll _pre_of_root() {
     ll _Index = tree[root].child[0];
     if (_Index) {
         while (tree[_Index].child[1]) {
             _Index = tree[_Index].child[1];
         }
     }
-    ll ret = tree[_Index].value;
-    
+    Splay(_Index);
+    return _Index;
+}
+
+inline ll _next_of_root() {
+    ll _Index = tree[root].child[1];
+    if (_Index) {
+        while (tree[_Index].child[0]) {
+            _Index = tree[_Index].child[0];
+        }
+    }
+    Splay(_Index);
+    return _Index;
+}
+
+
+//删除操作
+inline void remove(ll _Value) {
+    //首先将 x 旋转到根的位置。
+    get_Rank_By_Value(_Value);
+    if (tree[root].cnt > 1){
+        tree[root].cnt--;
+        update_size(root);
+        return;
+    }
+
+    //x没有子节点
+    if (!tree[root].child[0] && !tree[root].child[1]) {
+        clear(root);
+        root = 0;
+        return;
+    }
+
+    //
+    if (!tree[root].child[0]) {
+        ll Index = root;
+        root = tree[root].child[1];
+        tree[root].father = 0;
+        clear(Index);
+        return;
+    }
+    if (!tree[root].child[1]) {
+        ll Index = root;
+        root = tree[root].child[0];
+        tree[root].father = 0;
+        clear(Index);
+        return;
+    }
+    ll cur = root,pre = _pre_of_root();
+    tree[tree[cur].child[1]].father = pre;
+    tree[pre].child[1] = tree[cur].child[1];
+    clear(cur);
+    update_size(root);
+    return;
+}
+
+
+inline ll pre(ll _Value) {
+    insert(_Value);
+
+    ll ret = tree[_pre_of_root()].value;
+    remove(_Value);
+    return ret;
+}
+
+inline ll next(ll _Value) {
+    insert(_Value);
+
+    ll ret = tree[_next_of_root()].value;
+    remove(_Value);
+    return ret;
 }
 
 int main() {
