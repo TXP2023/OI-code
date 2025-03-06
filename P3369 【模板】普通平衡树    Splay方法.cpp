@@ -97,7 +97,7 @@ void rotate(ll _Index) {
     //maintain(x);
     ll u = tree[_Index].father, v = tree[u].father, chk = get_child(_Index);
     //将 y 的左儿子指向 x 的右儿子
-    tree[u].child[chk] = tree[u].child[chk ^ 1];
+    tree[u].child[chk] = tree[_Index].child[chk ^ 1];
     //x 的右儿子（如果 x 有右儿子的话）的父亲指向 y
     if (tree[_Index].child[chk ^ 1]) {
         tree[tree[_Index].child[chk ^ 1]].father = u;
