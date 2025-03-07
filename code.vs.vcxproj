@@ -577,9 +577,6 @@
     <Text Include="output.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Sparse_table.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClInclude>
     <ClInclude Include="unsigned_large_int.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClInclude>
