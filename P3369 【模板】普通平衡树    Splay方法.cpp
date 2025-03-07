@@ -19,7 +19,6 @@
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
 #define MAXN          (int64_t)(1e6 + 5)
-#define DEBUG         false
 
 typedef long long int ll;
 typedef unsigned long long int unill;
@@ -332,51 +331,27 @@ int main() {
         switch (operate) {
             // 向 M 中插入一个数 x
         case 1:
-            insert(x);
-#if DEBUG
-            printf("%lld now is  root value is: %lld\n", i, tree[root].value);
-            show(root);
-#endif            
+            insert(x);           
             break;
             // 从 M 中删除一个数 x（若有多个相同的数，应只删除一个）
         case 2:
             remove(x);
-#if DEBUG
-            printf("%lld now is  root value is: %lld\n", i, tree[root].value);
-            show(root);
-#endif
             break;
             // 查询 M 中有多少个数比 x 小，并且将得到的答案加一。
         case 3:
             printf("%lld\n", get_Rank_By_Value(x));
-#if DEBUG
-            printf("%lld now is  root value is: %lld\n", i, tree[root].value);
-            show(root);
-#endif
             break;
             // 查询如果将 M 从小到大排列后，排名位于第 x 位的数。
         case 4:
             printf("%lld\n", get_Value_By_Rank(x));
-#if DEBUG
-            printf("%lld now is  root value is: %lld\n", i, tree[root].value);
-            show(root);
-#endif
             break;
             // 查询 M 中 x 的前驱
         case 5:
             printf("%lld\n", pre(x));
-#if DEBUG
-            printf("%lld now is  root value is: %lld\n", i, tree[root].value);
-            show(root);
-#endif
             break;
             // 查询 M 中 x 的后继
         case 6:
             printf("%lld\n", next(x));
-#if DEBUG
-            printf("%lld now is  root value is: %lld\n", i, tree[root].value);
-            show(root);
-#endif
             break;
         }
     }
