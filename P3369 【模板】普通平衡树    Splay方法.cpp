@@ -18,7 +18,8 @@
 #define READ          false
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
-#define MAXN          (long long)(1e5 + 5)
+#define MAXN          (long long)(1e6 + 5)
+#define DEBUG         false
 
 typedef long long int ll;
 typedef unsigned long long int unill;
@@ -38,7 +39,7 @@ inline void writef(Type x);
 
 
 struct Splay_data {
-    short int child[2]; //
+    ll child[2]; //
     ll father; //父亲节点
     ll value; //节点权值
     ll size; //子树大小
@@ -106,12 +107,12 @@ void rotate(ll _Index) {
     tree[u].father = _Index;
     //如果原来的 y 还有父亲 z，那么把 z 的某个儿子（原来 y 所在的儿子位置）指向 x，且 x 的父亲指向 z。
     tree[_Index].father = v;
-    if (v){
+    if (v) {
         //tree[v].child[get_child(u)] = _Index;
         tree[v].child[u == tree[v].child[1]] = _Index;
     }
-    update_size(_Index);
     update_size(u);
+    update_size(_Index);
     return;
 }
 
@@ -119,7 +120,7 @@ void rotate(ll _Index) {
 void Splay(ll _Index) {
     //Splay 操作规定：每访问一个节点 x 后都要强制将其旋转到根节点。
     //
-    for (ll i = tree[_Index].father; i = tree[_Index].father, i ; rotate(_Index)) {
+    for (ll i = tree[_Index].father; i = tree[_Index].father, i; rotate(_Index)) {
         if (tree[i].father) {
             rotate(get_child(_Index) == get_child(i) ? i : _Index);
         }
@@ -161,7 +162,7 @@ inline void insert(ll _Value) {
         if (!_Index) {
             tree[++node_num].value = _Value;
             tree[node_num].cnt++;
-            tree[node_num].father = father;
+            tree[node_num].father = father;//-
             tree[father].child[_Value > tree[father].value] = node_num;
             update_size(node_num);
             update_size(father);
@@ -192,14 +193,13 @@ inline ll get_Rank_By_Value(ll _Value) {
             _Index = tree[_Index].child[1];
         }
     }
-    return ret;
 }
 
 //查询排名 rank 的数
 inline ll get_Value_By_Rank(ll _Rank) {
     ll _Index = root;
     while (1) {
-        if (tree[_Index].child[0] && tree[_Index].size <= _Rank) {
+        if (tree[_Index].child[0] && tree[tree[_Index].child[0]].size >= _Rank) {
             _Index = tree[_Index].child[0];
         }
         else {
@@ -219,7 +219,7 @@ inline ll _pre_of_root() {
     if (!_Index) {
         return _Index;
     }
-    
+
     while (tree[_Index].child[1]) {
         _Index = tree[_Index].child[1];
     }
@@ -247,7 +247,7 @@ inline ll _next_of_root() {
 inline void remove(ll _Value) {
     //首先将 x 旋转到根的位置。
     get_Rank_By_Value(_Value);
-    if (tree[root].cnt > 1){
+    if (tree[root].cnt > 1) {
         tree[root].cnt--;
         update_size(root);
         return;
@@ -275,7 +275,7 @@ inline void remove(ll _Value) {
         clear(Index);
         return;
     }
-    ll cur = root,pre = _pre_of_root();
+    ll cur = root, pre = _pre_of_root();
     tree[tree[cur].child[1]].father = pre;
     tree[pre].child[1] = tree[cur].child[1];
     clear(cur);
@@ -290,6 +290,29 @@ inline ll pre(ll _Value) {
     ll ret = tree[_pre_of_root()].value;
     remove(_Value);
     return ret;
+}
+
+void show(ll _Index) {
+    if (!_Index) {
+        return;
+    }
+
+    if (tree[_Index].child[0]) {
+        printf("%lld  ", tree[_Index].value);
+        printf("%lld\n", tree[tree[_Index].child[0]].value);
+    }
+
+    if (tree[_Index].child[1]) {
+        printf("%lld  ", tree[_Index].value);
+        printf("%lld \n", tree[tree[_Index].child[1]].value);
+    }
+    if (tree[_Index].child[0]) {
+        show(tree[_Index].child[0]);
+    }
+    if (tree[_Index].child[1]) {
+        show(tree[_Index].child[1]);
+    }
+    return;
 }
 
 inline ll next(ll _Value) {
@@ -310,32 +333,57 @@ int main() {
 #endif // _RUN_TIME
 
     //TODO
-    for (ll i = readf<ll>(); i > 0; --i) {
+    ll n = readf<ll>();
+    for (ll i = 1; i <= n; ++i) {
         ll operate = readf<ll>(), x = readf<ll>();
         switch (operate) {
-        //向 M 中插入一个数 x
+            //向 M 中插入一个数 x
         case 1:
             insert(x);
+#if DEBUG
+            printf("%lld now is  root value is: %lld\n", i, tree[root].value);
+            show(root);
+#endif            
             break;
-        //从 M 中删除一个数 x（若有多个相同的数，应只删除一个）
+            //从 M 中删除一个数 x（若有多个相同的数，应只删除一个）
         case 2:
             remove(x);
+#if DEBUG
+            printf("%lld now is  root value is: %lld\n", i, tree[root].value);
+            show(root);
+#endif
             break;
-        //查询 M 中有多少个数比 x 小，并且将得到的答案加一。
+            //查询 M 中有多少个数比 x 小，并且将得到的答案加一。
         case 3:
             printf("%lld\n", get_Rank_By_Value(x));
+#if DEBUG
+            printf("%lld now is  root value is: %lld\n", i, tree[root].value);
+            show(root);
+#endif
             break;
-        //查询如果将 M 从小到大排列后，排名位于第 x 位的数。
+            //查询如果将 M 从小到大排列后，排名位于第 x 位的数。
         case 4:
             printf("%lld\n", get_Value_By_Rank(x));
+#if DEBUG
+            printf("%lld now is  root value is: %lld\n", i, tree[root].value);
+            show(root);
+#endif
             break;
-        //查询 M 中 x 的前驱
+            //查询 M 中 x 的前驱
         case 5:
             printf("%lld\n", pre(x));
+#if DEBUG
+            printf("%lld now is  root value is: %lld\n", i, tree[root].value);
+            show(root);
+#endif
             break;
-        //查询 M 中 x 的后继
+            //查询 M 中 x 的后继
         case 6:
             printf("%lld\n", next(x));
+#if DEBUG
+            printf("%lld now is  root value is: %lld\n", i, tree[root].value);
+            show(root);
+#endif
             break;
         }
     }
