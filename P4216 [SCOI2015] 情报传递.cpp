@@ -14,6 +14,7 @@
 */
 #pragma once
 #include <vector>
+#include <set>
 #include <stdio.h>
 #include <algorithm>
 #include <ctype.h>
@@ -57,12 +58,36 @@ struct node {
         cnt = 0;
         return;
     }
+
+};
+
+struct operate {
+	ll u, v, max_value;
+    ll type;
+
+    operate(ll _type, ll _u) {
+		type = _type;
+        u = _u;
+        return;
+    }
+    operate(ll _type, ll _u, ll _v, ll _max_value) {
+		type = _type;
+        u = _u;
+        v = _v;
+        max_value = _max_value;
+        return;
+    }
+    operate() {
+		return;
+    }
 };
 
 std::vector<ll> graph[MAXN];
+std::vector<operate> operates;
 uint64_t root[MAXN];
 ll deep[MAXN], father[MAXN], heavy_son[MAXN], chain_top[MAXN], node_num[MAXN], id[MAXN];
-node tree[MAXN];
+ll value[MAXN];
+node tree[100];
 ll n, q, tree_root, tree_cnt = 0, cnt = 1;
 
 namespace Tree {
@@ -79,7 +104,9 @@ namespace Tree {
     inline void _init_have_chain(ll _u, ll _father, ll _top, ll &_cnt);
 
     //返回值为一个pair，first为途径点的数量， second为权值大于_max_value的数量
-	inline std::pair< uint64_t, uint64_t> query(ll _u, ll _v, ll _max_value);
+	inline uint64_t query(ll _u, ll _v, ll _max_value);
+
+    inline uint64_t get_lca(ll _u, ll _v);
 }
 
 namespace Persistent_data_structure {
@@ -127,22 +154,34 @@ inline void Tree::_init_have_chain(ll _u, ll _father, ll top, ll &_cnt) {
 	return;
 }
 
-std::pair< uint64_t, uint64_t> Tree::query(ll _u, ll _v, ll _max_value) {
-    ll ret = 0, path = 0;;
+uint64_t Tree::query(ll _u, ll _v, ll _max_value) {
+    ll ret = 0;
 	while (chain_top[_u] != chain_top[_v]) {
 		if (deep[chain_top[_u]] < deep[chain_top[_v]]) {
 			std::swap(_u, _v);
 		}
-		ret += Persistent_data_structure::query(root[id[chain_top[_u]]], root[id[_u]], 1, MAXN, _max_value);
-        path += deep[_u] - deep[chain_top[_u]] + 1;
-		_u = father[chain_top[_u]];
+		ret += std::max(Persistent_data_structure::query(root[id[chain_top[_u]] - 1], root[id[_u]], 0, MAXN, _max_value), 0LL);
+        _u = father[chain_top[_u]];
 	}
 	if (deep[_u] > deep[_v]) {
 		std::swap(_u, _v);
 	}
-	ret += Persistent_data_structure::query(root[id[_u]], root[id[_v]], 1, MAXN, _max_value);
-    path += deep[_v] - deep[chain_top[_u]] + 1;
-    return { path, ret };
+	ret += Persistent_data_structure::query((_u == tree_root ? 0: root[father[id[_u]]]), root[id[_v]], 0, MAXN, _max_value);
+    return ret;
+}
+
+uint64_t Tree::get_lca(ll _u, ll _v) {
+    ll ret = 0;
+    while (chain_top[_u] != chain_top[_v]) {
+        if (deep[chain_top[_u]] < deep[chain_top[_v]]) {
+            std::swap(_u, _v);
+        }
+        _u = father[chain_top[_u]];
+    }
+    if (deep[_u] > deep[_v]) {
+        std::swap(_u, _v);
+    }
+    return _u;
 }
 
 inline ll Persistent_data_structure::update(ll _pre, ll _lp, ll _rp, ll _Index) {
@@ -155,7 +194,7 @@ inline ll Persistent_data_structure::update(ll _pre, ll _lp, ll _rp, ll _Index) 
             tree[p].ls = update(tree[_pre].ls, _lp, mid, _Index);
         }
         else {
-            tree[p].rs = update(tree[_pre].rs, mid + 1, -_rp, _Index);
+            tree[p].rs = update(tree[_pre].rs, mid + 1, _rp, _Index);
         }
     }
     return p;
@@ -163,21 +202,50 @@ inline ll Persistent_data_structure::update(ll _pre, ll _lp, ll _rp, ll _Index) 
 
 inline ll Persistent_data_structure::query(ll root_left, ll root_right, ll _lp, ll _rp, ll _max_value) {
 	//当前节点所表示的最小值大于等于_max_value
-    if (_lp > _max_value) {
+    if (_rp < _max_value) {
 		return tree[root_right].cnt - tree[root_left].cnt;
+    }
+    if (_lp >= _max_value) {
+        return 0;
     }
 
     ll mid = (_lp + _rp) >> 1;
     //现在进入了这个区间 那么这个_max_value绝对位于这个区间内或比这个区间的最小值还小
-    //右子树的最小值绝对大于_max_value
+    //左子树的最小值绝对小于_max_value
     ll ret = query(tree[root_left].ls, tree[root_right].ls, _lp, mid, _max_value); 
 	
-    if (mid >= _max_value) {
-        //左子树的最大值大于_max_value
-		//进入左子树
+    if (mid + 1 < _max_value) {
+        //右子树的最小值于_max_value
+		//进入有子树
         ret += query(tree[root_left].rs, tree[root_right].rs, mid + 1, _rp, _max_value);
     }
     return ret;
+}
+
+inline void offline_pretreatment() {
+	std::set<ll> set;
+    for (std::vector<operate>::iterator i = operates.begin(); i != operates.end(); i++) {
+        if (i->type != 2) {
+            continue;
+        }
+        if (set.count(i->u)) {
+            operates.erase(i);
+		}
+		else {
+			set.insert(i->u);
+        }
+    }
+    return;
+}
+
+inline void build_tree(ll _u, ll _father) {
+	root[_u] = Persistent_data_structure::update(root[father[_u]], 0, MAXN, value[_u]);
+    for (size_t i = 0; i < graph[_u].size(); i++) {
+        if (graph[_u][i] != _father) {
+            build_tree(graph[_u][i], _u);
+        }
+    }
+    return;
 }
 
 int main() {
@@ -204,23 +272,39 @@ int main() {
     }
     Tree::init();
 
-    readf(&q);
-    for (size_t i = 0; i < n; i++) {
+    operates.resize(readf(&q));
+    std::fill(value, value + n, q);
+    for (size_t i = 0; i < q; i++) {
         switch (readf<short>()) {
-        //传递
-        case 1: {
-            ll u, v, max_value;
-            std::pair< uint64_t, uint64_t> ans;
-            readf(&u), readf(&v), readf(&max_value);
-            ans = Tree::query(--u, --v, max_value);
-            printf("%lld %lld\n", ans.first, ans.second);
-        }
-            break;
-        //侦察
         case 2:
-            ll t = readf<ll>();
-			root[t] = Persistent_data_structure::update(root[t], 1, MAXN, i);
+            operates[i] = operate(2LL, readf<ll>());
+            if (value[operates[i].u - 1] == q) {
+                value[operates[i].u - 1] = i;
+            }
             break;
+        case 1:
+            ll u, v, max_value;;
+			readf(&u), readf(&v), readf(&max_value);
+            operates[i] = operate(1LL, u, v, max_value);
+        }
+    }
+
+	build_tree(tree_root, -1);
+    offline_pretreatment();
+    for (size_t i = 0; i < operates.size(); i++) {
+		ll type = operates[i].type, u = operates[i].u, v = operates[i].v, max_value = operates[i].max_value;
+        if (type == 1) {
+            ll lca = Tree::get_lca(--u, --v);
+            printf("%lld ", deep[u] + 1 + deep[v] - 2 * (lca != tree_root ? deep[father[lca]] : 0));
+            if (ll(i - max_value - 1) <= 0) {
+                
+                puts("0");
+                continue;
+            }
+            
+            uint64_t ans;
+            ans = Tree::query(u, v, i - max_value);
+            printf("%lld\n", ans);
         }
     }
 
