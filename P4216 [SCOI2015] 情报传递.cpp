@@ -20,6 +20,7 @@
 #include <ctype.h>
 #include <cstdarg>
 #include <climits>
+#include <cstring>
 #include <time.h>
 #include <iostream>
 #include <stdint.h>
@@ -239,7 +240,7 @@ inline void offline_pretreatment() {
 }
 
 inline void build_tree(ll _u, ll _father) {
-	root[_u] = Persistent_data_structure::update(root[father[_u]], 0, MAXN, value[_u]);
+	root[_u] = Persistent_data_structure::update(_u != tree_root? root[father[_u]] : 0, 0, MAXN, value[_u]);
     for (size_t i = 0; i < graph[_u].size(); i++) {
         if (graph[_u][i] != _father) {
             build_tree(graph[_u][i], _u);
@@ -290,12 +291,12 @@ int main() {
     }
 
 	build_tree(tree_root, -1);
-    offline_pretreatment();
+    //offline_pretreatment();
     for (size_t i = 0; i < operates.size(); i++) {
 		ll type = operates[i].type, u = operates[i].u, v = operates[i].v, max_value = operates[i].max_value;
         if (type == 1) {
             ll lca = Tree::get_lca(--u, --v);
-            printf("%lld ", deep[u] + 1 + deep[v] - 2 * (lca != tree_root ? deep[father[lca]] : 0));
+            printf("%lld ", deep[u] + 1 + deep[v] + 1 - 2 * (lca != tree_root ? deep[father[lca]] + 1 : 0) - 1);
             if (ll(i - max_value - 1) <= 0) {
                 
                 puts("0");
