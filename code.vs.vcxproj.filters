@@ -393,6 +393,9 @@
     <ClCompile Include="P6136 【模板】普通平衡树（数据加强版）.cpp">
       <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
+    <ClCompile Include="P4216 [SCOI2015] 情报传递.cpp">
+      <Filter>源文件\待完成</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
@@ -577,9 +580,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="unsigned_large_int.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Sparse_table.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
