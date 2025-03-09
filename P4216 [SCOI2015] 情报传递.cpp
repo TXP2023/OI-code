@@ -29,7 +29,7 @@
 #define READ          false
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
-#define MAXN          (int64_t)(8)
+#define MAXN          (int64_t)(2e5 + 5)
 
 typedef long long int ll;
 typedef unsigned long long int unill;
@@ -88,7 +88,7 @@ std::vector<operate> operates;
 uint64_t root[MAXN];
 ll deep[MAXN], father[MAXN], heavy_son[MAXN], chain_top[MAXN], node_num[MAXN], id[MAXN];
 ll value[MAXN];
-node tree[100];
+node tree[MAXN];
 ll n, q, tree_root, tree_cnt = 0, cnt = 1;
 
 namespace Tree {
@@ -117,26 +117,40 @@ namespace Persistent_data_structure {
 
 inline void Tree::init() {
     memset(heavy_son, -1, sizeof(heavy_son));
-	Tree::_init(tree_root, -1, 0);
+	Tree::_init(tree_root, -1, 1);
 	Tree::_init_have_chain(tree_root, tree_root, tree_root, id_cnt);
 	return;
 }
 
 inline void Tree::_init(ll _u, ll _father, ll _deep) {
+ //   deep[_u] = _deep;
+	//father[_u] = _father;
+	//node_num[_u] = 1;
+	//for (size_t i = 0; i < graph[_u].size(); ++i) {
+	//	if (graph[_u][i] == _father) {
+	//		continue;
+	//	}
+	//	ll v = graph[_u][i];
+	//	_init(v, _u, _deep + 1);
+	//	node_num[_u] += node_num[v];
+	//	if (heavy_son[_u] == -1 || node_num[heavy_son[_u]] < node_num[v]) {
+	//		heavy_son[_u] = v;
+	//	}
+	//}
     deep[_u] = _deep;
-	father[_u] = _father;
-	node_num[_u] = 1;
-	for (size_t i = 0; i < graph[_u].size(); i++) {
-		if (graph[_u][i] == _father) {
-			continue;
-		}
-		ll v = graph[_u][i];
-		_init(v, _u, _deep + 1);
-		node_num[_u] += node_num[v];
-		if (heavy_son[_u] == -1 || node_num[heavy_son[_u]] < node_num[v]) {
-			heavy_son[_u] = v;
-		}
-	}
+    father[_u] = _father;
+    node_num[_u] = 1;
+    for (size_t i = 0; i < graph[_u].size(); i++) {
+        if (graph[_u][i] == _father) {
+            continue;
+        }
+        ll v = graph[_u][i];
+        _init(v, _u, _deep + 1);
+        node_num[_u] += node_num[v];
+        if (heavy_son[_u] == -1 || node_num[heavy_son[_u]] < node_num[v]) {
+            heavy_son[_u] = v;
+        }
+    }
 	return;
 }
 
@@ -161,13 +175,13 @@ uint64_t Tree::query(ll _u, ll _v, ll _max_value) {
 		if (deep[chain_top[_u]] < deep[chain_top[_v]]) {
 			std::swap(_u, _v);
 		}
-		ret += std::max(Persistent_data_structure::query(root[id[chain_top[_u]] - 1], root[id[_u]], 0, MAXN, _max_value), 0LL);
+		ret += std::max(Persistent_data_structure::query(root[id[father[chain_top[_u]]] - 1], root[id[_u] - 1], 0, MAXN, _max_value), 0LL);
         _u = father[chain_top[_u]];
 	}
 	if (deep[_u] > deep[_v]) {
 		std::swap(_u, _v);
 	}
-	ret += Persistent_data_structure::query((_u == tree_root ? 0: root[father[id[_u]]]), root[id[_v]], 0, MAXN, _max_value);
+	ret += Persistent_data_structure::query((_u == tree_root ? 0: root[id[father[_u]] - 1]), root[id[_v] - 1], 0, MAXN, _max_value);
     return ret;
 }
 
@@ -202,11 +216,11 @@ inline ll Persistent_data_structure::update(ll _pre, ll _lp, ll _rp, ll _Index) 
 }
 
 inline ll Persistent_data_structure::query(ll root_left, ll root_right, ll _lp, ll _rp, ll _max_value) {
-	//当前节点所表示的最小值大于等于_max_value
+	//当前节点所表示的最大值大于小于_max_value
     if (_rp < _max_value) {
 		return tree[root_right].cnt - tree[root_left].cnt;
     }
-    if (_lp >= _max_value) {
+    if (_lp >= _max_value || tree[root_right].cnt - tree[root_left].cnt == 0) {
         return 0;
     }
 
@@ -264,7 +278,8 @@ int main() {
     for (size_t i = 0; i < n; i++) {
         ll u = readf<ll>();
         if (u) {
-			graph[i].push_back(--u);
+            u--;
+			graph[i].push_back(u);
             graph[u].push_back(i);
         }
         else {
