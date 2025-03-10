@@ -330,7 +330,7 @@
     <ClCompile Include="P3379 【模板】最近公共祖先（LCA） 树链剖分方法.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="P3384 【模板】重链剖分\P3384 【模板】重链剖分.cpp">
+    <ClCompile Include="P3384 【模板】重链剖分.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="P3386 【模板】二分图最大匹配.cpp">
