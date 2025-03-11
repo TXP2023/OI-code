@@ -78,7 +78,7 @@ struct operate {
     }
 };
 
-std::vector<ll> graph[MAXN];
+std::vector< std::vector<ll> > graph;
 std::vector<operate> operates;
 uint64_t root[MAXN];
 ll deep[MAXN], father[MAXN], heavy_son[MAXN], chain_top[MAXN], node_num[MAXN], id[MAXN];
@@ -118,20 +118,6 @@ inline void Tree::init() {
 }
 
 inline void Tree::_init(ll _u, ll _father, ll _deep) {
- //   deep[_u] = _deep;
-	//father[_u] = _father;
-	//node_num[_u] = 1;
-	//for (size_t i = 0; i < graph[_u].size(); ++i) {
-	//	if (graph[_u][i] == _father) {
-	//		continue;
-	//	}
-	//	ll v = graph[_u][i];
-	//	_init(v, _u, _deep + 1);
-	//	node_num[_u] += node_num[v];
-	//	if (heavy_son[_u] == -1 || node_num[heavy_son[_u]] < node_num[v]) {
-	//		heavy_son[_u] = v;
-	//	}
-	//}
     deep[_u] = _deep;
     father[_u] = _father;
     node_num[_u] = 1;
@@ -234,9 +220,9 @@ inline ll Persistent_data_structure::update(ll _pre, ll _lp, ll _rp, ll _Index) 
 
 inline void build_tree(ll _u, ll _father) {
 	root[id[_u]] = Persistent_data_structure::update(root[id[father[_u]]], 0, MAXN, value[_u]);
-    for (size_t i = 0; i < graph[_u].size(); i++) {
-        if (graph[_u][i] != _father) {
-            build_tree(graph[_u][i], _u);
+    for (ll v : graph[_u]) {
+        if (v != _father) {
+            build_tree(v, _u);
         }
     }
     return;
@@ -253,6 +239,8 @@ int main() {
 
     //TODO
     readf(&n);
+
+    graph.resize(n + 5);
 
     for (size_t i = 1; i <= n; i++) {
         ll u = readf<ll>();
@@ -284,18 +272,15 @@ int main() {
     }
 
 	build_tree(tree_root, -1);
-    //offline_pretreatment();
     for (size_t i = 0; i < cnt; i++) {
 		ll id = operates[i].id, u = operates[i].u, v = operates[i].v, max_value = operates[i].max_value;
         ll lca = Tree::get_lca(u, v);
         printf("%lld ", deep[u] + deep[v] - 2 * deep[father[lca]] - 1);
-        if (ll(id - max_value - 1) <= 0) {
-                
+        if (ll(id - max_value - 1) <= 0) {           
             puts("0");
             continue;
         }
-            
-        uint64_t ans;
+
         printf("%lld\n", Tree::query(u, v, id - max_value));
     }
 
