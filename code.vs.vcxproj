@@ -258,6 +258,7 @@
     <ClCompile Include="P2059 [JLOI2013] 卡牌游戏.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="P2146 [NOI2015] 软件包管理器.cpp" />
     <ClCompile Include="P2197 【模板】Nim 游戏.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
@@ -369,7 +370,9 @@
     <ClCompile Include="P4092 [HEOI2016 TJOI2016] 树.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="P4216 [SCOI2015] 情报传递.cpp" />
+    <ClCompile Include="P4216 [SCOI2015] 情报传递.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="P4315 月下“毛景树”.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>

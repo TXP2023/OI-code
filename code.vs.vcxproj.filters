@@ -396,6 +396,9 @@
     <ClCompile Include="P3384 【模板】重链剖分.cpp">
       <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
+    <ClCompile Include="P2146 [NOI2015] 软件包管理器.cpp">
+      <Filter>源文件\待完成</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
