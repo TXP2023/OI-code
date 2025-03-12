@@ -209,12 +209,13 @@ int main() {
     //TODO
     readf(&n);
 
-    for (size_t i = 1; i <= n; i++) {
+    for (size_t i = 2; i <= n; i++) {
         ll u = readf<ll>() + 1;
         graph[i].push_back(u);
         graph[u].push_back(i);
     }
     init();
+    build_tree(1, 1, n);
 
     readf(&q);
     for (size_t i = 0; i < q; i++) {
@@ -222,6 +223,7 @@ int main() {
         ll x;
         std::cin >> str;
         readf(&x);
+        ++x;
         if (str == "install") {
             printf("%lld\n", install(x));
         }
