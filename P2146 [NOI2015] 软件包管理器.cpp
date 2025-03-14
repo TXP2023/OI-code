@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <algorithm>
 #include <ctype.h>
+#include <cstring>
 #include <cstdarg>
 #include <climits>
 #include <time.h>
@@ -121,16 +122,17 @@ inline void push_down(ll _P) {
     if (tree[_P].tag.first) {
         add_tag(ls(_P), tree[_P].tag.second);
         add_tag(rs(_P), tree[_P].tag.second);
+        tree[_P].tag = { false, 0 };
     }
     return;
 }
 
 void build_tree(ll _P, ll _Lp, ll _Rp) {
     tree[_P].left = _Lp;
-    tree[_P].right = _Lp;
+    tree[_P].right = _Rp;
     tree[_P].value[0] = _Rp - _Lp + 1;
     tree[_P].value[1] = 0;
-    if (_Lp == _Lp) {
+    if (_Lp == _Rp) {
         return;
     }
     ll mid = (_Lp + _Rp) >> 1;
@@ -148,10 +150,10 @@ void updata(ll _P, ll _Left, ll _Right, ll _Value) {
     push_down(_P);
     ll mid = (tree[_P].left + tree[_P].right) >> 1;
     if (_Left <= mid) {
-        updata(ls(_P), tree[_P].left, mid, _Value);
+        updata(ls(_P), _Left, _Right, _Value);
     }
     if (_Right > mid) {
-        updata(rs(_P), mid + 1, tree[_P].right, _Value);
+        updata(rs(_P), _Left, _Right, _Value);
     }
     push_up(_P);
     return;
@@ -165,27 +167,27 @@ ll query(ll _P, ll _Left, ll _Right, ll _Value) {
     push_down(_P);
     ll mid = (tree[_P].left + tree[_P].right) >> 1, ret = 0;
     if (_Left <= mid) {
-        ret += query(ls(_P), tree[_P].left, mid, _Value);
+        ret += query(ls(_P), _Left, _Right, _Value);
     }
     if (_Right > mid) {
-        ret += query(rs(_P), mid + 1, tree[_P].right, _Value);
+        ret += query(rs(_P), _Left, _Right, _Value);
     }
     return ret;
 }
 
 inline ll install(ll _x) {
     ll ret = 0, _u = _x, _v = 1;
-	while (chain_top[_u] != chain_top[_v]) {
-		if (deep[chain_top[_u]] < deep[chain_top[_v]]) {
-			std::swap(_u, _v);
-		}
-		ret += query(1, id[chain_top[_u]], id[_u], 0);
+    while (chain_top[_u] != chain_top[_v]) {
+        if (deep[chain_top[_u]] < deep[chain_top[_v]]) {
+            std::swap(_u, _v);
+        }
+        ret += query(1, id[chain_top[_u]], id[_u], 0);
         updata(1, id[chain_top[_u]], id[_u], 1);
         _u = father[chain_top[_u]];
-	}
-	if (deep[_u] > deep[_v]) {
-		std::swap(_u, _v);
-	}
+    }
+    if (deep[_u] > deep[_v]) {
+        std::swap(_u, _v);
+    }
     ret += query(1, id[_u], id[_v], 0);
     updata(1, id[_u], id[_v], 1);
     return ret;
@@ -193,7 +195,7 @@ inline ll install(ll _x) {
 
 inline ll uninstall(ll _x) {
     ll ret = query(1, id[_x], id[_x] + node_num[_x] - 1, 1);
-    updata(1, id[_x], id[_x] + node_num[_x] - 1, 1);
+    updata(1, id[_x], id[_x] + node_num[_x] - 1, 0);
     return ret;
 }
 
