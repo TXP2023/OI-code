@@ -402,6 +402,9 @@
     <ClCompile Include="P2574 XOR的艺术.cpp">
       <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
+    <ClCompile Include="P2015 二叉苹果树.cpp">
+      <Filter>源文件\已完成的题目</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
