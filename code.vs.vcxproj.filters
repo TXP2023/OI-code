@@ -390,14 +390,14 @@
     <ClCompile Include="P6136 【模板】普通平衡树（数据加强版）.cpp">
       <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
-    <ClCompile Include="P4216 [SCOI2015] 情报传递.cpp">
-      <Filter>源文件\待完成</Filter>
-    </ClCompile>
     <ClCompile Include="P3384 【模板】重链剖分.cpp">
       <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P2146 [NOI2015] 软件包管理器.cpp">
       <Filter>源文件\待完成</Filter>
+    </ClCompile>
+    <ClCompile Include="P4216 [SCOI2015] 情报传递.cpp">
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
