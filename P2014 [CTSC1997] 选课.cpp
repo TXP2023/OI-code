@@ -13,7 +13,6 @@
 #include <time.h>
 #include <iostream>
 #include <stdint.h>
-#include <time.h>
 
 #define READ          false
 #define MAX_INF       1e18
