@@ -49,7 +49,7 @@ ll n, m;
 template<typename Type>
 inline Type ls(Type _X) {
     return _X << 1;
-}
+} 
 
 template<typename Type>
 inline Type rs(Type _X) {
