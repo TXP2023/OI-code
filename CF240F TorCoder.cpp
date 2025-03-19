@@ -166,6 +166,7 @@ int main() {
         for (size_t j = 0; j < 25; ++j) {
             if (query(j, i, i, 1, 1, n)) {
                 putchar(j + 'a');
+                break;
             }
         }
     }
