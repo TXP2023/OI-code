@@ -131,7 +131,7 @@ int main() {
         update(array[i], i, i, 1, 1, 1, n);
     }
 
-    for (size_t i = 0; i < m; i++) {
+    for (size_t j = 0; j < m; j++) {
         ll left = readf<ll>(), right = readf<ll>();
         int cnt[25], t = 0;
         for (size_t i = 0; i < 25; i++) {
@@ -144,10 +144,32 @@ int main() {
                     goto LOOP;
                 }
             }
-        
+        }
+        for (size_t i = 0; i < 25; i++) {
+            if (!cnt[i]) {
+                continue;
+            }
+            update(i, left, right, 0, 1, 1, n);
+            if (cnt[i] % 2) {
+                ll mid = (left + right) >> 1;
+                update(i, mid - cnt[i] / 2, mid + cnt[i] / 2, 1, 1, 1, n);
+            }
+            else {
+                update(i, left, left + cnt[i] / 2, 1, 1, 1, n);
+                update(i, right - cnt[i] / 2, right, 1, 1, 1, n);
+            }
         }
         LOOP:
     }
+
+    for (size_t i = 1; i <= n; i++) {
+        for (size_t j = 0; j < 25; ++j) {
+            if (query(j, i, i, 1, 1, n)) {
+                putchar(j + 'a');
+            }
+        }
+    }
+
 
 #ifdef _RUN_TIME
     printf("The running duration is not less than %ld ms\n", clock() - start);
