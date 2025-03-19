@@ -66,7 +66,7 @@ inline Type rs(Type _X) {
 
 inline _tree push_up(_tree _ltree, _tree _rtree) {
     _tree ret;
-    ret.sum = _ltree.sum + _ltree.sum;
+    ret.sum = _ltree.sum + _rtree.sum;
     ret.lmax = std::max(_ltree.lmax, _ltree.sum + _rtree.lmax);
     ret.rmax = std::max(_rtree.rmax, _rtree.sum + _ltree.rmax);
     ret.max = std::max(
@@ -113,7 +113,8 @@ _tree query(ll _P, ll _Lp, ll _Rp, ll _Left, ll _Right) {
         return seg_tree[_P];
     }
 
-    ll mid = (_Lp + _Rp) >> 1, bool tag = false;
+    ll mid = (_Lp + _Rp) >> 1;
+    bool tag = false;
     _tree ret;
     if (_Left <= mid) {
         tag = true;
