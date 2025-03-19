@@ -155,11 +155,11 @@ int main() {
                 update(i, mid - cnt[i] / 2, mid + cnt[i] / 2, 1, 1, 1, n);
             }
             else {
-                update(i, left, left + cnt[i] / 2, 1, 1, 1, n);
-                update(i, right - cnt[i] / 2, right, 1, 1, 1, n);
+                update(i, left, left + cnt[i] / 2 - 1, 1, 1, 1, n);
+                update(i, right - cnt[i] / 2 + 1, right, 1, 1, 1, n);
             }
         }
-        LOOP:
+    LOOP:;
     }
 
     for (size_t i = 1; i <= n; i++) {
@@ -170,9 +170,8 @@ int main() {
         }
     }
 
-
 #ifdef _RUN_TIME
-    printf("The running duration is not less than %ld ms\n", clock() - start);
+    printf("\nThe running duration is not less than %ld ms\n", clock() - start);
 #endif // _RUN_TIME
     return 0;
 }
