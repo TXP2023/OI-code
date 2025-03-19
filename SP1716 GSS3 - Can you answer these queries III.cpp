@@ -73,7 +73,7 @@ inline _tree push_up(_tree _ltree, _tree _rtree) {
         std::max(
             std::max(ret.rmax, ret.lmax), //位于左子节点的左边或右子节点的右边
             std::max(_ltree.max, _rtree.max)),
-        _ltree.lmax + _ltree.rmax
+        _ltree.rmax + _rtree.lmax
     );
     return ret;
 }
