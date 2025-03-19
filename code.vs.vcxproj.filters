@@ -420,6 +420,9 @@
     <ClCompile Include="P2846 [USACO08NOV] Light Switching G.cpp">
       <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
+    <ClCompile Include="SP1716.cpp">
+      <Filter>源文件\待完成</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
