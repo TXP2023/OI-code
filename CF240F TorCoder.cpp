@@ -84,6 +84,7 @@ void update(ll root, ll _Left, ll _Right, ll value, ll _P, ll _Lp, ll _Rp) {
     }
 
     ll mid = (_Lp + _Rp) >> 1;
+    push_down(root, _P, _Lp, _Rp);
     if (_Left <= mid) {
         update(root, _Left, _Right, value, ls(_P), _Lp, mid);
     }
