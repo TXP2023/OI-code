@@ -17,7 +17,7 @@
 #define READ          false
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
-#define MAXN          (int64_t)(1e6 + 5)
+#define MAXN          (int64_t)(1e5 + 5)
 
 typedef long long int ll;
 typedef unsigned long long int unill;
@@ -114,6 +114,9 @@ inline ll query(ll root, ll _Left, ll _Right, ll _P, ll _Lp, ll _Rp) {
 int main() {
 #ifdef _FREOPEN
     freopen("input.txt", "r", stdin);
+#else
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
 #endif // _FREOPEN
 
 #ifdef _RUN_TIME
@@ -130,14 +133,17 @@ int main() {
 
     for (size_t i = 1; i <= n; i++) {
         update(array[i], i, i, 1, 1, 1, n);
+        //printf("debug %lld", query(25, 1, 1, 1, 1, n));
     }
 
+    //printf("debug %lld", query(25, 1, 1, 1, 1, n));
     for (size_t j = 0; j < m; j++) {
+        ll beg = 0;
         ll left = readf<ll>(), right = readf<ll>();
-        int cnt[25], t = 0;
-        for (size_t i = 0; i < 25; i++) {
+        int cnt[26], t = 0;
+        for (size_t i = 0; i <= 25; i++) {
             cnt[i] = query(i, left, right, 1, 1, n);
-            if (cnt[i] % 2 && t == 0) {
+            if (cnt[i] % 2) {
                 if (t == 0) {
                     t = 1;
                 }
@@ -146,25 +152,29 @@ int main() {
                 }
             }
         }
-        for (size_t i = 0; i < 25; i++) {
+        
+        for (size_t i = 0; i <= 25; i++) {
             if (!cnt[i]) {
                 continue;
             }
             update(i, left, right, 0, 1, 1, n);
+            
             if (cnt[i] % 2) {
                 ll mid = (left + right) >> 1;
                 update(i, mid - cnt[i] / 2, mid + cnt[i] / 2, 1, 1, 1, n);
             }
             else {
-                update(i, left, left + cnt[i] / 2 - 1, 1, 1, 1, n);
-                update(i, right - cnt[i] / 2 + 1, right, 1, 1, 1, n);
+                
+                update(i, left + beg, left + beg + cnt[i] / 2 - 1, 1, 1, 1, n);
+                update(i, right - beg - cnt[i] / 2 + 1, right - beg, 1, 1, 1, n);
+                beg += cnt[i] / 2;
             }
         }
     LOOP:;
     }
 
     for (size_t i = 1; i <= n; i++) {
-        for (size_t j = 0; j < 25; ++j) {
+        for (size_t j = 0; j <= 25; ++j) {
             if (query(j, i, i, 1, 1, n)) {
                 putchar(j + 'a');
                 break;
