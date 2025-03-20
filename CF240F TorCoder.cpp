@@ -161,14 +161,12 @@ int main() {
             
             if (cnt[i] % 2) {
                 ll mid = (left + right) >> 1;
-                update(i, mid - cnt[i] / 2, mid + cnt[i] / 2, 1, 1, 1, n);
+                update(i, mid, mid, 1, 1, 1, n);
+                --cnt[i];
             }
-            else {
-                
-                update(i, left + beg, left + beg + cnt[i] / 2 - 1, 1, 1, 1, n);
-                update(i, right - beg - cnt[i] / 2 + 1, right - beg, 1, 1, 1, n);
-                beg += cnt[i] / 2;
-            }
+            update(i, left + beg, left + beg + cnt[i] / 2 - 1, 1, 1, 1, n);
+            update(i, right - beg - cnt[i] / 2 + 1, right - beg, 1, 1, 1, n);
+            beg += cnt[i] / 2;
         }
     LOOP:;
     }

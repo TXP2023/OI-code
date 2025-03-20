@@ -417,10 +417,10 @@
     <ClCompile Include="P2014 [CTSC1997] 选课.cpp">
       <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
-    <ClCompile Include="CF240F TorCoder.cpp">
-      <Filter>源文件\待完成</Filter>
-    </ClCompile>
     <ClCompile Include="SP1716 GSS3 - Can you answer these queries III.cpp">
+      <Filter>源文件\已完成的题目</Filter>
+    </ClCompile>
+    <ClCompile Include="CF240F TorCoder.cpp">
       <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
   </ItemGroup>
