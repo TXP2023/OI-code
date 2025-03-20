@@ -89,8 +89,6 @@ inline void push_up(ll _Index) {
     return;
 }
 
-
-
 inline void push_down(ll _Index, ll _RangeL, ll _RangeR) {
     if (tree[_Index].mul) {
         add_multiply_tag(ls(_Index), tree[_Index].mul);
