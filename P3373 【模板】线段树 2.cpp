@@ -192,11 +192,12 @@ int main() {
         case 3:
             printf("%lld\n", query(1, 1, 1, left, right));
             break;
-            value = readf<ll>();
         case 1:
+            value = readf<ll>();
             update_multiply(1, 1, n, left, right, value);
             break;
         case 2:
+            value = readf<ll>();
             update_add(1, 1, n, left, right, value);
             break;
         }
