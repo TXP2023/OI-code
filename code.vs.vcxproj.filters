@@ -168,9 +168,6 @@
     <ClCompile Include="P3372 【模板】线段树 1.cpp">
       <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
-    <ClCompile Include="P3373 【模板】线段树 2.cpp">
-      <Filter>源文件\已完成的题目</Filter>
-    </ClCompile>
     <ClCompile Include="P3386 【模板】二分图最大匹配.cpp">
       <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
@@ -422,6 +419,9 @@
     </ClCompile>
     <ClCompile Include="CF240F TorCoder.cpp">
       <Filter>源文件\已完成的题目</Filter>
+    </ClCompile>
+    <ClCompile Include="P3373 【模板】线段树 2.cpp">
+      <Filter>源文件\待完成</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
