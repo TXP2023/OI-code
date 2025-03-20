@@ -146,6 +146,7 @@ void update_add(ll _Index, ll _RangeL, ll _RangeR, ll _Left, ll _Right, ll _valu
     if (mid < _Right) {
         update_add(rs(_Index), mid + 1, _RangeR, _Left, _Right, _value);
     }
+    push_up(_Index);
     return;
 }
 
@@ -163,6 +164,7 @@ void update_multiply(ll _Index, ll _RangeL, ll _RangeR, ll _Left, ll _Right, ll 
     if (mid < _Right) {
         update_multiply(rs(_Index), mid + 1, _RangeR, _Left, _Right, _value);
     }
+    push_up(_Index);
     return;
 }
 
@@ -188,7 +190,7 @@ int main() {
         ll ope = readf<short>(), left = readf<ll>(), right = readf<ll>(), value;
         switch (ope) {
         case 3:
-            printf("%lld\n", query(1, 1, 1, left, right));
+            printf("%lld\n", query(1, 1, n, left, right));
             break;
         case 1:
             value = readf<ll>();
