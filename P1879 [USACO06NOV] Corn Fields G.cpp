@@ -45,7 +45,7 @@ public:
     }
     
     inline void push_back(Type val) {
-        _que[cnt++] = val;
+        _que[size++] = val;
     }
 
     ll size = 0;
@@ -167,8 +167,6 @@ inline void writef(Type x) {
     while (top) putchar(sta[--top] + '0');  // 48 ÊÇ '0'
     return;
 }
-
-
 
 /**
  *              ,----------------,              ,---------,
