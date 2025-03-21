@@ -421,7 +421,7 @@
       <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P3373 【模板】线段树 2.cpp">
-      <Filter>源文件\待完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

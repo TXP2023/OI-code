@@ -42,7 +42,7 @@ struct tree_node {
 
     tree_node() {
         add = 0;
-        mul = 0;
+        mul = 1;
         return;
     }
 };
@@ -73,6 +73,7 @@ inline void add_multiply_tag(ll _Index, ll _Value) {
     tree[_Index].sum *= _Value;
     tree[_Index].mul *= _Value;
     tree[_Index].add *= _Value;
+    Mode(_Index);
     return;
 }
 
@@ -90,10 +91,10 @@ inline void push_up(ll _Index) {
 }
 
 inline void push_down(ll _Index, ll _RangeL, ll _RangeR) {
-    if (tree[_Index].mul) {
+    if (tree[_Index].mul != 1) {
         add_multiply_tag(ls(_Index), tree[_Index].mul);
         add_multiply_tag(rs(_Index), tree[_Index].mul);
-        tree[_Index].mul = 0;
+        tree[_Index].mul = 1;
     }
     if (tree[_Index].add) {
         ll mid = (_RangeL + _RangeR) >> 1;
@@ -129,7 +130,7 @@ ll query(ll _Index, ll _RangeL, ll _RangeR, ll _Left, ll _Right) {
     if (mid < _Right) {
         sum += query(rs(_Index), mid + 1, _RangeR, _Left, _Right);
     }
-    return sum;
+    return sum % mode;
 }
 
 void update_add(ll _Index, ll _RangeL, ll _RangeR, ll _Left, ll _Right, ll _value) {
@@ -194,11 +195,11 @@ int main() {
             break;
         case 1:
             value = readf<ll>();
-            update_multiply(1, 1, n, left, right, value);
+            update_multiply(1, 1, n, left, right, value % mode);
             break;
         case 2:
             value = readf<ll>();
-            update_add(1, 1, n, left, right, value);
+            update_add(1, 1, n, left, right, value % mode);
             break;
         }
     }
