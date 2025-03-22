@@ -243,7 +243,9 @@
     <ClCompile Include="P1792 [国家集训队] 种树.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="P1879 [USACO06NOV] Corn Fields G.cpp" />
+    <ClCompile Include="P1879 [USACO06NOV] Corn Fields G.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="P1892 [BOI2003] 团伙.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>

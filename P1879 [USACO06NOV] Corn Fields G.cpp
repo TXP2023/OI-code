@@ -75,7 +75,7 @@ int main() {
         for (size_t j = 0; j < m; j++) {
             ll value = readf<ll>();
             if (value) {
-                farm[i] |= (value << j);
+                farm[i] |= (1 << j);
             }
         }
     }
@@ -88,8 +88,8 @@ int main() {
     }
 
     for (size_t i = 0; i < legit_scheme.size; i++) {
-        //legit_scheme[i] 为 farm[1] 的子集
-        if ((legit_scheme[i] & farm[1]) == farm[1]) {
+        //farm[1] 为 legit_scheme[i] 的子集
+        if ((legit_scheme[i] & farm[1]) == legit_scheme[i]) {
             dp[1][legit_scheme[i]] = 1;
         }
     }
@@ -98,13 +98,13 @@ int main() {
         for (size_t j = 0; j < legit_scheme.size; j++) {
             ll scheme = legit_scheme[j];
             //当前考虑的方案 scheme 不为当前所考虑的行 farm[i] 的子集 
-            if (!(scheme & farm[i])) {
+            if ((scheme & farm[i]) != scheme) {
                 continue;
             }
             //考虑上一行的状态
             for (size_t k = 0; k < legit_scheme.size; k++) {
-                ll pre_scheme = legit_scheme[i];
-                if (!dp[i - 1][pre_scheme] && (scheme & pre_scheme)) {
+                ll pre_scheme = legit_scheme[k];
+                if (!dp[i - 1][pre_scheme] || (scheme & pre_scheme)) {
                     continue;
                 }
                 dp[i][scheme] = (dp[i - 1][pre_scheme] + dp[i][scheme]) % MODE;
@@ -112,14 +112,14 @@ int main() {
         }
     }
 
-    for (size_t i = 0; i <= legit_scheme.size; i++) {
+    for (size_t i = 0; i < legit_scheme.size; i++) {
         ans = (ans + dp[n][legit_scheme[i]]) % MODE;
     }
 
-    writef(ans);
+    writef(ans % MODE);
 
 #ifdef _RUN_TIME
-    printf("The running duration is not less than %ld ms\n", clock() - start);
+    printf("\nThe running duration is not less than %ld ms\n", clock() - start);
 #endif // _RUN_TIME
     return 0;
 }
