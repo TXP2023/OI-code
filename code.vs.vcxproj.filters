@@ -423,13 +423,16 @@
     <ClCompile Include="P3373 【模板】线段树 2.cpp">
       <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
-    <ClCompile Include="P6157 有趣的游戏.cpp">
-      <Filter>源文件\待完成</Filter>
-    </ClCompile>
     <ClCompile Include="CF242E XOR on Segment.cpp">
       <Filter>源文件\待完成</Filter>
     </ClCompile>
+    <ClCompile Include="P6157 有趣的游戏.cpp">
+      <Filter>源文件\已完成的题目</Filter>
+    </ClCompile>
     <ClCompile Include="P1879 [USACO06NOV] Corn Fields G.cpp">
+      <Filter>源文件\已完成的题目</Filter>
+    </ClCompile>
+    <ClCompile Include="P2704 [NOI2001] 炮兵阵地.cpp">
       <Filter>源文件\待完成</Filter>
     </ClCompile>
   </ItemGroup>

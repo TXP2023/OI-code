@@ -17,8 +17,9 @@
 #define READ          false
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
-#define MAXN          (int64_t)(15)
-#define MODE          (int64_t)(1e8)
+#define MAXM          10
+#define MAXN          100
+#define SCHEME_NUM    (1 << MAXM)
 
 typedef long long int ll;
 typedef unsigned long long int unill;
@@ -36,28 +37,48 @@ inline Type readf(Type* p = nullptr);
 template<typename Type>
 inline void writef(Type x);
 
-template<typename Type, size_t _max_size>
+template<typename Type, size_t _MAX_SIZE>
 class Vector {
 public:
-    template<typename T>
-    inline Type & operator [] (T _Index) {
-        return _que[_Index];
-    }
-    
-    inline void push_back(Type val) {
-        _que[size++] = val;
+
+    Vector() {
+        size_ = 0;
+        return;
     }
 
-    ll size = 0;
+    template<typename T>
+    inline Type& operator [] (T _Pos) {
+        return arr_[_Pos];
+    }
+
+    inline void push_back(Type _Value) {
+        arr_[size_++] = _Value;
+        return;
+    }
+
+    inline size_t size() {
+        return size_;
+    }
+
+    inline Type* begin() {
+        return arr_;
+    }
+
+    inline Type* end() {
+        return &arr_[size_];
+    }
+
+    
 
 private:
-    Type _que[_max_size];
+    Type arr_[_MAX_SIZE];
+    size_t size_;
 };
 
-Vector<ll, 1 << MAXN>  legit_scheme;
-ll farm[MAXN];
-ll dp[MAXN + 2][1 << MAXN]; //dp[i][j]为dp的第i行排列为j时的方案数
-ll n, m, ans = 0;
+Vector<uint64_t, SCHEME_NUM> legit_scheme;
+uint32_t dp[2][SCHEME_NUM][SCHEME_NUM]; //Dp[i][j][k]为第i行的方案为j,上一行的方案为k
+ll map[MAXN], sum[MAXN];
+ll n, m, ans = LLONG_MIN;
 
 int main() {
 #ifdef _FREOPEN
@@ -72,54 +93,62 @@ int main() {
     readf(&n), readf(&m);
 
     for (size_t i = 1; i <= n; i++) {
+        scanf("\n");
         for (size_t j = 0; j < m; j++) {
-            ll value = readf<ll>();
-            if (value) {
-                farm[i] |= (1 << j);
+            if (getchar() == 'P') {
+                map[i] |= (1 << j);
+                ++sum[i];
             }
         }
     }
 
-    for (size_t i = 0; i < (1 << MAXN); i++) {
-        if (i & (i >> 1) ) {
+    for (size_t i = 0; i <= SCHEME_NUM; ++i) {
+        if (i & (i >> 1) && i & (i >> 2)) {
             continue;
         }
         legit_scheme.push_back(i);
     }
 
-    for (size_t i = 0; i < legit_scheme.size; i++) {
-        //legit_scheme[i] 为 farm[1] 的子集
-        if ((legit_scheme[i] & farm[1]) == legit_scheme[i]) {
-            dp[1][legit_scheme[i]] = 1;
+    for (uint64_t scheme : legit_scheme) {
+        if ((scheme & map[1]) == scheme) {
+            //memset(dp[1][scheme], 1, sizeof(dp[1][scheme]));
+            std::fill(dp[1][scheme], dp[1][scheme] + SCHEME_NUM, 1);
         }
     }
 
-    for (size_t i = 2; i <= n; i++) {
-        for (size_t j = 0; j < legit_scheme.size; j++) {
-            ll scheme = legit_scheme[j];
-            //当前考虑的方案 scheme 不为当前所考虑的行 farm[i] 的子集 
-            if ((scheme & farm[i]) != scheme) {
+    for (size_t line = 2; line <= n; ++line) {
+        size_t pos = line % 2;
+        for (uint64_t scheme : legit_scheme) {
+            if ((scheme & map[line]) != scheme) {
                 continue;
             }
-            //考虑上一行的状态
-            for (size_t k = 0; k < legit_scheme.size; k++) {
-                ll pre_scheme = legit_scheme[k];
-                if (!dp[i - 1][pre_scheme] || (scheme & pre_scheme)) {
+            for (uint64_t pre_scheme : legit_scheme) {
+                if (scheme & pre_scheme) {
                     continue;
                 }
-                dp[i][scheme] = (dp[i - 1][pre_scheme] + dp[i][scheme]) % MODE;
+                for (uint64_t pre_pre_scheme : legit_scheme) {
+                    if ((pre_pre_scheme & scheme) != scheme) {
+                        continue;
+                    }
+                    dp[pos][scheme][pre_scheme] = std::max(dp[pos][scheme][pre_scheme], dp[pos ^ 1][pre_scheme][pre_pre_scheme] + (uint32_t)sum[line]);
+                }
             }
         }
     }
 
-    for (size_t i = 0; i < legit_scheme.size; i++) {
-        ans = (ans + dp[n][legit_scheme[i]]) % MODE;
+    for (uint64_t scheme : legit_scheme) {
+        if ((scheme & map[n]) == scheme) {
+            continue;
+        }
+        for (uint64_t pre_scheme : legit_scheme) {
+            ans = std::max(ans, ll(dp[n % 2][scheme][pre_scheme]));
+        }
     }
 
-    writef(ans % MODE);
+    printf("%lld\n", ans);
 
 #ifdef _RUN_TIME
-    printf("\nThe running duration is not less than %ld ms\n", clock() - start);
+    printf("The running duration is not less than %ld ms\n", clock() - start);
 #endif // _RUN_TIME
     return 0;
 }
@@ -167,6 +196,8 @@ inline void writef(Type x) {
     while (top) putchar(sta[--top] + '0');  // 48 是 '0'
     return;
 }
+
+
 
 /**
  *              ,----------------,              ,---------,
