@@ -68,8 +68,6 @@ public:
         return &arr_[size_];
     }
 
-    
-
 private:
     Type arr_[_MAX_SIZE];
     size_t size_;
@@ -77,8 +75,19 @@ private:
 
 Vector<uint64_t, SCHEME_NUM> legit_scheme;
 uint32_t dp[2][SCHEME_NUM][SCHEME_NUM]; //Dp[i][j][k]为第i行的方案为j,上一行的方案为k
-ll map[MAXN], sum[MAXN];
+ll map[MAXN];
 ll n, m, ans = LLONG_MIN;
+
+inline uint32_t get_binary_1(uint64_t _Value) {
+    ll cnt = 0;
+    while (_Value) {
+        if (_Value % 2) {
+            ++cnt;
+        }
+        _Value >>= 1;
+    }
+    return cnt;
+}
 
 int main() {
 #ifdef _FREOPEN
@@ -92,18 +101,17 @@ int main() {
     //TODO
     readf(&n), readf(&m);
 
-    for (size_t i = 1; i <= n; i++) {
+    for (size_t i = 1; i <= n; ++i) {
         scanf("\n");
-        for (size_t j = 0; j < m; j++) {
+        for (size_t j = 1; j <= m; ++j) {
             if (getchar() == 'P') {
-                map[i] |= (1 << (m-j-1));
-                ++sum[i];
+                map[i] |= (1 << (m - j));
             }
         }
     }
 
-    for (size_t i = 0; i <= SCHEME_NUM; ++i) {
-        if (i & (i >> 1) || i & (i >> 2)) {
+    for (size_t i = 0; i <= (1 << m); ++i) {
+        if ((i & (i >> 1)) || (i & (i >> 2))) {
             continue;
         }
         legit_scheme.push_back(i);
@@ -111,7 +119,7 @@ int main() {
 
     for (uint64_t scheme : legit_scheme) {
         if ((scheme & map[1]) == scheme) {
-            std::fill(dp[1][scheme], dp[1][scheme] + SCHEME_NUM, 1);
+            std::fill(dp[1][scheme], dp[1][scheme] + (1 << m), get_binary_1(scheme));
         }
     }
 
@@ -129,14 +137,17 @@ int main() {
                     if (scheme & pre_pre_scheme) {
                         continue;
                     }
-                    dp[pos][scheme][pre_scheme] = std::max(dp[pos][scheme][pre_scheme], dp[pos ^ 1][pre_scheme][pre_pre_scheme] + (uint32_t)sum[line]);
+                    dp[pos][scheme][pre_scheme] = std::max(
+                        dp[pos][scheme][pre_scheme],
+                        dp[pos ^ 1][pre_scheme][pre_pre_scheme] + get_binary_1(scheme)
+                    );
                 }
             }
         }
     }
 
     for (uint64_t scheme : legit_scheme) {
-        if ((scheme & map[n]) == scheme) {
+        if ((scheme & ~map[n]) == scheme) {
             continue;
         }
         for (uint64_t pre_scheme : legit_scheme) {
