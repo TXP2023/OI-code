@@ -96,8 +96,11 @@ int main() {
         scanf("\n");
         for (size_t j = 0; j < m; j++) {
             if (getchar() == 'P') {
-                map[i] |= (1 << j);
+                map[i] |= (1 << (m-j-1));
                 ++sum[i];
+            }
+            else {
+                map[i] <<= 1;
             }
         }
     }
