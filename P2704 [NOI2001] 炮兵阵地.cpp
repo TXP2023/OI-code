@@ -127,7 +127,7 @@ int main() {
                     continue;
                 }
                 for (uint64_t pre_pre_scheme : legit_scheme) {
-                    if ((pre_pre_scheme & scheme) != scheme) {
+                    if (scheme & pre_pre_scheme) {
                         continue;
                     }
                     dp[pos][scheme][pre_scheme] = std::max(dp[pos][scheme][pre_scheme], dp[pos ^ 1][pre_scheme][pre_pre_scheme] + (uint32_t)sum[line]);
