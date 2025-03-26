@@ -103,7 +103,7 @@ int main() {
     }
 
     for (size_t i = 0; i <= SCHEME_NUM; ++i) {
-        if (i & (i >> 1) && i & (i >> 2)) {
+        if (i & (i >> 1) || i & (i >> 2)) {
             continue;
         }
         legit_scheme.push_back(i);
@@ -111,7 +111,6 @@ int main() {
 
     for (uint64_t scheme : legit_scheme) {
         if ((scheme & map[1]) == scheme) {
-            //memset(dp[1][scheme], 1, sizeof(dp[1][scheme]));
             std::fill(dp[1][scheme], dp[1][scheme] + SCHEME_NUM, 1);
         }
     }
