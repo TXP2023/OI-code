@@ -147,11 +147,10 @@ int main() {
     }
 
     for (uint64_t scheme : legit_scheme) {
-        if ((scheme & ~map[n]) == scheme) {
-            continue;
-        }
-        for (uint64_t pre_scheme : legit_scheme) {
-            ans = std::max(ans, ll(dp[n % 2][scheme][pre_scheme]));
+        if ((scheme & map[n]) == scheme) {
+            for (uint64_t pre_scheme : legit_scheme) {
+                ans = std::max(ans, ll(dp[n % 2][scheme][pre_scheme]));
+            }
         }
     }
 
