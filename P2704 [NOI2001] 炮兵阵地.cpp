@@ -99,9 +99,6 @@ int main() {
                 map[i] |= (1 << (m-j-1));
                 ++sum[i];
             }
-            else {
-                map[i] <<= 1;
-            }
         }
     }
 
