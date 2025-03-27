@@ -81,6 +81,10 @@ struct Scheme {
         cnt= _Cnt;
         return;
     }
+
+    Scheme() {
+        return;
+    }
 };
 
 Vector<Scheme, (1 << MAXN) + 1> legit_scheme;
@@ -108,7 +112,7 @@ int main() {
     //TODO
     readf(&n), readf(&k);
 
-    for (size_t i = 0; i <= (1 << n); i++) {
+    for (size_t i = 0; i < (1 << n); i++) {
         if (i & (i >> 1)) {
             continue;
         }
