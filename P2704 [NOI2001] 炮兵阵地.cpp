@@ -17,8 +17,8 @@
 #define READ          false
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
-#define MAXM          10
-#define MAXN          100
+#define MAXM          11
+#define MAXN          101
 #define SCHEME_NUM    ((1 << MAXM)+1)
 
 typedef long long int ll;
