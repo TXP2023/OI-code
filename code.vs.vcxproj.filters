@@ -435,6 +435,12 @@
     <ClCompile Include="P2704 [NOI2001] 炮兵阵地.cpp">
       <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
+    <ClCompile Include="P1896 [SCOI2005] 互不侵犯.cpp">
+      <Filter>源文件\待完成</Filter>
+    </ClCompile>
+    <ClCompile Include="My_Vector.cpp">
+      <Filter>头文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
