@@ -19,7 +19,7 @@
 #define MAX_NUM_SIZE  35
 #define MAXM          10
 #define MAXN          100
-#define SCHEME_NUM    (1 << MAXM)
+#define SCHEME_NUM    ((1 << MAXM)+1)
 
 typedef long long int ll;
 typedef unsigned long long int unill;
@@ -105,7 +105,9 @@ int main() {
         scanf("\n");
         for (size_t j = 1; j <= m; ++j) {
             if (getchar() == 'P') {
-                map[i] |= (1 << (m - j));
+                ll val = (1 << (m - j));
+                map[i] |= val;
+                //map[i] |= (1 << (m - j));
             }
         }
     }
@@ -141,6 +143,7 @@ int main() {
                         dp[pos][scheme][pre_scheme],
                         dp[pos ^ 1][pre_scheme][pre_pre_scheme] + get_binary_1(scheme)
                     );
+                    std::cout << "";
                 }
             }
         }
