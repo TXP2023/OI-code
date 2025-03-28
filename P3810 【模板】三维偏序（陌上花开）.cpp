@@ -188,7 +188,7 @@ int32_t main() {
         ans[f[array[i].id] + array[i].cnt - 1] += array[i].cnt;
     }
 
-    for (size_t i = 1; i <= n; i++) {
+    for (size_t i = 0; i < n; i++) {
         printf("%lld\n", ans[i]);
     }
 
