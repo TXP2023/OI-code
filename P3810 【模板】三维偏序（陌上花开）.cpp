@@ -48,7 +48,9 @@ struct data {
         return;
     }
 
-    data();
+    data() {
+        return;
+    }
 
     inline bool operator <(const data& other)const {
         if (a == other.a) {
@@ -129,7 +131,7 @@ void cdq(int32_t left, int32_t right) {
     pos_1 = left;
     int32_t pos_2 = mid + 1, pos = left;
     while (pos_1 <= mid && pos_2 <= right) {
-        if (array[pos_1].c <= array[pos_2].c) {
+        if (array[pos_1].b <= array[pos_2].b) {
             cdq_arr[pos] = array[pos_1];
             ++pos_1;
         }
