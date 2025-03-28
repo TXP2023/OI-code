@@ -381,6 +381,7 @@
     <ClCompile Include="P3740 [HAOI2014] 贴海报.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="P3810 【模板】三维偏序（陌上花开）.cpp" />
     <ClCompile Include="P3834 【模板】可持久化线段树 2.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>

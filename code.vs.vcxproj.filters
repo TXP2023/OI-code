@@ -441,6 +441,9 @@
     <ClCompile Include="My_Vector.cpp">
       <Filter>头文件</Filter>
     </ClCompile>
+    <ClCompile Include="P3810 【模板】三维偏序（陌上花开）.cpp">
+      <Filter>源文件\待完成</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">

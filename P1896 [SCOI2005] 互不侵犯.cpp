@@ -74,9 +74,9 @@ private:
 };
 
 struct Scheme {
-    ll s;
-    ll cnt;
-    Scheme(ll _S, ll _Cnt) {
+    int32_t s;
+    int32_t cnt;
+    Scheme(int32_t _S, int32_t _Cnt) {
         s = _S;
         cnt= _Cnt;
         return;
@@ -88,11 +88,11 @@ struct Scheme {
 };
 
 Vector<Scheme, (1 << MAXN) + 1> legit_scheme;
-uint64_t dp[MAXN][MAXK][MAX_SCHEME]; //第i行，要摆放j个国王，这行摆放的方案为k
-ll n, k, ans;
+uint32_t dp[MAXN][MAXK][MAX_SCHEME]; //第i行，要摆放j个国王，这行摆放的方案为k
+int32_t n, k, ans;
 
 inline uint64_t get_binary_1(uint64_t _Value) {
-    ll num = 0;
+    int32_t num = 0;
     while (_Value) {
         num += _Value % 2;
         _Value >>= 1;
@@ -194,7 +194,7 @@ inline void writef(Type x) {
 
 
 
-/**
+ /**
  *              ,----------------,              ,---------,
  *         ,-----------------------,          ,"        ,"|
  *       ,"                      ,"|        ,"        ,"  |
