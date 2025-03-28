@@ -82,7 +82,7 @@ inline Type lowbit(Type _Value) {
 }
 
 inline void insert(int32_t _Index, int32_t _Value) {
-    for (size_t i = _Index; i <= k; i++) {
+    for (size_t i = _Index; i <= k; i+=lowbit(i)) {
         bit[i] += _Value;
     }
     return;
@@ -126,7 +126,10 @@ void cdq(int32_t left, int32_t right) {
         f[array[pos_2].id] += query(array[pos_2].c);
     }
 
-    memset(bit, 0, sizeof(bit));
+    //memset(bit, 0, sizeof(bit));
+    for (size_t i = left; i < pos_1; i++) {
+        insert(array[i].c, -array[i].cnt);
+    }
 
     pos_1 = left;
     int32_t pos_2 = mid + 1, pos = left;
