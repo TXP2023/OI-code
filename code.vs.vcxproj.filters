@@ -423,9 +423,6 @@
     <ClCompile Include="P3373 【模板】线段树 2.cpp">
       <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
-    <ClCompile Include="CF242E XOR on Segment.cpp">
-      <Filter>源文件\待完成</Filter>
-    </ClCompile>
     <ClCompile Include="P6157 有趣的游戏.cpp">
       <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
@@ -442,7 +439,10 @@
       <Filter>头文件</Filter>
     </ClCompile>
     <ClCompile Include="P3810 【模板】三维偏序（陌上花开）.cpp">
-      <Filter>源文件\待完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
+    </ClCompile>
+    <ClCompile Include="CF242E XOR on Segment.cpp">
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

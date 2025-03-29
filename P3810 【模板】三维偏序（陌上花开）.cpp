@@ -96,6 +96,7 @@ inline int32_t query(ll _Index) {
     return sum;
 }
 
+//排序去重
 inline int32_t initialization() {
     std::sort(array + 1, array + n + 1);
     int32_t _Index = 1;
@@ -107,7 +108,8 @@ inline int32_t initialization() {
             array[++_Index] = array[i];
         }
     }
-    return _Index;
+    //对于值相同的array元素，合并后id的为首次出现的位置。
+    return _Index; //返回有效元素数量
 }
 
 void cdq(int32_t left, int32_t right) {
@@ -118,11 +120,15 @@ void cdq(int32_t left, int32_t right) {
     cdq(left, mid);
     cdq(mid + 1, right);
     uint32_t pos_1 = left;
+    //对于每一个pos_2寻找满足pos_1.b <= pos_2.b，并将合法的pos_1.c的值插入
     for (size_t pos_2 = mid + 1; pos_2 <= right; pos_2++) {
         while (pos_1 <= mid && array[pos_1].b <= array[pos_2].b) {
             insert(array[pos_1].c, array[pos_1].cnt);
             ++pos_1;
         }
+        //由于前面已经考虑过了 array[pos_1].b <= array[pos_2].b 那么对于当前考虑的array[pos_2]，bit中所有元素对应的b值都小于array[pos_2].b
+        //那么就直接查询小于array[pos_1].c的值
+        
         f[array[pos_2].id] += query(array[pos_2].c);
     }
 
@@ -131,8 +137,11 @@ void cdq(int32_t left, int32_t right) {
         insert(array[i].c, -array[i].cnt);
     }
 
+
+    //合并操作
     pos_1 = left;
     int32_t pos_2 = mid + 1, pos = left;
+    //依照b值插入，此时a值是有序的？
     while (pos_1 <= mid && pos_2 <= right) {
         if (array[pos_1].b <= array[pos_2].b) {
             cdq_arr[pos] = array[pos_1];
@@ -145,14 +154,17 @@ void cdq(int32_t left, int32_t right) {
         ++pos;
     }
 
+    //如果此时mid前的对应的元素没有全部被插入 那么就插入进去
     while (pos_1 <= mid) {
         cdq_arr[pos++] = array[pos_1++];
     }
 
+    //如果此时mid后的对应的元素没有全部被插入 那么就插入进去
     while (pos_2 <= right) {
         cdq_arr[pos++] = array[pos_2++];
     }
 
+    //复制
     for (size_t i = left; i <= right; ++i) {
         array[i] = cdq_arr[i];
     }
