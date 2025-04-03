@@ -18,7 +18,7 @@
 #define MAX_INF        1e18
 #define MAX_NUM_SIZE   35
 #define MAXN           (int64_t)(3e4+1)
-#define BINARY_CNT_MAX 11 
+#define BINARY_CNT_MAX 11
 
 typedef long long int ll;
 typedef unsigned long long int unill;
