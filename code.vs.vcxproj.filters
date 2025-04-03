@@ -450,6 +450,18 @@
     <ClCompile Include="P3401 洛谷树.cpp">
       <Filter>源文件\待完成</Filter>
     </ClCompile>
+    <ClCompile Include="Hash.cpp">
+      <Filter>源文件\样例</Filter>
+    </ClCompile>
+    <ClCompile Include="P3370 【模板】字符串哈希.cpp">
+      <Filter>源文件\已完成的题目</Filter>
+    </ClCompile>
+    <ClCompile Include="P5018 [NOIP 2018 普及组] 对称二叉树.cpp">
+      <Filter>源文件\已完成的题目</Filter>
+    </ClCompile>
+    <ClCompile Include="P7469 [NOI Online 2021 提高组] 积木小赛.cpp">
+      <Filter>源文件\已完成的题目</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
