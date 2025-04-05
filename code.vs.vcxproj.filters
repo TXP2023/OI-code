@@ -465,6 +465,18 @@
     <ClCompile Include="P7469 [NOI Online 2021 提高组] 积木小赛.cpp">
       <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
+    <ClCompile Include="A.cpp">
+      <Filter>源文件\比赛</Filter>
+    </ClCompile>
+    <ClCompile Include="B.cpp">
+      <Filter>源文件\比赛</Filter>
+    </ClCompile>
+    <ClCompile Include="C.cpp">
+      <Filter>源文件\比赛</Filter>
+    </ClCompile>
+    <ClCompile Include="D.cpp">
+      <Filter>源文件\比赛</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
