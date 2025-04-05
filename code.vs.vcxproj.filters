@@ -28,6 +28,9 @@
     <Filter Include="源文件\已完成的题目">
       <UniqueIdentifier>{d56be3a9-9366-4fe7-bbaa-c26693c45ccd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\比赛">
+      <UniqueIdentifier>{1f5d184f-a935-4a2c-a697-7bd6c1562db6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="模板.cpp">
