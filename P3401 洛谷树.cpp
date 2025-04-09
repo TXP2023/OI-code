@@ -19,6 +19,7 @@
 #define MAX_NUM_SIZE   35
 #define MAXN           (int64_t)(3e4+1)
 #define BINARY_CNT_MAX 11
+#define BINARY_SIZE    3
 
 typedef long long int ll;
 typedef unsigned long long int unill;
@@ -93,7 +94,7 @@ private:
 Edge edges[MAXN];
 std::vector<ll> graph[MAXN];
 ll deep[MAXN], dfn[MAXN], top[MAXN], father[MAXN], node_num[MAXN], heavy_son[MAXN];
-segment_tree seg_tree[10];
+segment_tree seg_tree[BINARY_SIZE];
 ll weight[MAXN];
 ll n, q, dnf_cnt = 0;
 
@@ -145,13 +146,14 @@ inline Type segment_tree::rs(Type _X) {
 
 inline void segment_tree::push_up(ll _Index) {
     tree[_Index].cnt[0] = tree[ls(_Index)].cnt[0] + tree[rs(_Index)].cnt[0];
+    tree[_Index].cnt[1] = tree[ls(_Index)].cnt[1] + tree[rs(_Index)].cnt[1];
     return;
 }
 
 void segment_tree::build_tree(ll _Val_Pos, ll _Index, ll _RangeL, ll _RangeR) {
     if (_RangeL == _RangeR) {
-        tree[_RangeL].cnt[0] = ((weight[_RangeL] >> _Val_Pos) & 1) ^ 1;
-        tree[_RangeL].cnt[1] = (weight[_RangeL] >> _Val_Pos) & 1;
+        tree[_Index].cnt[0] = ((weight[_RangeL] >> _Val_Pos) & 1) ^ 1;
+        tree[_Index].cnt[1] = (weight[_RangeL] >> _Val_Pos) & 1;
         return;
     }
 
@@ -197,13 +199,14 @@ segment_tree::tree_node segment_tree::query(ll _Index, ll _RangeL, ll _RangeR, l
 }
 
 inline void query(ll _u, ll _v) {
-    ll cnt[10][2];
+    ll cnt[BINARY_SIZE][2];
+    memset(cnt, 0, sizeof(cnt));
 	while (top[_u] != top[_v]) {
 		if (deep[top[_u]] < deep[top[_v]]) {
 			std::swap(_u, _v);
 		}
-        for (size_t i = 0; i < 10; i++) {
-			segment_tree::tree_node ans = seg_tree[i].query(1, 1, n, dfn[top[_u]] - 1, dfn[_u]);
+        for (size_t i = 0; i < BINARY_SIZE; i++) {
+			segment_tree::tree_node ans = seg_tree[i].query(1, 1, n, dfn[top[_u]], dfn[_u]);
 			cnt[i][0] += ans.cnt[0];
 			cnt[i][1] += ans.cnt[1];
         }
@@ -212,13 +215,13 @@ inline void query(ll _u, ll _v) {
     if (deep[_u] < deep[_v]) {
         std::swap(_u, _v);
     }
-    for (size_t i = 0; i < 10; i++) {
-        segment_tree::tree_node ans = seg_tree[i].query(1, 1, n, dfn[_v] - 1, dfn[_u]);
+    for (size_t i = 0; i < BINARY_SIZE; i++) {
+        segment_tree::tree_node ans = seg_tree[i].query(1, 1, n, dfn[_v] + 1, dfn[_u]);
         cnt[i][0] += ans.cnt[0];
         cnt[i][1] += ans.cnt[1];
     }
     ll ans = 0;
-    for (size_t i = 0; i < 10; i++) {
+    for (size_t i = 0; i < BINARY_SIZE; i++) {
 		ans += cnt[i][0] * cnt[i][1] * (1 << i);
     }
 	writef(ans);
@@ -247,7 +250,7 @@ int main() {
 
     tree_init();
 
-    for (size_t i = 1; i < n - 1; i++) {
+    for (size_t i = 1; i <= n - 1; i++) {
         ll u = edges[i].u, v = edges[i].v;
         weight[dfn[deep[u] > deep[v] ? u : v]] = edges[i].w;
     }
