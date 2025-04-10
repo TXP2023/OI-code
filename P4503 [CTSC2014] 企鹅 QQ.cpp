@@ -37,7 +37,7 @@ inline Type readf(Type* p = nullptr);
 template<typename Type>
 inline void writef(Type x);
 
-const uint64_t base1 = 124355159, base2 = 14519, mode_1 = 97499, mode_2 = 100003;
+const uint64_t base1 = 124355159, base2 = 14519, mode_1 = 1635173629, mode_2 = 100003;
 char str[MAXN][MAX_LENGTH];
 uint64_t Hash[MAXN][MAX_LENGTH], Reverse_Hash[MAXN][MAX_LENGTH];
 ll n, lenght, ans;
@@ -73,10 +73,10 @@ int main() {
         ll hash[MAXN];
         memset(hash, 0, sizeof(hash));
         for (size_t i = 1; i <= n; i++) {
-            hash[i] = (Hash[i][difference_Pos - 1] * base1 + Reverse_Hash[i][difference_Pos + 1] * base2)% mode_1;
+            hash[i] = (Hash[i][difference_Pos - 1] * base1 + Reverse_Hash[i][difference_Pos + 1] * base2) % mode_1;
         }
         std::sort(hash + 1, hash + 1 + n);
-        ll cnt = 0;
+        ll cnt = 1;
         for (size_t i = 2; i <= n; i++) {
             if (hash[i] == hash[i - 1]) {
                 ans += cnt++;
