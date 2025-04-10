@@ -3,6 +3,7 @@
 //      By txp2024 www.luogu.com.cn  TXP2023 www.github.com
 // 
 //+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+// 这个题目非常神奇，你让hash值自然溢出就ac了，但是取余mode反而会wa
 #pragma once
 #include <vector>
 #include <stdio.h>
@@ -44,10 +45,10 @@ ll n, lenght, ans;
 
 inline void init(ll _Index) {
     for (size_t i = 1; i <= lenght; ++i) {
-        Hash[_Index][i] = (Hash[_Index][i - 1] * base1 + str[_Index][i]) % mode_1;
+        Hash[_Index][i] = (Hash[_Index][i - 1] * base1 + str[_Index][i]);
     }
     for (size_t i = lenght; i >= 1; --i) {
-        Reverse_Hash[_Index][i] = (Reverse_Hash[_Index][i + 1] * base2 + str[_Index][i]) % mode_2;
+        Reverse_Hash[_Index][i] = (Reverse_Hash[_Index][i + 1] * base2 + str[_Index][i]);
     }
     return;
 }
@@ -73,7 +74,7 @@ int main() {
         ll hash[MAXN];
         memset(hash, 0, sizeof(hash));
         for (size_t i = 1; i <= n; i++) {
-            hash[i] = (Hash[i][difference_Pos - 1] * base1 + Reverse_Hash[i][difference_Pos + 1] * base2) % mode_1;
+            hash[i] = (Hash[i][difference_Pos - 1] * base1 + Reverse_Hash[i][difference_Pos + 1] * base2);
         }
         std::sort(hash + 1, hash + 1 + n);
         ll cnt = 1;

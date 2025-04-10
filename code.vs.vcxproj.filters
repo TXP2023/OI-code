@@ -478,7 +478,7 @@
       <Filter>源文件\比赛</Filter>
     </ClCompile>
     <ClCompile Include="P4503 [CTSC2014] 企鹅 QQ.cpp">
-      <Filter>源文件\待完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
