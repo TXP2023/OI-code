@@ -477,6 +477,9 @@
     <ClCompile Include="D.cpp">
       <Filter>源文件\比赛</Filter>
     </ClCompile>
+    <ClCompile Include="P4503 [CTSC2014] 企鹅 QQ.cpp">
+      <Filter>源文件\待完成</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
