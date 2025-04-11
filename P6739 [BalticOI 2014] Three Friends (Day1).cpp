@@ -45,7 +45,7 @@ template<size_t _MaxStrLenght, uint64_t _base, uint64_t _mod>
 class Hash {
 public:
     Hash();
-    Hash(std::string _Str);
+    Hash(const char *_Str);
 
     inline uint64_t get_range_hash(size_t _First_Pos, size_t _Last_Pos);
 
@@ -57,9 +57,10 @@ private:
     
 };
 
-std::string str;
+
 Hash<MAX_LENGTH, HASH_1_BASE, HASH_1_MOD> hash_1;
 Hash<MAX_LENGTH, HASH_2_BASE, HASH_2_MOD> hash_2;
+char str[MAX_LENGTH];
 size_t n, ans_l, ans_r;
 
 template<size_t _MaxStrLenght, uint64_t _base, uint64_t _mod>
@@ -83,9 +84,9 @@ Hash<_MaxStrLenght, _base, _mod>::Hash() {
 }
 
 template<size_t _MaxStrLenght, uint64_t _base, uint64_t _mod>
-Hash<_MaxStrLenght, _base, _mod>::Hash(std::string _Str) {
-    for (size_t i = 1; i <= _Str.length(); i++) {
-        hash[i] = (hash[i - 1] * base + _Str[i - 1] - 'A' + 1) % _mod;
+Hash<_MaxStrLenght, _base, _mod>::Hash(const char *_Str) {
+    for (size_t i = 1; i <= n; i++) {
+        hash[i] = (hash[i - 1] * base + _Str[i] - 'A' + 1) % _mod;
     }
     return;
 }
@@ -113,7 +114,8 @@ int main() {
         puts("NOT POSSIBLE");
         return 0;
     }
-    std::cin >> str;
+    scanf("%s", str + 1);
+    str[0] = 'A' - 1;
 
     hash_1 = Hash<MAX_LENGTH, HASH_1_BASE, HASH_1_MOD>(str);
     hash_2 = Hash<MAX_LENGTH, HASH_2_BASE, HASH_2_MOD>(str);
@@ -163,7 +165,9 @@ int main() {
     }
 
     if (ans_l != 0) {
-        std::cout << str.substr(ans_l - 1, n/2) << '\n';
+        for (size_t i = ans_l; i <= ans_l + n/2 - 1; i++) {
+            putchar(str[i]);
+        }
     }
     else {
         puts("NOT POSSIBLE");
