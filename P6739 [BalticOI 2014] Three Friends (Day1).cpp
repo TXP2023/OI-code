@@ -20,10 +20,10 @@
 #define MAX_NUM_SIZE  35
 #define MAX_LENGTH    (uint64_t)(2e6+1)
 #define _DEBUG        true
-#define HASH_1_BASE   998244353
-#define HASH_1_MOD    22783
-#define HASH_2_BASE   37951
-#define HASH_2_MOD    1000000007
+#define HASH_1_BASE   131
+#define HASH_1_MOD    ULLONG_MAX
+#define HASH_2_BASE   233
+#define HASH_2_MOD    ULLONG_MAX
 
 typedef long long int ll;
 typedef unsigned long long int unill;
@@ -95,7 +95,7 @@ inline uint64_t Hash<_MaxStrLenght, _base, _mod>::get_range_hash(size_t _First_P
     if (_First_Pos > _Last_Pos) {
         return 0;
     }
-    return hash[_Last_Pos] - hash[_First_Pos - 1] * fast_pow(base, _Last_Pos - _First_Pos + 1) % _mod;
+    return (hash[_Last_Pos] - hash[_First_Pos - 1] * fast_pow(_base, _Last_Pos - _First_Pos + 1)) % _mod;
 }
 
 int main() {
@@ -121,7 +121,7 @@ int main() {
     ll size = n / 2;
     for (size_t i = 1; i <= n; i++) {
         uint64_t hash_1_1, hash_1_2, hash_2_1, hash_2_2;
-        if (i <= n/2) {
+        if (i <= n/2 + 1) {
             hash_1_1 = hash_1.get_range_hash(1, i - 1) * hash_1.fast_pow(hash_1.base, n/2 - i + 1) + hash_1.get_range_hash(i + 1, size + 1);
             hash_1_2 = hash_1.get_range_hash(size + 2, n);
             hash_2_1 = hash_2.get_range_hash(1, i - 1) * hash_2.fast_pow(hash_2.base, n / 2 - i + 1) + hash_2.get_range_hash(i + 1, size + 1);
