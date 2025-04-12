@@ -481,7 +481,7 @@
       <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P6739 [BalticOI 2014] Three Friends (Day1).cpp">
-      <Filter>源文件\待完成</Filter>
+      <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

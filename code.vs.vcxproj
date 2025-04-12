@@ -471,7 +471,9 @@
     <ClCompile Include="P6577 【模板】二分图最大权完美匹配.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="P6739 [BalticOI 2014] Three Friends (Day1).cpp" />
+    <ClCompile Include="P6739 [BalticOI 2014] Three Friends (Day1).cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="P6833 [Cnoi2020] 雷雨.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
