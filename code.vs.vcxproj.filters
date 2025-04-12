@@ -483,6 +483,9 @@
     <ClCompile Include="P6739 [BalticOI 2014] Three Friends (Day1).cpp">
       <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
+    <ClCompile Include="P8643 [蓝桥杯 2016 国 AC] 碱基.cpp">
+      <Filter>源文件\已完成的题目</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
