@@ -7,6 +7,7 @@
 #include <vector>
 #include <stdio.h>
 #include <algorithm>
+#include <string.h>
 #include <ctype.h>
 #include <cstdarg>
 #include <climits>
@@ -54,7 +55,7 @@ private:
 Hash<MAXN, 131, UINT64_MAX> hash_1;
 Hash<MAXN, 131, UINT64_MAX> hash_2;
 char arr[MAXN];
-uint32_t n, ans = 0;
+uint64_t n, ans = 0;
 
 template<size_t _MaxStrLenght, uint64_t _base, uint64_t _mod>
 inline uint64_t Hash<_MaxStrLenght, _base, _mod>::fast_pow(size_t bas, size_t pow) {
@@ -78,6 +79,7 @@ Hash<_MaxStrLenght, _base, _mod>::Hash() {
 
 template<size_t _MaxStrLenght, uint64_t _base, uint64_t _mod>
 Hash<_MaxStrLenght, _base, _mod>::Hash(const char* _Str) {
+    memset(hash, 0, sizeof(hash));
     for (size_t i = 1; i <= n; i++) {
         hash[i] = (hash[i - 1] * base + _Str[i] - '0' + 1) % _mod;
     }
@@ -126,7 +128,7 @@ int main() {
     hash_2 = Hash<MAXN, 131, UINT64_MAX>(arr);
 
     for (size_t mid = 0; mid < n; mid++) /*区间中位线*/ {
-        size_t length_max = std::min(mid, n - mid - 1), length_min = 1, right_length = 0; //向侧边扩展的长度
+        size_t length_max = std::min(mid, n - mid), length_min = 1, right_length = 0; //向侧边扩展的长度
         while (length_max >= length_min) {
             size_t length_mid = (length_max + length_min) >> 1;
             if (chick(mid + 1 - length_mid, mid + length_mid)) {
@@ -140,7 +142,7 @@ int main() {
         ans += right_length;
     }
 
-    printf("%lld\n", ans);
+    printf("%llu\n", ans);
 
 #ifdef _RUN_TIME
     printf("The running duration is not less than %ld ms\n", clock() - start);
