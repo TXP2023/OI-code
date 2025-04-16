@@ -399,7 +399,9 @@
     <ClCompile Include="P3478 [POI 2008] STA-Station.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="P3501 [POI 2010] ANT-Antisymmetry.cpp" />
+    <ClCompile Include="P3501 [POI 2010] ANT-Antisymmetry.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="P3620 [CTSC2007] 数据备份.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
