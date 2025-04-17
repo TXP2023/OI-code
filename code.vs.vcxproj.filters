@@ -489,6 +489,9 @@
     <ClCompile Include="P3501 [POI 2010] ANT-Antisymmetry.cpp">
       <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
+    <ClCompile Include="P3678 [CERC2016] 外观分析 Appearance Analysis.cpp">
+      <Filter>源文件\已完成的题目</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
