@@ -21,7 +21,6 @@
 #define MAX_NUM_SIZE  35
 #define MAX_S1        (uint64_t)(1e6+5)
 #define MAX_S2        (uint64_t)(1e6 + 5)
-#define INDEX_1       true
 
 typedef long long int ll;
 typedef unsigned long long int unill;
@@ -42,12 +41,11 @@ inline void writef(Type x);
 std::string s1, s2;
 uint64_t next[MAX_S1];
 
-#if INDEX_1
 inline void get_next(uint64_t* _Arr, std::string _Str) {
     _Arr[1] = 0;
     for (size_t i = 2, length = 0; i <= _Str.length(); ++i) {
         while (length && _Str[i - 1] != _Str[length]) {
-            length = _Arr[length - 1];
+            length = _Arr[length];
         }
         if (_Str[i - 1] == _Str[length]) {
             ++length;
@@ -56,24 +54,7 @@ inline void get_next(uint64_t* _Arr, std::string _Str) {
     }
     return;
 }
-#else
-inline void get_next(uint64_t* _Arr, std::string _Str) {
-    _Arr[0] = 0;
-    for (size_t i = 1, j = 0; i < _Str.length(); ++i) {
-        while (j && _Str[i] != _Str[j]) {
-            j = _Arr[j - 1];
-        }
-        if (_Str[i] == _Str[j]) {
-            ++j;
-            next[i] = j;
-        }
-    }
-    return;
-}
-#endif // INDEX_1
 
-
-#if INDEX_1
 inline void kmp(const uint64_t* _Next, std::string _Str1, std::string _Str2) {
     for (size_t s1Index = 0, s2Index = 0; s1Index < _Str1.length(); s1Index++) {
         while (s2Index && _Str1[s1Index] != _Str2[s2Index]) {
@@ -88,23 +69,6 @@ inline void kmp(const uint64_t* _Next, std::string _Str1, std::string _Str2) {
         }
     }
 }
-#else
-
-inline void kmp(const uint64_t * _Next, std::string _Str1, std::string _Str2) {
-    for (size_t i = 0, j = 0; i < _Str1.length(); i++) {
-        while (j && _Str1[i] != _Str2[j]) {
-            j = _Next[j - 1];
-        }
-        if (_Str1[i] == _Str2[j]) {
-            ++j;
-        }
-        if (j == _Str2.length()) {
-            printf("%lld\n", i - j + 2);
-            j = _Next[j - 1];
-        }
-    }
-}
-#endif
 
 int main() {
 #ifdef _FREOPEN
@@ -121,20 +85,12 @@ int main() {
     get_next(next, s2);
     kmp(next, s1, s2);
 
-#if INDEX_1
     for (size_t i = 1; i <= s2.length(); i++) {
         printf("%lld ", next[i]);
     }
-#else
-    for (size_t i = 0; i < s2.length(); i++) {
-        printf("%lld ", next[i]);
-    }
-#endif // INDEX_1
-
-    
 
 #ifdef _RUN_TIME
-    printf("The running duration is not less than %ld ms\n", clock() - start);
+    printf("\nThe running duration is not less than %ld ms\n", clock() - start);
 #endif // _RUN_TIME
     return 0;
 }
