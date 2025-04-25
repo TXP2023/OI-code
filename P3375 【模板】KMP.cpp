@@ -40,6 +40,7 @@ inline void writef(Type x);
 
 std::string s1, s2;
 uint64_t next[MAX_S1];
+std::vector<size_t> ans;
 
 inline void get_next(uint64_t* _Arr, std::string _Str) {
     _Arr[1] = 0;
@@ -48,14 +49,14 @@ inline void get_next(uint64_t* _Arr, std::string _Str) {
             length = _Arr[length];
         }
         if (_Str[i - 1] == _Str[length]) {
-            ++length;
-            _Arr[i] = length;
+            _Arr[i] = ++length;
         }
     }
     return;
 }
 
-inline void kmp(const uint64_t* _Next, std::string _Str1, std::string _Str2) {
+inline std::vector<size_t> kmp(const uint64_t* _Next, std::string _Str1, std::string _Str2) {
+    std::vector<size_t> ret;
     for (size_t s1Index = 0, s2Index = 0; s1Index < _Str1.length(); s1Index++) {
         while (s2Index && _Str1[s1Index] != _Str2[s2Index]) {
             s2Index = _Next[s2Index];
@@ -64,7 +65,7 @@ inline void kmp(const uint64_t* _Next, std::string _Str1, std::string _Str2) {
             ++s2Index;
         }
         if (s2Index == _Str2.length()) {
-            printf("%lld\n", s1Index - s2Index + 2);
+            ret.push_back(s1Index - s2Index + 2);
             s2Index = _Next[s2Index];
         }
     }
@@ -83,7 +84,11 @@ int main() {
     std::cin >> s1 >> s2;
 
     get_next(next, s2);
-    kmp(next, s1, s2);
+    ans = kmp(next, s1, s2);
+
+    for (size_t i : ans) {
+        printf("%llu\n", i);
+    }
 
     for (size_t i = 1; i <= s2.length(); i++) {
         printf("%lld ", next[i]);
