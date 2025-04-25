@@ -19,6 +19,8 @@
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
 #define TRIE_SIZE     6400005
+#define ROOT          0
+#define GET_BINARY_INDEX(n, i)  ((n >> uint32_t(32 - i - 1)) & 1)
 
 typedef long long int ll;
 typedef unsigned long long int unill;
@@ -50,6 +52,43 @@ struct tree_node {
 
 tree_node trie[TRIE_SIZE];
 ll n;
+uint32_t trie_cnt = 0, ans;
+
+void insert(uint32_t val, uint32_t cnt = 0, uint32_t pos = ROOT) {
+    ++trie[pos].cnt;
+    if (cnt == 32) {
+        return;
+    }
+    if (!trie[pos].Index[GET_BINARY_INDEX(val, cnt)]) {
+        trie[pos].Index[GET_BINARY_INDEX(val, cnt)] = ++trie_cnt;
+    }
+    ll p = trie[pos].Index[GET_BINARY_INDEX(val, cnt)];
+    insert(val, ++cnt, p);
+    return;
+}
+
+uint32_t get_xor(uint32_t val, uint32_t cnt = 0, const uint32_t & this_pos = ROOT, const uint32_t & other_pos = ROOT, uint32_t sum = 0) {
+    if (cnt == 32) {
+        return sum;
+    }
+    if (trie[other_pos].Index[GET_BINARY_INDEX(val, cnt) ^ 1]) {
+        return get_xor(
+            val, ++cnt, 
+            trie[this_pos].Index[GET_BINARY_INDEX(val, cnt)], 
+            trie[other_pos].Index[GET_BINARY_INDEX(val, cnt) ^ 1], 
+            sum << 1 | 1
+        );
+    }
+    else {
+        return get_xor(
+            val, ++cnt,
+            trie[this_pos].Index[GET_BINARY_INDEX(val, cnt)],
+            trie[other_pos].Index[GET_BINARY_INDEX(val, cnt)],
+            sum << 1
+        );
+    }
+    
+}
 
 int main() {
 #ifdef _FREOPEN
@@ -63,6 +102,14 @@ int main() {
     //TODO
     readf(&n);
 
+    for (size_t i = 0; i < n; i++) {
+        uint32_t val;
+        readf(&val);
+        insert(val);
+        ans = std::max(ans, get_xor(val));
+    }
+
+    printf("%lld\n", ans);
 
 #ifdef _RUN_TIME
     printf("The running duration is not less than %ld ms\n", clock() - start);
