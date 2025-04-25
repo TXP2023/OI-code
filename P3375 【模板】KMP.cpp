@@ -44,12 +44,12 @@ std::vector<size_t> ans;
 
 inline void get_next(uint64_t* _Arr, std::string _Str) {
     _Arr[1] = 0;
-    for (size_t i = 2, length = 0; i <= _Str.length(); ++i) {
-        while (length && _Str[i - 1] != _Str[length]) {
+    for (size_t i = 1, length = 0; i < _Str.length(); ++i) {
+        while (length && _Str[i] != _Str[length]) {
             length = _Arr[length];
         }
-        if (_Str[i - 1] == _Str[length]) {
-            _Arr[i] = ++length;
+        if (_Str[i] == _Str[length]) {
+            _Arr[i + 1] = ++length;
         }
     }
     return;
@@ -69,6 +69,7 @@ inline std::vector<size_t> kmp(const uint64_t* _Next, std::string _Str1, std::st
             s2Index = _Next[s2Index];
         }
     }
+    return ret;
 }
 
 int main() {
