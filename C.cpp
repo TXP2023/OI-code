@@ -6,6 +6,7 @@
 #pragma once
 #include <vector>
 #include <stdio.h>
+#include <string.h>
 #include <algorithm>
 #include <ctype.h>
 #include <cstdarg>
@@ -17,6 +18,9 @@
 #define READ          false
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
+#define MAXN          (size_t)(2e5 + 5)
+#define MAXM          (size_t)(2e5 + 5)
+#define MAXQ          (size_t)(2e5 + 5)
 
 typedef long long int ll;
 typedef unsigned long long int unill;
@@ -34,8 +38,43 @@ inline Type readf(Type* p = nullptr);
 template<typename Type>
 inline void writef(Type x);
 
-ll ans = 0, base = 2;
-ll n;
+struct Question {
+    uint32_t user, type, page, id;
+    inline bool operator ==(const Question& other)const {
+        return user == other.user && type == other.type && page == other.page;
+    }
+
+    inline bool operator <(const Question& other)const {
+        if (*this == other) {
+            return false;
+        }
+        if (user < other.user) {
+            return true;
+        }
+        else {
+            if (id < other.id) {
+            return true;
+            }
+            return false;
+        }
+        return false;
+    }
+
+    Question() {
+        return;
+    }
+    Question(uint32_t _User, uint32_t _Type, uint32_t _Page, uint32_t _Id) {
+        user = _User;
+        id = _Id;
+        type = _Type;
+        page = _Page;
+        return;
+    }
+};
+
+Question questions[MAXN];
+bool pages_tag[MAXM], tag;//pages_tag[i]是这个user是否可以访问第i个页面， tag就是这个user是否可以访问所有页面*/
+uint32_t n, m, q, old_user = -1;
 
 int main() {
 #ifdef _FREOPEN
@@ -46,26 +85,42 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    readf(&n);
+    //TODO
+    readf(&n), readf(&m), readf(&q);
 
-    while (base <= n) {
-        ll b2 = n / base;
-        if (b2 < 1) {
-            base *= 2;
-            continue;
+    for (size_t i = 1; i <= q; i++) {
+        uint32_t type = readf<uint32_t>(), user = readf<uint32_t>(), page = 0;
+        if (type != 2) {
+            page = readf<uint32_t>();
         }
-        ll b = (ll)sqrt(b2);
-
-        if (b >= 1) {
-            ans += (b + 1) / 2;
-        }
-        if (2 * base > n) {
-            break;
-        }
-        base *= 2;
+        questions[i] = Question(user, type, page, i);
     }
-    printf("%lld\n", ans);
 
+    std::sort(questions + 1, questions + 1 + q);
+
+    for (auto& quest : questions) {
+        if (old_user != quest.user) { /*此时要开始处理一个新的user的信息*/
+            tag = false;
+            memset(pages_tag, 0, sizeof(pages_tag));
+            old_user = quest.user;
+        }
+
+        switch (quest.type) {
+        case 1:
+            pages_tag[quest.page] = true;
+            break;
+        case 2:
+            tag = true;
+            break;
+        case 3:
+            if (tag == true || pages_tag[quest.page]) { //这个用户可以访问所有的页面
+                puts("Yes");
+            }
+            else {
+                puts("No");
+            }
+        }
+    }
 
 
 #ifdef _RUN_TIME
