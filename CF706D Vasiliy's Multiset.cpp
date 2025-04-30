@@ -20,7 +20,7 @@
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
 #define GET_BINARY_INDEX(n, i)  ((n >> uint32_t(32 - i - 1)) & 1)
-#define TRIE_SIZE     12800005
+#define TRIE_SIZE     128000
 #define ROOT          0
 
 typedef long long int ll;
@@ -55,7 +55,7 @@ struct trie_node {
 trie_node trie[TRIE_SIZE];
 uint32_t q, trie_cnt = 0;
 
-void insert(const uint32_t &pos, uint32_t val, uint32_t val_cnt) {
+void insert(const uint32_t &pos, const uint32_t& val, uint32_t val_cnt) {
     ++trie[pos].cnt;
     if (val_cnt == 32) {
         return;
@@ -67,7 +67,7 @@ void insert(const uint32_t &pos, uint32_t val, uint32_t val_cnt) {
     return;
 }
 
-void remove(const uint32_t &pos, uint32_t val, uint32_t val_cnt) {
+void remove(const uint32_t &pos, const uint32_t& val, uint32_t val_cnt) {
     --trie[pos].cnt;
     if (val_cnt == 32) {
         return;
@@ -76,7 +76,7 @@ void remove(const uint32_t &pos, uint32_t val, uint32_t val_cnt) {
     return;
 }
 
-uint32_t query(const uint32_t &pos, uint32_t val, uint32_t val_cnt) {
+uint32_t query(const uint32_t &pos, const uint32_t& val, uint32_t val_cnt) {
     if (val_cnt == 32) {
         return 0;
     }
