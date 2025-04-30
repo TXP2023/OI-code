@@ -1,4 +1,3 @@
-
 //+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 //
 //      By txp2024 www.luogu.com.cn  TXP2023 www.github.com
@@ -20,7 +19,7 @@
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
 #define GET_BINARY_INDEX(n, i)  ((n >> uint32_t(32 - i - 1)) & 1)
-#define TRIE_SIZE     128000
+#define TRIE_SIZE     3100005
 #define ROOT          0
 
 typedef long long int ll;
@@ -40,7 +39,7 @@ template<typename Type>
 inline void writef(Type x);
 
 struct trie_node {
-    size_t child[2];
+    uint32_t child[2];
     uint32_t cnt;
 
     trie_node() {
@@ -72,19 +71,19 @@ void remove(const uint32_t &pos, const uint32_t& val, uint32_t val_cnt) {
     if (val_cnt == 32) {
         return;
     }
-    remove(trie[pos].child[GET_BINARY_INDEX(val, val_cnt)], val, ++val_cnt);
+    remove(trie[pos].child[GET_BINARY_INDEX(val, val_cnt)], val, val_cnt + 1);
     return;
 }
 
 uint32_t query(const uint32_t &pos, const uint32_t& val, uint32_t val_cnt) {
-    if (val_cnt == 32) {
+    if (val_cnt == 32 || !trie[pos].cnt) {
         return 0;
     }
     if (trie[trie[pos].child[GET_BINARY_INDEX(val, val_cnt) ^ 1]].cnt && trie[pos].child[GET_BINARY_INDEX(val, val_cnt) ^ 1] != 0) {
-        return (1 << (32 - val_cnt)) + query(trie[pos].child[GET_BINARY_INDEX(val, val_cnt) ^ 1], val, ++val_cnt);
+        return (1 << (32 - val_cnt - 1)) + query(trie[pos].child[GET_BINARY_INDEX(val, val_cnt) ^ 1], val, val_cnt + 1);
     }
     else {
-        return query(trie[pos].child[GET_BINARY_INDEX(val, val_cnt)], val, ++val_cnt);
+        return query(trie[pos].child[GET_BINARY_INDEX(val, val_cnt)], val, val_cnt + 1);
     }
 }
 
@@ -100,9 +99,10 @@ int main() {
     //TODO
     readf(&q);
 
+    insert(ROOT, 0, 0);
     for (size_t i = 0; i < q; i++) {
-        scanf("\n");
-        char opt = getchar();
+        char opt;
+        std::cin >> opt;
         uint32_t val = readf<uint32_t>();
         switch (opt) {
         case '+':
@@ -112,7 +112,7 @@ int main() {
             remove(ROOT, val, 0);
             break;
         case '?':
-            printf("%lld\n", query(ROOT, val, 0));
+            printf("%u\n", query(ROOT, val, 0));
             break;
         }
     }
