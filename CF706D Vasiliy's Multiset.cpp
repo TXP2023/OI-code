@@ -80,7 +80,7 @@ uint32_t query(const uint32_t &pos, uint32_t val, uint32_t val_cnt) {
     if (val_cnt == 32) {
         return 0;
     }
-    if (trie[trie[pos].child[GET_BINARY_INDEX(val, val_cnt) ^ 1]].cnt && (GET_BINARY_INDEX(val, val_cnt) ^ 1) != 0) {
+    if (trie[trie[pos].child[GET_BINARY_INDEX(val, val_cnt) ^ 1]].cnt && trie[pos].child[GET_BINARY_INDEX(val, val_cnt) ^ 1] != 0) {
         return (1 << (32 - val_cnt)) + query(trie[pos].child[GET_BINARY_INDEX(val, val_cnt) ^ 1], val, ++val_cnt);
     }
     else {
