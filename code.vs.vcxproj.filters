@@ -31,6 +31,9 @@
     <Filter Include="源文件\比赛">
       <UniqueIdentifier>{1f5d184f-a935-4a2c-a697-7bd6c1562db6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\已完成的题目\CodeForces">
+      <UniqueIdentifier>{50ce614d-5ddf-4d86-8a97-e1ac619381b4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="模板.cpp">
@@ -420,9 +423,6 @@
     <ClCompile Include="SP1716 GSS3 - Can you answer these queries III.cpp">
       <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
-    <ClCompile Include="CF240F TorCoder.cpp">
-      <Filter>源文件\已完成的题目</Filter>
-    </ClCompile>
     <ClCompile Include="P3373 【模板】线段树 2.cpp">
       <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
@@ -442,9 +442,6 @@
       <Filter>头文件</Filter>
     </ClCompile>
     <ClCompile Include="P3810 【模板】三维偏序（陌上花开）.cpp">
-      <Filter>源文件\已完成的题目</Filter>
-    </ClCompile>
-    <ClCompile Include="CF242E XOR on Segment.cpp">
       <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
     <ClCompile Include="P2831 [NOIP 2016 提高组] 愤怒的小鸟.cpp">
@@ -501,8 +498,14 @@
     <ClCompile Include="P10471 最大异或对 The XOR Largest Pair.cpp">
       <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
+    <ClCompile Include="CF242E XOR on Segment.cpp">
+      <Filter>源文件\已完成的题目\CodeForces</Filter>
+    </ClCompile>
     <ClCompile Include="CF706D Vasiliy%27s Multiset.cpp">
-      <Filter>源文件\已完成的题目</Filter>
+      <Filter>源文件\已完成的题目\CodeForces</Filter>
+    </ClCompile>
+    <ClCompile Include="CF240F TorCoder.cpp">
+      <Filter>源文件\已完成的题目\CodeForces</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
