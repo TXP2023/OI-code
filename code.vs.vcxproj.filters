@@ -510,6 +510,18 @@
     <ClCompile Include="CF817E Choosing The Commander.cpp">
       <Filter>源文件\待完成</Filter>
     </ClCompile>
+    <ClCompile Include="P3805 【模板】manacher.cpp">
+      <Filter>源文件\已完成的题目</Filter>
+    </ClCompile>
+    <ClCompile Include="P1723 高手过愚人节.cpp">
+      <Filter>源文件\已完成的题目</Filter>
+    </ClCompile>
+    <ClCompile Include="P12213 [蓝桥杯 2023 国 Python B] 最长回文前后缀.cpp">
+      <Filter>源文件\待完成</Filter>
+    </ClCompile>
+    <ClCompile Include="P4555 [国家集训队] 最长双回文串.cpp">
+      <Filter>源文件\待完成</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">

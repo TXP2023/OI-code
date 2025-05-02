@@ -18,12 +18,7 @@
 #define READ          false
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
-#define INSERT        1
-#define REMOVE        2
-#define QUERY         3
-#define GET_BINARY_INDEX(n, i)  ((n >> uint32_t(32 - i - 1)) & 1)
-#define TRIE_SIZE     3100005
-#define ROOT          0
+#define MAX_LENGTH    10000005
 
 typedef long long int ll;
 typedef unsigned long long int unill;
@@ -41,53 +36,46 @@ inline Type readf(Type* p = nullptr);
 template<typename Type>
 inline void writef(Type x);
 
-struct trie_node{
-    uint32_t child[2];
-    uint32_t cnt;
+char str[MAX_LENGTH * 2];
+uint32_t length = 0, n;
 
-    trie_node() {
-        child[0] = 0;
-        child[1] = 0;
-        cnt = 0;
-        return;
+inline uint32_t _Manacher(const char* _str) {
+    uint32_t radius[MAX_LENGTH * 2], len = strlen(_str), max_length = 0;
+    std::fill(radius, radius + len + 1, 0);
+    radius[1] = 1;
+    for (uint32_t i = 2, right_pos = 1, left_pos; i < len; i++) {
+        //依据以前计算好的数据拓展
+        if (i <= right_pos) {
+            radius[i] = std::min(
+                radius[right_pos - i + left_pos],
+                right_pos - i + 1
+            );
+        }
+        //暴力往外拓展
+        while (_str[i - radius[i]] == _str[i + radius[i]]) {
+            ++radius[i];
+        }
+        if (i + radius[i] - 1 > right_pos) {
+            right_pos = i + radius[i] - 1, left_pos = i - radius[i] + 1;
+        }
+        max_length = std::max(radius[i], max_length);
+
     }
-};
-
-
-trie_node trie[TRIE_SIZE];
-uint32_t q, trie_cnt = 0;
-
-void insert(const uint32_t& pos, const uint32_t& val, uint32_t val_cnt) {
-    ++trie[pos].cnt;
-    if (val_cnt == 32) {
-        return;
-    }
-    if (!trie[pos].child[GET_BINARY_INDEX(val, val_cnt)]) {
-        trie[pos].child[GET_BINARY_INDEX(val, val_cnt)] = ++trie_cnt;
-    }
-    insert(trie[pos].child[GET_BINARY_INDEX(val, val_cnt)], val, val_cnt + 1);
-    return;
+    return max_length - 1;
 }
 
-void remove(const uint32_t& pos, const uint32_t& val, uint32_t val_cnt) {
-    --trie[pos].cnt;
-    if (val_cnt == 32) {
-        return;
+inline uint32_t Manacher(const char* str) {
+    char _str[MAX_LENGTH * 2];
+    uint32_t len = strlen(str);
+    _str[0] = '$';
+    for (uint32_t i = 0, cnt = 1; i < len; ++length, ++i) {
+        _str[cnt] = '#';
+        _str[++cnt] = str[i];
+        _str[++cnt] = '#';
     }
-    remove(trie[pos].child[GET_BINARY_INDEX(val, val_cnt)], val, val_cnt + 1);
-    return;
-}
-
-uint32_t query(const uint32_t& pos, const uint32_t& val, uint32_t val_cnt) {
-    if (val_cnt == 32 || !trie[pos].cnt) {
-        return 0;
-    }
-    if (trie[trie[pos].child[GET_BINARY_INDEX(val, val_cnt) ^ 1]].cnt && trie[pos].child[GET_BINARY_INDEX(val, val_cnt) ^ 1] != 0) {
-        return (1 << (32 - val_cnt - 1)) + query(trie[pos].child[GET_BINARY_INDEX(val, val_cnt) ^ 1], val, val_cnt + 1);
-    }
-    else {
-        return query(trie[pos].child[GET_BINARY_INDEX(val, val_cnt)], val, val_cnt + 1);
-    }
+    _str[length * 2 + 2] = '@';
+    _str[length * 2 + 3] = '\0';
+    return _Manacher(_str);
 }
 
 int main() {
@@ -100,7 +88,12 @@ int main() {
 #endif // _RUN_TIME
 
     //TODO
+    readf(&n);
+    memset(str, 0, sizeof(str));
+    scanf("%s", str + 1);
 
+    printf("%lld\n", Manacher(str + 1));
+    length = 0;
 
 
 #ifdef _RUN_TIME
