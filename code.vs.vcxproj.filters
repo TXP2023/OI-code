@@ -522,6 +522,15 @@
     <ClCompile Include="P4555 [国家集训队] 最长双回文串.cpp">
       <Filter>源文件\待完成</Filter>
     </ClCompile>
+    <ClCompile Include="P1659 [国家集训队] 拉拉队排练.cpp">
+      <Filter>源文件\待完成</Filter>
+    </ClCompile>
+    <ClCompile Include="P9606 [CERC2019] ABB.cpp">
+      <Filter>源文件\已完成的题目</Filter>
+    </ClCompile>
+    <ClCompile Include="E.cpp">
+      <Filter>源文件\比赛</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
