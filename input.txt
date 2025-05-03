@@ -1,2 +1,2 @@
-8
-cabcabca
+10
+bbcabbabbc

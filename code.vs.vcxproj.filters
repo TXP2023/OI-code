@@ -534,6 +534,9 @@
     <ClCompile Include="P4391 [BalticOI 2009] Radio Transmission 无线传输.cpp">
       <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
+    <ClCompile Include="P3435 [POI 2006] OKR-Periods of Words.cpp">
+      <Filter>源文件\待完成</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
