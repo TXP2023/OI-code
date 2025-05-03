@@ -56,7 +56,7 @@ trie_node trie[MAX_LENGTH];
 ll n, textLength;
 
 #if true
-void insert(const char* str, const size_t &pos, const size_t& str_id) {
+void insert(const char* str, const size_t& pos, const size_t& str_id) {
     if (*str == '\0') {
         if (!trie[pos].str_id) {
             trie[pos].str_id = str_id;
@@ -194,7 +194,7 @@ int main() {
     for (size_t i = 1; i <= n; i++) {
         scanf("%s", str + 1);
         insert(str + 1, ROOT, i);
-        
+
         //std::string s;
         //std::cin >> s;
         //_insert(s, i);
@@ -206,9 +206,12 @@ int main() {
 
     query();
     getAnswer();
+    uint32_t ans_cnt = 0;
     for (size_t i = 1; i <= n; i++) {
-        printf("%lld\n", ans[strPos[i]]);
+        //printf("%lld\n", ans[strPos[i]]);
+        ans_cnt += (ans[strPos[i]] > 0);
     }
+    printf("%llu\n", ans_cnt);
 
 #ifdef _RUN_TIME
     printf("The running duration is not less than %ld ms\n", clock() - start);

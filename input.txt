@@ -1,2 +1,5 @@
-10
-bbcabbabbc
+3
+a
+aa
+aa
+aaa
