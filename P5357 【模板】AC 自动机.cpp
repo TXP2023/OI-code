@@ -50,7 +50,7 @@ struct trie_node {
     }
 };
 
-char text[MAX_LENGTH];
+char str[MAX_LENGTH];
 size_t fail[MAX_LENGTH], strPos[MAXN], ans[MAXN], inDegree[MAX_LENGTH], trie_cnt = 0; // ß≈‰÷∏’Î 
 trie_node trie[MAX_LENGTH];
 ll n, textLength;
@@ -59,13 +59,13 @@ void insert(const char* str, const size_t &pos, const size_t& str_id) {
     trie[pos].cnt++;
     if (*str == '\0') {
         trie[pos].str_id = str_id;
-        str_pos[str_id] = pos;
+        strPos[str_id] = pos;
         return;
     }
     if (!trie[pos].index[*str - 'a']) {
         trie[pos].index[*str - 'a'] = ++trie_cnt;
     }
-    insert(str + 1, trie[pos].index[*str - 'a']);
+    insert(str + 1, trie[pos].index[*str - 'a'], str_id);
     return;
 }
 
@@ -74,7 +74,7 @@ inline void get_fail() {
     for (size_t i = 0; i <= 25; i++) {
         if (trie[ROOT].index[i]) {
             fail[trie[ROOT].index[i]] = ROOT;
-            que.push(trie[ROOT].index[i])£ª
+            que.push(trie[ROOT].index[i]);
         }
     }
     while (!que.empty()) {
@@ -84,20 +84,20 @@ inline void get_fail() {
             if (trie[u].index[i]) {
                 fail[trie[u].index[i]] = trie[fail[u]].index[i];
                 ++inDegree[trie[fail[u]].index[i]];
-                q.push(t[u][i]);
+                que.push(trie[u].index[i]);
             }
             else {
                 trie[u].index[i] = trie[fail[u]].index[i];
             }
         }
     }
-    return
+    return;
 }
 
 inline void query() {
     size_t u = ROOT;
     for (size_t i = 1; i <= textLength; i++) {
-        u = trie[u].index[text[i] = 'a'];
+        u = trie[u].index[str[i] = 'a'];
         ++trie[u].cnt;
     }
     return;
@@ -115,7 +115,7 @@ inline void getAnswer() {
         que.pop();
         ans[trie[u].str_id] = trie[u].cnt;
         v = fail[u];
-        trie[v] += trie[u];
+        trie[v].cnt += trie[u].cnt;
         if (!(--inDegree[v])) {
             que.push(v);
         }
@@ -135,8 +135,18 @@ int main() {
     //TODO
     readf(&n);
 
-    for (size_t i = 0; i < n; i++) {
-        
+    for (size_t i = 1; i <= n; i++) {
+        scanf("%s", str + 1);
+        insert(str + 1, ROOT, i);
+    }
+
+    scanf("%s", str + 1);
+    textLength = strlen(str + 1);
+    get_fail();
+    query();
+    getAnswer();
+    for (size_t i = 1; i <= n; i++) {
+        printf("%lld\n", ans[strPos[i]]);
     }
 
 #ifdef _RUN_TIME

@@ -537,6 +537,9 @@
     <ClCompile Include="P3435 [POI 2006] OKR-Periods of Words.cpp">
       <Filter>源文件\待完成</Filter>
     </ClCompile>
+    <ClCompile Include="P5357 【模板】AC 自动机.cpp">
+      <Filter>源文件\待完成</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
