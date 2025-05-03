@@ -18,8 +18,7 @@
 #define READ          false
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
-#define MAXN          (uint64_t)(1e6+5)
-#define mod           19930726
+#define MAX_LENGTH    (uint64_t)(1e6+5)
 
 typedef long long int ll;
 typedef unsigned long long int unill;
@@ -37,49 +36,22 @@ inline Type readf(Type* p = nullptr);
 template<typename Type>
 inline void writef(Type x);
 
-uint64_t length[MAXN];
-char str[MAXN];
-uint64_t cnt[MAXN];
-uint64_t n, k, max_length = 0, multiple = 1;
+uint64_t next[MAX_LENGTH];
+std::string str;
+size_t length;
 
-
-inline uint64_t fast_pow(uint64_t a, uint64_t n) {
-    uint64_t base = a, ret = 1;
-    while (n) {
-        if (n & 1) {
-            ret = ret * base;
-            ret %= mod;
+inline void get_next(uint64_t* _Arr, std::string _Str) {
+    _Arr[1] = 0;
+    for (size_t i = 1, length = 0; i < _Str.length(); ++i) {
+        while (length && _Str[i] != _Str[length]) {
+            length = _Arr[length];
         }
-        base = base * base;
-        base %= mod;
-        n >>= 1;
+        if (_Str[i] == _Str[length]) {
+            _Arr[i + 1] = ++length;
+        }
     }
-    return ret % mod;
+    return;
 }
-
-inline void _Manacher(const char* _str) {
-    uint64_t len = strlen(_str), max_length = 0;
-    length[1] = 1;
-    for (uint64_t i = 2, right_pos = 1, left_pos; i < len; i++) {
-        //依据以前计算好的数据拓展
-        if (i <= right_pos) {
-            length[i] = std::min(
-                length[right_pos - i + left_pos],
-                right_pos - i + 1
-            );
-        }
-        //暴力往外拓展
-        while (_str[i - length[i]] == _str[i + length[i]]) {
-            ++length[i];
-        }
-        if (i + length[i] - 1 > right_pos) {
-            right_pos = i + length[i] - 1, left_pos = i - length[i] + 1;
-        }
-        max_length = std::max(length[i], max_length);
-
-    }
-}
-
 
 int main() {
 #ifdef _FREOPEN
@@ -91,43 +63,13 @@ int main() {
 #endif // _RUN_TIME
 
     //TODO
-    readf(&n), readf(&k);
+    readf(&length);
+    std::cin >> str;
 
-    str[0] = '@';
-    scanf("%s", str + 1);
-    str[n + 1] = '$';
+    get_next(next, str);
 
-    _Manacher(str);
-    size_t len = strlen(str);
+    printf("%lld\n", length - next[length]);
 
-    for (uint64_t i = 1; i < len; i++) {
-        max_length = std::max(max_length, length[i] * 2 - 1);
-        for (ll j = length[i] * 2 - 1; j > 0; j -= 2) {
-            ++cnt[j];
-        }
-    }
-
-    --cnt[1];
-    for (size_t i = max_length; i > 0 && k > 0; i--) {
-        if (k > cnt[i]) {
-            multiple *= fast_pow(i, cnt[i]);
-            multiple %= mod;
-            k -= cnt[i];
-        }
-        else {
-            multiple *= fast_pow(i, k);
-            multiple %= mod;
-            k = 0;
-        }
-
-    }
-
-    if (k > 0) {
-        puts("-1");
-    }
-    else {
-        printf("%lld\n", multiple % mod);
-    }
 #ifdef _RUN_TIME
     printf("The running duration is not less than %ld ms\n", clock() - start);
 #endif // _RUN_TIME

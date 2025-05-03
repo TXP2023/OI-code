@@ -531,6 +531,9 @@
     <ClCompile Include="E.cpp">
       <Filter>源文件\比赛</Filter>
     </ClCompile>
+    <ClCompile Include="P4391 [BalticOI 2009] Radio Transmission 无线传输.cpp">
+      <Filter>源文件\已完成的题目</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
