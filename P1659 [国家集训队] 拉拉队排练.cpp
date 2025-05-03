@@ -98,14 +98,25 @@ int main() {
     readf(&n), readf(&k);
 
     str[0] = '@';
-    scanf("%s", str + 1);
-    str[n + 1] = '$';
+    char ch;
+    for (size_t cnt = 1; std::cin >> ch; ) {
+        if (ch == -1) {
+            break;
+        }
+        str[cnt] = '#';
+        str[++cnt] = ch;
+        str[++cnt] = '#';
+    }
+    str[n * 2 + 2] = '@';
 
     length = _Manacher(str);
 
     for (uint64_t i = 1; i < length.size(); i++) {
-        max_length = std::max(max_length, length[i] * 2 - 1);
-        for (ll j = length[i] * 2 - 1; j > 0 ; j-=2) {
+        if (i % 2 == 1) {
+            continue;
+        }
+        max_length = std::max(max_length, length[i] - 1);
+        for (ll j = length[i] - 1; j > 0 ; j-=2) {
             ++cnt[j];
         }
     }
@@ -113,12 +124,12 @@ int main() {
     --cnt[1];
     for (size_t i = max_length; i > 0 && k > 0 ; i--) {
         if (k > cnt[i]) {
-            multiple *= pow(i, cnt[i]);
+            multiple *= fast_pow(i, cnt[i]);
             multiple %= mod;
             k -= cnt[i];
         }
         else {
-            multiple *= pow(i, k);
+            multiple *= fast_pow(i, k);
             multiple %= mod;
             k = 0;
         }
