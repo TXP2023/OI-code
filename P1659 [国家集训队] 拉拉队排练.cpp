@@ -102,13 +102,15 @@ int main() {
 
     for (uint32_t i = 1; i < len; i++) {
         max_length = std::max(max_length, length[i] * 2 - 1);
-        for (ll j = length[i] * 2 - 1; j > 0; j -= 2) {
-            ++cnt[j];
-        }
+        ++cnt[length[i] * 2 - 1];
     }
 
     --cnt[1];
-    for (size_t i = max_length; i > 0 && k > 0; i--) {
+
+    for (ll i = max_length; i >=0 ; i--) {
+        cnt[i] += cnt[i + 1];
+    }
+    for (size_t i = max_length; i > 0 && k > 0; i-=2) {
         if (k > cnt[i]) {
             multiple *= fast_pow(i, cnt[i]);
             multiple %= mod;

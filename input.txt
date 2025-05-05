@@ -1,5 +1,2 @@
-3
-a
-aa
-aa
-aaa
+5 3
+ababa

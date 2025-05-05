@@ -55,7 +55,6 @@ size_t fail[MAX_LENGTH], strPos[MAXN], ans[MAXN], inDegree[MAX_LENGTH], trie_cnt
 trie_node trie[MAX_LENGTH];
 ll n, textLength;
 
-#if true
 void insert(const char* str, const size_t &pos, const size_t& str_id) {
     if (*str == '\0') {
         if (!trie[pos].str_id) {
@@ -71,22 +70,6 @@ void insert(const char* str, const size_t &pos, const size_t& str_id) {
     insert(str + 1, trie[pos].index[*str - 'a'], str_id);
     return;
 }
-
-void _insert(std::string S, int ip) {
-    int pos = 0;
-    for (int i = 0; i < S.size(); ++i) {
-        if (!trie[pos].index[S[i] - 'a']) {
-            trie[pos].index[S[i] - 'a'] = ++trie_cnt;
-        }
-        pos = trie[pos].index[S[i] - 'a'];
-    }
-    if (!trie[pos].str_id) {
-        trie[pos].str_id = ip;
-    }
-    strPos[ip] = trie[pos].str_id;
-    return;
-}
-#endif
 
 inline void get_fail() {
     std::queue<uint32_t> que;
@@ -111,25 +94,6 @@ inline void get_fail() {
         }
     }
     return;
-}
-
-void Fail() {
-    std::queue<int> q;
-    for (register long long i = 0; i <= 25; ++i) {
-        if (trie[0].index[i])
-            fail[trie[0].index[i]] = 0, q.push(trie[0].index[i]);
-    }
-    while (!q.empty()) {
-        int u = q.front();
-        q.pop();
-        for (register long long i = 0; i <= 25; ++i) {
-            if (trie[u].index[i])
-                fail[trie[u].index[i]] = trie[fail[u]].index[i],
-                inDegree[trie[fail[u]].index[i]]++, q.push(trie[u].index[i]);
-            else
-                trie[u].index[i] = trie[fail[u]].index[i];
-        }
-    }
 }
 
 inline void query() {
@@ -161,24 +125,6 @@ inline void getAnswer() {
     return;
 }
 
-void tuopu() {
-    std::queue<int> q;
-    for (register long long i = 0; i <= trie_cnt; ++i) {
-        if (!inDegree[i]) {
-            q.push(i);
-        }
-    }
-    while (!q.empty()) {
-        int x = q.front();
-        q.pop();
-        ans[trie[x].str_id] = trie[x].cnt;
-        int y = fail[x];
-        trie[y].cnt += trie[x].cnt;
-        if (!(--inDegree[y])) q.push(y);
-    }
-    return;
-}
-
 int main() {
 #ifdef _FREOPEN
     freopen("input.txt", "r", stdin);
@@ -194,10 +140,6 @@ int main() {
     for (size_t i = 1; i <= n; i++) {
         scanf("%s", str + 1);
         insert(str + 1, ROOT, i);
-        
-        //std::string s;
-        //std::cin >> s;
-        //_insert(s, i);
     }
 
     scanf("%s", str + 1);
