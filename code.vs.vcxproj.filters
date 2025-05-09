@@ -34,6 +34,9 @@
     <Filter Include="源文件\已完成的题目\CodeForces">
       <UniqueIdentifier>{50ce614d-5ddf-4d86-8a97-e1ac619381b4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\已完成的题目\LibreOj">
+      <UniqueIdentifier>{39c86e0c-6817-40fc-adf9-c25678da12fd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="模板.cpp">
@@ -545,6 +548,12 @@
     </ClCompile>
     <ClCompile Include="P5357 【模板】AC 自动机.cpp">
       <Filter>源文件\样例</Filter>
+    </ClCompile>
+    <ClCompile Include="#10221. 「一本通 6.5 例 3」Fibonacci 前 n 项和.cpp">
+      <Filter>源文件\已完成的题目\LibreOj</Filter>
+    </ClCompile>
+    <ClCompile Include="P3197 [HNOI2008] 越狱.cpp">
+      <Filter>源文件\待完成</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
