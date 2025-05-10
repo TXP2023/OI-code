@@ -46,7 +46,17 @@ int main() {
 #endif // _RUN_TIME
 
 
-
+    int n, m;
+    readf(&n), readf(&m);
+    if (m == 1 && n >= 1600 && n <= 2999) {
+        puts("Yes");
+        return 0;
+    }
+    if (m == 2 && n >= 1200 && n <= 2399) {
+        puts("Yes");
+        return 0;
+    }
+    puts("No");
 
 
 #ifdef _RUN_TIME

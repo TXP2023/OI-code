@@ -1,3 +1,4 @@
+#pragma GCC optimize(3,"Ofast","inline")
 //+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 //
 //      By txp2024 www.luogu.com.cn  TXP2023 www.github.com
@@ -41,40 +42,47 @@ struct Road {
     ll weight = LLONG_MAX;
 };
 
+struct que_node {
+    ll x, y;
+    ll weight;
+    bool operator <(const que_node& other)const {
+        return weight > other.weight;
+    }
+};
+
 struct point {
     ll x, y;
 };
 
 Road road[1002][1002];
 char map[1002][1002];
-std::deque<point> exits;
-ll h, w;
+point exits[1000000];
+ll h, w, exits_cnt = 0;
+std::queue<que_node> que;
 
-inline void get_path(point _Exit) {
-    std::queue<point> que;
-    que.push(_Exit);
+inline void get_path() {
     while (!que.empty()) {
-        point now = que.front();
+        que_node now = que.front();
         que.pop();
-        if (now.x - 1 >= 1 && map[now.x - 1][now.y] == '.' && road[now.x - 1][now.y].weight > road[now.x][now.y].weight + 1) {
+        if (now.x - 1 >= 1 && map[now.x - 1][now.y] != '#' && road[now.x - 1][now.y].weight > now.weight + 1) {
             road[now.x - 1][now.y].direction = 'v';
-            road[now.x - 1][now.y].weight = road[now.x][now.y].weight + 1;
-            que.push({ now.x - 1 , now.y });
+            road[now.x - 1][now.y].weight = now.weight + 1;
+            que.push({ now.x - 1 , now.y, now.weight + 1 });
         }
-        if (now.x + 1 <= h && map[now.x + 1][now.y] == '.' && road[now.x + 1][now.y].weight > road[now.x][now.y].weight + 1) {
+        if (now.x + 1 <= h && map[now.x + 1][now.y] != '#' && road[now.x + 1][now.y].weight > now.weight + 1) {
             road[now.x + 1][now.y].direction = '^';
-            road[now.x + 1][now.y].weight = road[now.x][now.y].weight + 1;
-            que.push({ now.x + 1 , now.y });
+            road[now.x + 1][now.y].weight = now.weight + 1;
+            que.push({ now.x + 1 , now.y, now.weight + 1 });
         }
-        if (now.y - 1 >= 1 && map[now.x][now.y - 1] == '.' && road[now.x][now.y - 1].weight > road[now.x][now.y].weight + 1) {
+        if (now.y - 1 >= 1 && map[now.x][now.y - 1] != '#' && road[now.x][now.y - 1].weight > now.weight + 1) {
             road[now.x][now.y - 1].direction = '>';
-            road[now.x][now.y - 1].weight = road[now.x][now.y].weight + 1;
-            que.push({ now.x , now.y - 1 });
+            road[now.x][now.y - 1].weight = now.weight + 1;
+            que.push({ now.x , now.y - 1, now.weight + 1 });
         }
-        if (now.y + 1 <= w && map[now.x][now.y + 1] == '.' && road[now.x][now.y + 1].weight > road[now.x][now.y].weight + 1) {
+        if (now.y + 1 <= w && map[now.x][now.y + 1] != '#' && road[now.x][now.y + 1].weight > now.weight + 1) {
             road[now.x][now.y + 1].direction = '<';
-            road[now.x][now.y + 1].weight = road[now.x][now.y].weight + 1;
-            que.push({ now.x , now.y + 1 });
+            road[now.x][now.y + 1].weight = now.weight + 1;
+            que.push({ now.x , now.y + 1, now.weight + 1 });
         }
     }
 }
@@ -96,14 +104,15 @@ int main() {
             std::cin >> ch;
             map[i][j] = ch;
             if (ch == 'E') {
-                exits.push_back(point{i, j});
+                exits[exits_cnt++] = (point{i, j});
             }
         }
     }
     
-    for (auto& i : exits) {
-        get_path(i);
+    for (size_t i = 0; i < exits_cnt; i++) {
+        que.push({ exits[i].x, exits[i].y, 1 });
     }
+    get_path();
 
     for (size_t i = 1; i <= h; i++) {
         for (size_t j = 1; j <= w; j++) {
@@ -165,7 +174,7 @@ inline void writef(Type x) {
     } while (x);
     while (top) putchar(sta[--top] + '0');  // 48 ÊÇ '0'
     return;
-}
+}   
 
 
 
