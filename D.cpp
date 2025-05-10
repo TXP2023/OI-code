@@ -129,7 +129,7 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    //TODO
+    
     readf(&H), readf(&W);
     ll x = readf<uint16_t>(), y = readf<uint16_t>();
     beg = point(x, y);

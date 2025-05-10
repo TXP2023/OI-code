@@ -89,7 +89,7 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    //TODO
+    
     scanf("%s\n", str + 1);
 
     length = str_init(str);

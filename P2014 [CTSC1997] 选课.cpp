@@ -73,7 +73,7 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    //TODO
+    
 	readf(&n), readf(&m);
     ++m;
 

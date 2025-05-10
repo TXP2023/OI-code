@@ -116,7 +116,7 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    //TODO
+    
     scanf("%s", str + 1);
     
     init();

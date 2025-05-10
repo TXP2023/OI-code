@@ -81,7 +81,7 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    //TODO
+    
     std::cin >> s1 >> s2;
 
     get_next(next, s2);

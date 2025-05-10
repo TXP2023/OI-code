@@ -73,7 +73,7 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    //TODO
+    
     str[0] = '$';
     for (size_t cnt = 1; char ch = getchar(); ++length) {
         if (ch == -1) {

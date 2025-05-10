@@ -85,7 +85,7 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    //TODO
+    
     readf(&n), readf(&m), readf(&q);
 
     for (size_t i = 1; i <= q; i++) {

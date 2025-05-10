@@ -49,7 +49,7 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    //TODO
+    
     readf(&a), readf(&b);
     sum.resize(a, std::vector< ll >( b, 0));
     barrier.resize(a, std::vector< bool >(b, 0));

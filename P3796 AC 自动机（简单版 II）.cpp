@@ -188,7 +188,7 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    //TODO
+    
     while (true) {
         readf(&n);
         if (n == 0) {

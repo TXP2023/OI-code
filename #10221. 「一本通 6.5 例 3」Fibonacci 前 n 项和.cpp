@@ -82,7 +82,7 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    //TODO
+    
     readf(&n), readf(&mod);
 
     for (size_t i = n; i; i>>=1) {

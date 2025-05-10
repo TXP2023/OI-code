@@ -46,7 +46,7 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    //TODO
+    
     readf(&n);
 
     std::vector<std::pair<uint64_t, uint64_t>> v(n);

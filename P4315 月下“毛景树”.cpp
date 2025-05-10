@@ -296,7 +296,7 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    //TODO
+    
     readf(&n);
     for (size_t i = 0; i < n - 1; i++) {
         ll u = readf<ll>() - 1, v = readf<ll>() - 1, w = readf<ll>();

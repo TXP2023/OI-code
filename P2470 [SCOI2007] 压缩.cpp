@@ -50,7 +50,7 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    //TODO
+    
     std::cin >> str;
     
     length = str.length();

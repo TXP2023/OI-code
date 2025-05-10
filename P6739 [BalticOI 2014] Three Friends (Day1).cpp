@@ -109,7 +109,7 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    //TODO
+    
     readf(&n);
     if (n % 2 == 0) {
         puts("NOT POSSIBLE");

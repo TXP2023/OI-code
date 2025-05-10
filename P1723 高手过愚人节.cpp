@@ -87,7 +87,7 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    //TODO
+    
     readf(&n);
     while (n--) {
         memset(str, 0, sizeof(str));
