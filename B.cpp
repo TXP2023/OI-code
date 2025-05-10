@@ -6,6 +6,7 @@
 #pragma once
 #include <vector>
 #include <stdio.h>
+#include <string.h>
 #include <algorithm>
 #include <ctype.h>
 #include <cstdarg>
@@ -13,13 +14,14 @@
 #include <time.h>
 #include <iostream>
 #include <stdint.h>
+#include <set>
 
 #define READ          false
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
 
 typedef long long int ll;
-typedef unsigned long long int unill;
+typedef unsigned long long int ull;
 
 //快读函数声明
 #if READ
@@ -34,18 +36,9 @@ inline Type readf(Type* p = nullptr);
 template<typename Type>
 inline void writef(Type x);
 
-uint64_t ans;
+std::set<ll> s;
 ll n, m;
 
-inline uint64_t pow(uint64_t x, uint64_t y) {
-    ll ret = 1;
-    while (y) {
-        if (y & 1) ret *= x;
-        x *= x;
-        y >>= 1;
-    }
-    return ret;
-}
 int main() {
 #ifdef _FREOPEN
     freopen("input.txt", "r", stdin);
@@ -55,18 +48,21 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    
     readf(&n), readf(&m);
 
-    for (ll i = m; i >= 0; --i) {
-		ans += pow(n, i);
-        if (ans > 1e9) {
-            puts("inf");
+    for (size_t i = 0; i < n; i++) {
+        ll val;
+        readf(&val);
+        if (val <= m) {
+            s.insert(val);
+        }
+        if (s.size() == m) {
+            printf("%lld\n", n - i);
             return 0;
         }
     }
-    printf("%lld\n", ans);
 
+    printf("%lld\n", 0);
 
 #ifdef _RUN_TIME
     printf("The running duration is not less than %ld ms\n", clock() - start);
@@ -117,8 +113,6 @@ inline void writef(Type x) {
     while (top) putchar(sta[--top] + '0');  // 48 是 '0'
     return;
 }
-
-
 
 /**
  *              ,----------------,              ,---------,

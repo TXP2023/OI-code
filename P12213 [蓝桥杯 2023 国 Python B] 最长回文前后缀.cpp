@@ -18,10 +18,10 @@
 #define READ          false
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
-#define MAX_LENGTH    10000005
+#define MAX_STR_LENGTH  (uint64_t)(1e5+5)
 
 typedef long long int ll;
-typedef unsigned long long int unill;
+typedef unsigned long long int ull;
 
 //快读函数声明
 #if READ
@@ -36,14 +36,30 @@ inline Type readf(Type* p = nullptr);
 template<typename Type>
 inline void writef(Type x);
 
-char str[MAX_LENGTH * 2];
-uint32_t length = 0, n;
+char str1[MAX_STR_LENGTH * 2], str2[MAX_STR_LENGTH * 2];
+ull radius1[MAX_STR_LENGTH * 2], radius2[MAX_STR_LENGTH * 2], first_length1[MAX_STR_LENGTH * 2], first_length2[MAX_STR_LENGTH * 2];
+ull strLength, ans = 0;
 
-inline std::vector<uint32_t> _Manacher(const char* _str) {
-    uint32_t len = strlen(_str), max_length = 0;
-    std::vector<uint32_t> radius(len, 0);
+inline size_t str_init(char* _Str) {
+    char _s[MAX_STR_LENGTH * 2];
+    _s[0] = '$';
+    ull cnt = 0, _length = strlen(_Str + 1);
+    for (size_t i = 1; i <= _length; i++) {
+        _s[++cnt] = '#';
+        _s[++cnt] = _Str[i];
+    }
+    _s[++cnt] = '#';
+    _s[++cnt] = '@';
+    _s[++cnt] = '\0';
+    memcpy(_Str, _s, sizeof(_s));
+    return strlen(_Str);
+}
+
+inline void _Manacher(const char* str, ull * radius, ull * first_length) {
+    size_t len = strlen(str);
+    std::fill(radius, radius + len, 0);
     radius[1] = 1;
-    for (uint32_t i = 2, right_pos = 1, left_pos; i < len; i++) {
+    for (ull i = 2, right_pos = 1, left_pos; i < len; i++) {
         //依据以前计算好的数据拓展
         if (i <= right_pos) {
             radius[i] = std::min(
@@ -52,59 +68,30 @@ inline std::vector<uint32_t> _Manacher(const char* _str) {
             );
         }
         //暴力往外拓展
-        while (_str[i - radius[i]] == _str[i + radius[i]]) {
+        while (str[i - radius[i]] == str[i + radius[i]]) {
             ++radius[i];
         }
         if (i + radius[i] - 1 > right_pos) {
             right_pos = i + radius[i] - 1, left_pos = i - radius[i] + 1;
         }
-        max_length = std::max(radius[i], max_length);
-
+        first_length[i - radius[i] + 1] = std::max(first_length[i - radius[i] + 1], radius[i] - 1);//求出以该点为左端点的最长饱和回文串 
     }
-
-    return radius;
+    for (int64_t i = 3; i < len; i += 2) {
+        first_length[i] = std::max(first_length[i - 2] - 2, first_length[i]);
+    } 
 }
 
-inline uint32_t Manacher(const char* str) {
-    char _str[MAX_LENGTH * 2];
-    uint32_t len = strlen(str), ret = 0;
-    _str[0] = '$';
-    for (uint32_t i = 0, cnt = 1; i < len; ++length, ++i) {
-        _str[cnt] = '#';
-        _str[++cnt] = str[i];
-        _str[++cnt] = '#';
+void Manacher(char* op, ull* r, ull* l) {
+    int mr = 0, c;
+    for (ull i = 1; i < strLength; i++) {
+        if (i < mr) r[i] = std::min(r[2 * c - i], mr - i);
+        else r[i] = 1;
+        while (op[i + r[i]] == op[i - r[i]]) r[i]++;
+        if (i + r[i] - 1 > mr) mr = i + r[i] - 1, c = i;
+        l[i - r[i] + 1] = std::max(l[i - r[i] + 1], r[i] - 1);//求出以该点为左端点的最长饱和回文串 
     }
-    _str[length * 2 + 2] = '@';
-    _str[length * 2 + 3] = '\0';
-    std::vector<uint32_t> radius = _Manacher(_str);
-    for (size_t i = 1; i < radius.size(); i++) {
-        if (i > radius.size() / 2) {
-            if (i - radius.size() / 2 < radius[i]) {
-                ret = std::max(radius[i] - 1, ret);
-            }
-        }
-        else {
-            if (radius.size() / 2 - i  < radius[i]) {
-                ret = std::max(radius[i] - 1, ret);
-            }
-        }
-    }
-    return ret;
-}
-
-inline void init() {
-    char _str[MAX_LENGTH * 2];
-    size_t _length = strlen(str + 1);
-    for (size_t i = 1; i <= _length; i++) {
-        _str[i] = str[i];
-    }
-    for (size_t i = 1; i <= _length; i++) {
-        _str[i + _length] = str[i];
-    }
-    for (size_t i = 1; i <= 2 * _length; i++) {
-        str[i] = _str[i];
-    }
-    return;
+    for (ull i = 3; i < strLength; i += 2) l[i] = std::max(l[i - 2] - 2, l[i]);
+    //求出以该点为左端点的最长回文串（含饱和回文串与不饱和回文串） 
 }
 
 int main() {
@@ -116,13 +103,27 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    
-    scanf("%s", str + 1);
-    
-    init();
+    scanf("%s\n", str1 + 1);
+    strLength = strlen(str1 + 1);
 
-    printf("%lld\n", Manacher(str + 1));
-    length = 0;
+    for (size_t i = 1; i <= strLength; i++) {
+        str2[i] = str1[strLength - i + 1];
+    } 
+
+    strLength = str_init(str1);
+    str_init(str2);
+
+    _Manacher(str1, radius1, first_length1);
+    _Manacher(str2, radius2, first_length2);
+    
+    for (size_t i = 2; i <= strLength; i += 2) {
+        ans = std::max(std::max(i - 2 + first_length1[i - 1], i - 2 + first_length2[i - 1]), ans);
+        if (str1[i] != str2[i]) {
+            break;
+        }
+    }
+
+    printf("%lld\n", ans);
 
 
 #ifdef _RUN_TIME

@@ -6,11 +6,11 @@
 #pragma once
 #include <vector>
 #include <stdio.h>
+#include <string.h>
 #include <algorithm>
 #include <ctype.h>
 #include <cstdarg>
 #include <climits>
-#include <queue>
 #include <time.h>
 #include <iostream>
 #include <stdint.h>
@@ -18,7 +18,6 @@
 #define READ          false
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
-#define MAXN          (uint64_t)(1e3)
 
 typedef long long int ll;
 typedef unsigned long long int unill;
@@ -36,89 +35,18 @@ inline Type readf(Type* p = nullptr);
 template<typename Type>
 inline void writef(Type x);
 
-struct point {
-    uint16_t x, y;
-
-    point() {
-        return;
-    }
-    point(uint16_t _x, uint16_t _y) {
-        x = _x;
-        y = _y;
-        return;
-    }
-
-    inline bool operator ==(const point& othere) const {
-        return x == othere.x && y == othere.y;
-    }
+struct Road {
+    char direction;
+    ll weight = LLONG_MAX;
 };
 
-ll value[MAXN + 4][MAXN + 4];
-char map[MAXN + 4][MAXN + 4];
-ll H, W;
-point beg, end;
+struct point {
+    ll x, y;
+};
 
-inline void dfs(point start) {
-    std::queue<point> que;
-    que.push(start);
-    while (!que.empty()) {
-        point now = que.front();
-        que.pop();
-        if (map[now.x - 1][now.y]) {//头顶有墙
-            value[now.x - 1][now.y] = std::min(value[now.x - 1][now.y], value[now.x][now.y] + 1);
-            value[now.x - 2][now.y] = std::min(value[now.x - 2][now.y], value[now.x][now.y] + 1);
-        }
-        else {
-            value[now.x - 1][now.y] = std::min(value[now.x - 1][now.y], value[now.x][now.y]);
-            if (map[now.x - 2][now.y]) {//头顶顶有墙
-                value[now.x - 2][now.y] = std::min(value[now.x - 2][now.y], value[now.x][now.y] + 1);
-            }
-            else {
-                value[now.x - 2][now.y] = std::min(value[now.x - 2][now.y], value[now.x][now.y]);
-            }
-        }
-
-        if (map[now.x + 1][now.y]) {//头顶有墙
-            value[now.x + 1][now.y] = std::min(value[now.x + 1][now.y], value[now.x][now.y] + 1);
-            value[now.x + 2][now.y] = std::min(value[now.x + 2][now.y], value[now.x][now.y] + 1);
-        }
-        else {
-            value[now.x + 1][now.y] = std::min(value[now.x + 1][now.y], value[now.x][now.y]);
-            if (map[now.x + 2][now.y]) {//头顶顶有墙
-                value[now.x + 2][now.y] = std::min(value[now.x + 2][now.y], value[now.x][now.y] + 1);
-            }
-            else {
-                value[now.x + 2][now.y] = std::min(value[now.x + 2][now.y], value[now.x][now.y]);
-            }
-        }
-        if (map[now.x][now.y - 1]) {//头顶有墙
-            value[now.x][now.y - 1] = std::min(value[now.x][now.y - 1], value[now.x][now.y] + 1);
-            value[now.x][now.y - 2] = std::min(value[now.x][now.y - 2], value[now.x][now.y] + 1);
-        }
-        else {
-            value[now.x][now.y - 1] = std::min(value[now.x][now.y - 1], value[now.x][now.y]);
-            if (map[now.x][now.y - 2]) {//头顶顶有墙
-                value[now.x][now.y - 2] = std::min(value[now.x][now.y - 2], value[now.x][now.y] + 1);
-            }
-            else {
-                value[now.x][now.y - 2] = std::min(value[now.x][now.y], value[now.x][now.y]);
-            }
-        }
-        if (map[now.x - 1][now.y]) {//头顶有墙
-            value[now.x - 1][now.y] = std::min(value[now.x - 1][now.y], value[now.x][now.y] + 1);
-            value[now.x - 2][now.y] = std::min(value[now.x - 2][now.y], value[now.x][now.y] + 1);
-        }
-        else {
-            value[now.x - 1][now.y] = std::min(value[now.x - 1][now.y], value[now.x][now.y]);
-            if (map[now.x - 2][now.y]) {//头顶顶有墙
-                value[now.x - 2][now.y] = std::min(value[now.x - 2][now.y], value[now.x][now.y] + 1);
-            }
-            else {
-                value[now.x - 2][now.y] = std::min(value[now.x - 2][now.y], value[now.x][now.y]);
-            }
-        }
-    }
-}
+Road road[1002][1002];
+char map[1002][1002];
+point 
 
 int main() {
 #ifdef _FREOPEN
@@ -129,18 +57,7 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    
-    readf(&H), readf(&W);
-    ll x = readf<uint16_t>(), y = readf<uint16_t>();
-    beg = point(x, y);
-    x = readf<uint16_t>(), y = readf<uint16_t>();
-    end = point(x, y);
-    for (size_t i = 2; i < H + 2; ++i) {
-        scanf("\n");
-        for (size_t j = 2; j < W+2; j++) {
-            map[i][j] = getchar() == '#' ? 1 : 0;
-        }
-    }
+
 
 
 

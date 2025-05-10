@@ -6,6 +6,7 @@
 #pragma once
 #include <vector>
 #include <stdio.h>
+#include <string.h>
 #include <algorithm>
 #include <ctype.h>
 #include <cstdarg>
@@ -34,7 +35,6 @@ inline Type readf(Type* p = nullptr);
 template<typename Type>
 inline void writef(Type x);
 
-ll n;
 
 int main() {
 #ifdef _FREOPEN
@@ -45,15 +45,8 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    
-    readf(&n);
 
-    if (!(400 % n)) {
-        printf("%lld\n", 400 / n);
-    }
-    else {
-        puts("-1");
-    }
+
 
 
 #ifdef _RUN_TIME
@@ -105,8 +98,6 @@ inline void writef(Type x) {
     while (top) putchar(sta[--top] + '0');  // 48 ÊÇ '0'
     return;
 }
-
-
 
 /**
  *              ,----------------,              ,---------,

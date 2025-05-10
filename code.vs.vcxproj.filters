@@ -37,6 +37,9 @@
     <Filter Include="源文件\已完成的题目\LibreOj">
       <UniqueIdentifier>{39c86e0c-6817-40fc-adf9-c25678da12fd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\比赛\AtCoder Beginner Contest 405">
+      <UniqueIdentifier>{9848bb38-4d4d-4276-85ca-2f82f0cda07f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="模板.cpp">
@@ -465,18 +468,6 @@
     <ClCompile Include="P7469 [NOI Online 2021 提高组] 积木小赛.cpp">
       <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
-    <ClCompile Include="A.cpp">
-      <Filter>源文件\比赛</Filter>
-    </ClCompile>
-    <ClCompile Include="B.cpp">
-      <Filter>源文件\比赛</Filter>
-    </ClCompile>
-    <ClCompile Include="C.cpp">
-      <Filter>源文件\比赛</Filter>
-    </ClCompile>
-    <ClCompile Include="D.cpp">
-      <Filter>源文件\比赛</Filter>
-    </ClCompile>
     <ClCompile Include="P4503 [CTSC2014] 企鹅 QQ.cpp">
       <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
@@ -531,9 +522,6 @@
     <ClCompile Include="P9606 [CERC2019] ABB.cpp">
       <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
-    <ClCompile Include="E.cpp">
-      <Filter>源文件\比赛</Filter>
-    </ClCompile>
     <ClCompile Include="P4391 [BalticOI 2009] Radio Transmission 无线传输.cpp">
       <Filter>源文件\已完成的题目</Filter>
     </ClCompile>
@@ -554,6 +542,18 @@
     </ClCompile>
     <ClCompile Include="P3197 [HNOI2008] 越狱.cpp">
       <Filter>源文件\待完成</Filter>
+    </ClCompile>
+    <ClCompile Include="A.cpp">
+      <Filter>源文件\比赛\AtCoder Beginner Contest 405</Filter>
+    </ClCompile>
+    <ClCompile Include="B.cpp">
+      <Filter>源文件\比赛\AtCoder Beginner Contest 405</Filter>
+    </ClCompile>
+    <ClCompile Include="C.cpp">
+      <Filter>源文件\比赛\AtCoder Beginner Contest 405</Filter>
+    </ClCompile>
+    <ClCompile Include="D.cpp">
+      <Filter>源文件\比赛\AtCoder Beginner Contest 405</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
