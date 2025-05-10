@@ -12,6 +12,7 @@
 #include <cstdarg>
 #include <climits>
 #include <time.h>
+#include <queue>
 #include <iostream>
 #include <stdint.h>
 
@@ -46,7 +47,37 @@ struct point {
 
 Road road[1002][1002];
 char map[1002][1002];
-point 
+std::deque<point> exits;
+ll h, w;
+
+inline void get_path(point _Exit) {
+    std::queue<point> que;
+    que.push(_Exit);
+    while (!que.empty()) {
+        point now = que.front();
+        que.pop();
+        if (now.x - 1 >= 1 && map[now.x - 1][now.y] == '.' && road[now.x - 1][now.y].weight > road[now.x][now.y].weight + 1) {
+            road[now.x - 1][now.y].direction = 'v';
+            road[now.x - 1][now.y].weight = road[now.x][now.y].weight + 1;
+            que.push({ now.x - 1 , now.y });
+        }
+        if (now.x + 1 <= h && map[now.x + 1][now.y] == '.' && road[now.x + 1][now.y].weight > road[now.x][now.y].weight + 1) {
+            road[now.x + 1][now.y].direction = '^';
+            road[now.x + 1][now.y].weight = road[now.x][now.y].weight + 1;
+            que.push({ now.x + 1 , now.y });
+        }
+        if (now.y - 1 >= 1 && map[now.x][now.y - 1] == '.' && road[now.x][now.y - 1].weight > road[now.x][now.y].weight + 1) {
+            road[now.x][now.y - 1].direction = '>';
+            road[now.x][now.y - 1].weight = road[now.x][now.y].weight + 1;
+            que.push({ now.x , now.y - 1 });
+        }
+        if (now.y + 1 <= w && map[now.x][now.y + 1] == '.' && road[now.x][now.y + 1].weight > road[now.x][now.y].weight + 1) {
+            road[now.x][now.y + 1].direction = '<';
+            road[now.x][now.y + 1].weight = road[now.x][now.y].weight + 1;
+            que.push({ now.x , now.y + 1 });
+        }
+    }
+}
 
 int main() {
 #ifdef _FREOPEN
@@ -57,9 +88,34 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
+    readf(&h), readf(&w);
 
+    for (ll i = 1; i <= h; i++) {
+        for (ll j = 1; j <= w; j++) {
+            char ch;
+            std::cin >> ch;
+            map[i][j] = ch;
+            if (ch == 'E') {
+                exits.push_back(point{i, j});
+            }
+        }
+    }
+    
+    for (auto& i : exits) {
+        get_path(i);
+    }
 
-
+    for (size_t i = 1; i <= h; i++) {
+        for (size_t j = 1; j <= w; j++) {
+            if (map[i][j] == '.') {
+                putchar(road[i][j].direction);
+            }
+            else {
+                putchar(map[i][j]);
+            }
+        }
+        putchar('\n');
+    }
 
 #ifdef _RUN_TIME
     printf("The running duration is not less than %ld ms\n", clock() - start);
