@@ -18,10 +18,10 @@
 #define READ          false
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
-#define MAX_LENGTH    10000005
+#define MAX_STR_LENGTH  (ull)(1e5+2)
 
 typedef long long int ll;
-typedef unsigned long long int unill;
+typedef unsigned long long int ull;
 
 //快读函数声明
 #if READ
@@ -36,46 +36,48 @@ inline Type readf(Type* p = nullptr);
 template<typename Type>
 inline void writef(Type x);
 
-char str[MAX_LENGTH * 2];
-uint32_t length = 0, n;
+char str[MAX_STR_LENGTH * 2];
+ull radius[MAX_STR_LENGTH * 2]; //以字符i为中心的回文串半径
+ull first_length[MAX_STR_LENGTH * 2], last_length[MAX_STR_LENGTH * 2];//  以字符i为左(右)端点的回文串长度  存储的长度是不统计输入字符集外的字符的
+ull length, ans = 0;
 
-inline uint32_t _Manacher(const char* _str) {
-    uint32_t radius[MAX_LENGTH * 2], len = strlen(_str), max_length = 0;
-    std::fill(radius, radius + len + 1, 0);
+inline ull str_init(char* _Str) {
+    char _s[MAX_STR_LENGTH * 2];
+    _s[0] = '$';
+    ull _strLength = strlen(_Str + 1), cnt = 1;
+    for (size_t i = 1; i <= _strLength; i++) {
+        _s[cnt++] = '#';
+        _s[cnt++] = _Str[i];
+    }
+    _s[cnt++] = '#';
+    _s[cnt++] = '@';
+    _s[cnt] = '\0';
+    memcpy(_Str, _s, sizeof(_s));
+    return strlen(_Str);
+}
+
+inline void manacher() {
     radius[1] = 1;
-    for (uint32_t i = 2, right_pos = 1, left_pos; i < len; i++) {
-        //依据以前计算好的数据拓展
+    ull _strLength = strlen(str);
+    for (ull i = 2, right_pos = 1, left_pos; i < _strLength; i++) {
         if (i <= right_pos) {
             radius[i] = std::min(
                 radius[right_pos - i + left_pos],
                 right_pos - i + 1
             );
+            first_length[i - radius[i] + 1] = std::max(first_length[i - radius[i] + 1], radius[i] - 1);
+            last_length[i + radius[i] - 1] = std::max(last_length[i + radius[i] - 1], radius[i] - 1);
         }
         //暴力往外拓展
-        while (_str[i - radius[i]] == _str[i + radius[i]]) {
+        while (str[i - radius[i]] == str[i + radius[i]]) {
             ++radius[i];
+            first_length[i - radius[i] + 1] = std::max(first_length[i - radius[i] + 1], radius[i] - 1);
+            last_length[i + radius[i] - 1] = std::max(last_length[i + radius[i] - 1], radius[i] - 1);
         }
         if (i + radius[i] - 1 > right_pos) {
             right_pos = i + radius[i] - 1, left_pos = i - radius[i] + 1;
         }
-        max_length = std::max(radius[i], max_length);
-
     }
-    return max_length - 1;
-}
-
-inline uint32_t Manacher(const char* str) {
-    char _str[MAX_LENGTH * 2];
-    uint32_t len = strlen(str);
-    _str[0] = '$';
-    for (uint32_t i = 0, cnt = 1; i < len; ++length, ++i) {
-        _str[cnt] = '#';
-        _str[++cnt] = str[i];
-        _str[++cnt] = '#';
-    }
-    _str[length * 2 + 2] = '@';
-    _str[length * 2 + 3] = '\0';
-    return _Manacher(_str);
 }
 
 int main() {
@@ -88,13 +90,19 @@ int main() {
 #endif // _RUN_TIME
 
     //TODO
-    readf(&n);
-    memset(str, 0, sizeof(str));
-    scanf("%s", str + 1);
+    scanf("%s\n", str + 1);
 
-    printf("%lld\n", Manacher(str + 1));
-    length = 0;
+    length = str_init(str);
 
+    manacher();
+
+    for (size_t i = 1; i < length; i+=2) {
+        if (first_length[i] && last_length[i]) {
+            ans = std::max(ans, last_length[i] + first_length[i]);
+        }
+    }
+
+    printf("%lld\n", ans);
 
 #ifdef _RUN_TIME
     printf("The running duration is not less than %ld ms\n", clock() - start);
