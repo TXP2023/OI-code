@@ -381,7 +381,9 @@
     <ClCompile Include="P3157 [CQOI2011] 动态逆序对.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="P3197 [HNOI2008] 越狱.cpp" />
+    <ClCompile Include="P3197 [HNOI2008] 越狱.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="P3258 [JLOI2014] 松鼠的新家.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
