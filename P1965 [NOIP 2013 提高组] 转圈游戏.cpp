@@ -18,7 +18,6 @@
 #define READ          false
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
-#define MOD           100003
 
 typedef long long int ll;
 typedef unsigned long long int unill;
@@ -36,24 +35,24 @@ inline Type readf(Type* p = nullptr);
 template<typename Type>
 inline void writef(Type x);
 
-int64_t n, m;
+ll n, m, k, x;
 
-inline int64_t fast_pow(int64_t a, int64_t n) {
+inline int64_t fast_pow(int64_t a, int64_t n, int64_t mod) {
     int64_t base = a, ret = 1;
     while (n) {
         if (n & 1) {
             ret = ret * base;
-            ret %= MOD;
+            ret %= mod;
         }
         base = base * base;
-        base %= MOD;
+        base %= mod;
         n >>= 1;
     }
-    return ret % MOD;
+    return ret % mod;
 }
 
-inline int64_t solution(int64_t n, int64_t m) {
-    return (fast_pow(m, n)%MOD - ((m * fast_pow(m - 1, n - 1))%MOD) + MOD) % MOD;
+inline int64_t solution(int64_t n, int64_t m, int64_t k, int64_t x) {
+    return ((x % n + m % n * fast_pow(10, k, n) % n) % n);
 }
 
 int main() {
@@ -65,9 +64,11 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    readf(&m), readf(&n);
+    readf(&n), readf(&m), readf(&k), readf(&x);
 
-    printf("%lld\n", solution(n, m));
+    printf("%ld\n", solution(n, m, k, x));
+
+
 
 #ifdef _RUN_TIME
     printf("The running duration is not less than %ld ms\n", clock() - start);

@@ -18,7 +18,6 @@
 #define READ          false
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
-#define MOD           100003
 
 typedef long long int ll;
 typedef unsigned long long int unill;
@@ -36,24 +35,68 @@ inline Type readf(Type* p = nullptr);
 template<typename Type>
 inline void writef(Type x);
 
-int64_t n, m;
+struct Matrix {
+    ll arr[110][110];
+};
 
-inline int64_t fast_pow(int64_t a, int64_t n) {
-    int64_t base = a, ret = 1;
-    while (n) {
-        if (n & 1) {
-            ret = ret * base;
-            ret %= MOD;
-        }
-        base = base * base;
-        base %= MOD;
-        n >>= 1;
-    }
-    return ret % MOD;
+ll n, m, k;
+Matrix tmp, ans;
+
+inline Matrix mul(Matrix a, Matrix b) {
+    Matrix ans;
+    memset(ans.arr, 0, sizeof(ans.arr));
+    for (int k = 0; k <= n; k++)
+        for (int i = 0; i <= n; i++)
+            if (a.arr[i][k])
+                for (int j = 0; j <= n; j++)
+                    ans.arr[i][j] += a.arr[i][k] * b.arr[k][j];
+
+    return ans;
 }
 
-inline int64_t solution(int64_t n, int64_t m) {
-    return (fast_pow(m, n)%MOD - ((m * fast_pow(m - 1, n - 1))%MOD) + MOD) % MOD;
+Matrix fast_mul(int g, Matrix x) {
+    Matrix ans;
+    memset(ans.arr, 0, sizeof(ans.arr));
+    for (int i = 0; i <= n; i++)
+        ans.arr[i][i] = 1;
+    while (g) {
+        if (g & 1) ans = mul(ans, x);
+        x = mul(x, x);
+        g >>= 1;
+    }
+    return ans;
+}
+
+Matrix init(int k) {
+    Matrix tmp;
+    memset(tmp.arr, 0, sizeof(tmp.arr));
+    for (int i = 0; i <= n; ++i)
+        tmp.arr[i][i] = 1;
+
+    char ch[5];
+    int a, b;
+    while (k--) {
+        scanf("%s", ch);
+        switch (ch[0]) {
+        case 'g':
+            scanf("%d", &a);
+            tmp.arr[0][a]++;
+            break;
+        case 's':
+            scanf("%d%d", &a, &b);
+            for (int i = 0; i <= n; i++) {
+                std::swap(tmp.arr[i][a], tmp.arr[i][b]);
+            }
+            break;
+        default:
+            scanf("%d", &a);
+            for (int i = 0; i <= n; i++) {
+                tmp.arr[i][a] = 0;
+            }
+            break;
+        }
+    }
+    return tmp;
 }
 
 int main() {
@@ -65,9 +108,24 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    readf(&m), readf(&n);
-
-    printf("%lld\n", solution(n, m));
+    while (1) {
+        readf(&n), readf(&m), readf(&k);
+        if ((!n) && (!m) && (!k)) {
+            break;
+        }
+        tmp = init(k);
+        ans = fast_mul(m, tmp);
+        memset(tmp.arr, 0, sizeof(tmp.arr));
+        tmp.arr[0][0] = 1;
+        ans = mul(tmp, ans);
+        for (int i = 1; i <= n; i++) {
+            if (i != 1) {
+                printf(" ");
+            } 
+            printf("%lld", ans.arr[0][i]);
+        }
+        puts("");
+    }
 
 #ifdef _RUN_TIME
     printf("The running duration is not less than %ld ms\n", clock() - start);
