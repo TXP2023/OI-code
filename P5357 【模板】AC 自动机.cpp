@@ -52,18 +52,22 @@ struct trie_node {
 
 char str[MAX_LENGTH];
 size_t fail[MAX_LENGTH], strPos[MAXN], ans[MAXN], inDegree[MAX_LENGTH], trie_cnt = 0; //失配指针 
+//fail[u]为trie中节点u的失配指针的索引，strPos[i]为第i个模式串所出现的最找相同模式串的id，inDegree[u]为在trie中，节点u被多少个失配指针所指向
 trie_node trie[MAX_LENGTH];
 ll n, textLength;
+//将一个模式串输入的次序的编号称为这个模式串的id
 
+//将模式串str插入到trie的pos节点，这个模式串的id为str_id
 void insert(const char* str, const size_t &pos, const size_t& str_id) {
-    if (*str == '\0') {
-        if (!trie[pos].str_id) {
-            trie[pos].str_id = str_id;
+    if (*str == '\0') { //已经到了模式串的结束符'\0'
+        if (!trie[pos].str_id) { //以前没有从根节点当前trie节点的模式串
+            trie[pos].str_id = str_id;  //记录从根节点当前trie节点的模式串的id
         }
-        strPos[str_id] = trie[pos].str_id;
+        strPos[str_id] = trie[pos].str_id;  //记录当前模式串首次出现的id
+        //如果这次是首次出现，那么 strPos[str_id] = trie[pos].str_id = str_id
+        //如果已经出现过相同的模式串 strPos[str_id] = trie[pos].str_id = 首次出现的id
         return;
     }
-    //trie[pos].cnt++;
     if (!trie[pos].index[*str - 'a']) {
         trie[pos].index[*str - 'a'] = ++trie_cnt;
     }
@@ -71,8 +75,11 @@ void insert(const char* str, const size_t &pos, const size_t& str_id) {
     return;
 }
 
+//计算失配指针
 inline void get_fail() {
     std::queue<uint32_t> que;
+    //一个节点u所代表的字母w，这个节点的失配指针为这个节点的父节点的失配指针所指向字母w的对应节点
+    //所有根节点的子节点的失配指针为根节点
     for (size_t i = 0; i <= 25; i++) {
         if (trie[ROOT].index[i]) {
             fail[trie[ROOT].index[i]] = ROOT;
@@ -83,20 +90,25 @@ inline void get_fail() {
         uint32_t u = que.front();
         que.pop();
         for (size_t i = 0; i <= 25; i++) {
+            //通过一个节点作为父节点，计算子节点的失配指针
             if (trie[u].index[i]) {
-                fail[trie[u].index[i]] = trie[fail[u]].index[i];
-                ++inDegree[trie[fail[u]].index[i]];
+                fail[trie[u].index[i]] = trie[fail[u]].index[i]; 
+                //这个节点的失配指针为这个节点的父节点的失配指针所指向对应字母的对应节点
+                ++inDegree[trie[fail[u]].index[i]]; //inDegree[i]记录节点i被多少个失配指针所指向
+                //这个节点的失配指针已经被计算，那么其的子节点的失配指针可以由这个节点计算
                 que.push(trie[u].index[i]);
             }
             else {
-                trie[u].index[i] = trie[fail[u]].index[i];
+                trie[u].index[i] = trie[fail[u]].index[i]; //没有这个节点的话，则子节点索引指向失配指针
             }
         }
     }
     return;
 }
 
-inline void query() {
+//将文本串插入到trie中
+inline void insert_text() {
+    //由于已经在程序的第101行中按照失配指针计算方法处理了没有子节点的情况，因此直接插入，不会新建节点。
     size_t u = ROOT;
     for (size_t i = 1; i <= textLength; i++) {
         u = trie[u].index[str[i] - 'a'];
@@ -146,7 +158,7 @@ int main() {
     textLength = strlen(str + 1);
     get_fail();
 
-    query();
+    insert_text();
     getAnswer();
     for (size_t i = 1; i <= n; i++) {
         printf("%lld\n", ans[strPos[i]]);
