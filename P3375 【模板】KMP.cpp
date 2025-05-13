@@ -19,8 +19,7 @@
 #define READ          false
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
-#define MAX_S1        (uint64_t)(1e6+5)
-#define MAX_S2        (uint64_t)(1e6 + 5)
+#define MAX_LENGTH    (uint64_t)(1e6+5)
 
 typedef long long int ll;
 typedef unsigned long long int unill;
@@ -38,35 +37,37 @@ inline Type readf(Type* p = nullptr);
 template<typename Type>
 inline void writef(Type x);
 
-std::string s1, s2;
-uint64_t next[MAX_S1];
+char text[MAX_LENGTH], mod[MAX_LENGTH];
+uint64_t next[MAX_LENGTH];
 std::vector<size_t> ans;
+ll textLength, modLength;
 
-inline void get_next(uint64_t* _Arr, std::string _Str) {
+inline void get_next(uint64_t* _Arr, const char* _Str) {
     _Arr[1] = 0;
-    for (size_t i = 1, length = 0; i < _Str.length(); ++i) {
-        while (length && _Str[i] != _Str[length]) {
+    ll _strLength = strlen(_Str + 1);
+    for (size_t i = 2, length = 0/*lenght表示已经比较过的长度*/; i <= _strLength; ++i) {
+        while (length && _Str[i] != _Str[length + 1]) {
             length = _Arr[length];
         }
-        if (_Str[i] == _Str[length]) {
-            _Arr[i + 1] = ++length;
+        if (_Str[i] == _Str[length + 1]) {
+            _Arr[i] = ++length;
         }
     }
     return;
 }
-
-inline std::vector<size_t> kmp(const uint64_t* _Next, std::string _Str1, std::string _Str2) {
+inline std::vector<size_t> kmp(const uint64_t* _Next, const char* _Text, const char* _Mod) {
     std::vector<size_t> ret;
-    for (size_t s1Index = 0, s2Index = 0; s1Index < _Str1.length(); s1Index++) {
-        while (s2Index && _Str1[s1Index] != _Str2[s2Index]) {
-            s2Index = _Next[s2Index];
+    size_t _textLength = strlen(_Text + 1), _modLength = strlen(_Mod + 1);
+    for (size_t textIndex = 0, modIndex = 0/*已经比较过的合法长度*/; textIndex <= textLength; textIndex++) {
+        while (modIndex && _Text[textIndex + 1] != _Mod[modIndex + 1]) {
+            modIndex = _Next[modIndex];
         }
-        if (_Str1[s1Index] == _Str2[s2Index]) {
-            ++s2Index;
+        if (_Text[textIndex + 1] == _Mod[modIndex + 1]) {
+            ++modIndex;
         }
-        if (s2Index == _Str2.length()) {
-            ret.push_back(s1Index - s2Index + 2);
-            s2Index = _Next[s2Index];
+        if (modIndex == _modLength) {
+            ret.push_back(textIndex - modIndex + 2);
+            modIndex = _Next[modIndex];
         }
     }
     return ret;
@@ -82,16 +83,18 @@ int main() {
 #endif // _RUN_TIME
 
     
-    std::cin >> s1 >> s2;
+    scanf("%s\n%s", text + 1, mod + 1);
+    textLength = strlen(text + 1);
+    modLength = strlen(mod + 1);
 
-    get_next(next, s2);
-    ans = kmp(next, s1, s2);
+    get_next(next, mod);
+    ans = kmp(next, text, mod);
 
     for (size_t i : ans) {
         printf("%llu\n", i);
     }
 
-    for (size_t i = 1; i <= s2.length(); i++) {
+    for (size_t i = 1; i <= modLength; i++) {
         printf("%lld ", next[i]);
     }
 

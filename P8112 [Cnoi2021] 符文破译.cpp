@@ -18,7 +18,7 @@
 #define READ          false
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
-#define MAX_LENGTH    1000005
+#define MAX_LENGTH    (uint64_t)(1e7+5)
 
 typedef long long int ll;
 typedef unsigned long long int unill;
@@ -36,21 +36,40 @@ inline Type readf(Type* p = nullptr);
 template<typename Type>
 inline void writef(Type x);
 
-char str[MAX_LENGTH];
-uint64_t Next[MAX_LENGTH], length, ans = 0;
+char text[MAX_LENGTH], mod[MAX_LENGTH];
+uint64_t Next[MAX_LENGTH], lastMod[MAX_LENGTH];
+uint64_t textLength, modLength, ans = 0;
 
-inline void get_next(uint64_t* _Next, const char * _Str) {
-    _Next[1] = 0;
-    uint64_t strLength = strlen(_Str);
-    for (size_t i = 1, _length = 0; i < strLength; ++i) {
-        while (_length && _Str[i] != _Str[_length]) {
-            _length = _Next[_length];
+
+inline void get_next(uint64_t* _Arr, const char* _Str) {
+    _Arr[1] = 0;
+    ll _strLength = strlen(_Str + 1);
+    for (size_t i = 2, length = 0/*lenght表示已经比较过的长度*/; i <= _strLength; ++i) {
+        while (length && _Str[i] != _Str[length + 1]) {
+            length = _Arr[length];
         }
-        if (_Str[i] == _Str[_length]) {
-            _Next[i + 1] = ++_length;
+        if (_Str[i] == _Str[length + 1]) {
+            _Arr[i] = ++length;
         }
     }
     return;
+}
+inline std::vector<size_t> kmp(const uint64_t* _Next, const char* _Text, const char* _Mod) {
+    std::vector<size_t> ret;
+    size_t _textLength = strlen(_Text + 1), _modLength = strlen(_Mod + 1);
+    for (size_t textIndex = 0, modIndex = 0/*已经比较过的合法长度*/; textIndex <= textLength; textIndex++) {
+        while (modIndex && _Text[textIndex + 1] != _Mod[modIndex + 1]) {
+            modIndex = _Next[modIndex];
+        }
+        if (_Text[textIndex + 1] == _Mod[modIndex + 1]) {
+            ++modIndex;
+        }
+        if (modIndex == _modLength) {
+            ret.push_back(textIndex - modIndex + 2);
+            modIndex = _Next[modIndex];
+        }
+    }
+    return ret;
 }
 
 int main() {
@@ -62,25 +81,41 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    readf(&length);
+    readf(&modLength), readf(&textLength);
 
-    scanf("%s", str + 1);
+    scanf("%s\n%s", mod + 1, text + 1);
 
-    get_next(Next, str + 1);
+    get_next(Next, mod);
 
-    for (size_t i = 1; i <= length; i++) {
-        int j = i;
-        while (Next[j]) {
-            j = Next[j];
+    std::vector<size_t> mod_pos = kmp(Next, text, mod);
+    std::vector<size_t>::iterator it = mod_pos.begin();
+
+    for (size_t i = 1, pos ; i <= textLength; i++) {
+        if (*it == i) {
+            pos = i;
+            ++it;
         }
-        
-        if (Next[i]) {
-            Next[i] = j;
-        }		
-        ans += i - j;
+        lastMod[i] = pos;
     }
 
-    printf("%llu\n", ans);
+    for (size_t i = 1; i < modLength; i++) {
+
+    }
+
+    
+
+    for (size_t i = 1, old_pos = -1; i <= textLength; ) {
+        if (lastMod[i] != old_pos) {
+            old_pos = lastMod[i];
+        }
+        i += modLength;
+        ++ans;
+        if (i > textLength) {
+            puts("Fake");
+        }
+    }
+
+    printf("%lld\n", ans);
 
 #ifdef _RUN_TIME
     printf("The running duration is not less than %ld ms\n", clock() - start);
