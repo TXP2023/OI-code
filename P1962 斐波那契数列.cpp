@@ -18,7 +18,7 @@
 #define READ          false
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
-#define MAX_LENGTH    (uint64_t)(1e7+5)
+#define MOD           (uint64_t)(1e9+7)
 
 typedef long long int ll;
 typedef unsigned long long int unill;
@@ -36,42 +36,56 @@ inline Type readf(Type* p = nullptr);
 template<typename Type>
 inline void writef(Type x);
 
-char text[MAX_LENGTH], mod[MAX_LENGTH];
-uint64_t Next[MAX_LENGTH], lastMod[MAX_LENGTH];
-uint64_t textLength, modLength, ans = 0;
-uint64_t dp[MAX_LENGTH];
+struct Matrix {
+    uint64_t arr_[3][3];
 
-
-inline void get_next(uint64_t* _Arr, const char* _Str) {
-    _Arr[1] = 0;
-    ll _strLength = strlen(_Str + 1);
-    for (size_t i = 2, length = 0/*lenght表示已经比较过的长度*/; i <= _strLength; ++i) {
-        while (length && _Str[i] != _Str[length + 1]) {
-            length = _Arr[length];
-        }
-        if (_Str[i] == _Str[length + 1]) {
-            _Arr[i] = ++length;
-        }
+    Matrix() {
+        memset(arr_, 0, sizeof(arr_));
     }
-    return;
-}
-inline void kmp(const uint64_t* _Next, const char* _Text, const char* _Mod) {
-    size_t _textLength = strlen(_Text + 1), _modLength = strlen(_Mod + 1);
-    for (size_t textIndex = 0, modIndex = 0/*已经比较过的合法长度*/; textIndex <= textLength; textIndex++) {
-        while (modIndex && _Text[textIndex + 1] != _Mod[modIndex + 1]) {
-            modIndex = _Next[modIndex];
-        }
-        if (_Text[textIndex + 1] == _Mod[modIndex + 1]) {
-            ++modIndex;
-        }
-        dp[textIndex + 1] = std::min(dp[textIndex + 1], dp[textIndex + 1 - modIndex] + 1);
-        if (modIndex == _modLength) {
-            modIndex = _Next[modIndex];
-        }
 
+    Matrix operator *(Matrix& other) const {
+        Matrix ret;
+        for (int i = 1; i <= 2; ++i) {
+            for (int j = 1; j <= 2; ++j) {
+                for (int k = 1; k <= 2; ++k) {
+                    ret.arr_[i][j] = (ret.arr_[i][j] + arr_[i][k] * other.arr_[k][j]) % MOD;
+                }
+            }
+        }
+        return ret;
     }
-    return;
+};
+
+Matrix ans, base;
+ll n;
+
+inline void mul_Self(uint64_t val) {
+    while (val) {
+        if (val & 1) {
+            ans = ans * base;
+        } 
+        base = base * base;
+        val >>= 1;
+    }
 }
+
+void init() { // 初始化 ans、base 矩阵
+    base.arr_[1][1] = base.arr_[1][2] = base.arr_[2][1] = 1;
+    ans.arr_[1][1] = ans.arr_[1][2] = 1;
+}
+
+//  矩阵初始化如图
+//  竖着为第一个索引，横着为第二个
+//  base:
+//      1  2
+//  1 | 1  1 |
+//    |      |
+//  2 | 1  0 |
+//  
+//  ans:
+//  
+//      1  2
+//  1 | 1  1 |
 
 int main() {
 #ifdef _FREOPEN
@@ -82,23 +96,18 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    readf(&modLength), readf(&textLength);
+    readf(&n);
 
-    scanf("%s\n%s", mod + 1, text + 1);
-
-    get_next(Next, mod);
-
-    std::fill(dp + 1, dp + 1 + textLength, MAX_INF);
-    dp[0] = 0;
-    kmp(Next, text, mod);
-
-    if (dp[textLength] < MAX_LENGTH) {
-        printf("%lld\n", dp[textLength]);
+    if (n <= 2) {
+        puts("1");
+        return 0;
     }
-    else {
-        puts("Fake");
-    }
-    
+
+    init();
+
+    mul_Self(n - 2);
+
+    printf("%lld\n", ans.arr_[1][1] % MOD);
 
 #ifdef _RUN_TIME
     printf("The running duration is not less than %ld ms\n", clock() - start);

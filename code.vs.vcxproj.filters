@@ -141,9 +141,6 @@
     <ClCompile Include="P3796 AC 自动机（简单版 II）.cpp">
       <Filter>源文件\待完成</Filter>
     </ClCompile>
-    <ClCompile Include="P5357 【模板】AC 自动机.cpp">
-      <Filter>源文件\样例</Filter>
-    </ClCompile>
     <ClCompile Include="#10221. 「一本通 6.5 例 3」Fibonacci 前 n 项和.cpp">
       <Filter>源文件\已完成的题目\LibreOj</Filter>
     </ClCompile>
@@ -577,7 +574,13 @@
       <Filter>源文件\待完成</Filter>
     </ClCompile>
     <ClCompile Include="P8112 [Cnoi2021] 符文破译.cpp">
-      <Filter>源文件\待完成</Filter>
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
+    <ClCompile Include="P5357 【模板】AC 自动机.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
+    <ClCompile Include="P1962 斐波那契数列.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
