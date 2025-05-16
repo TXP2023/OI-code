@@ -81,7 +81,7 @@
     <ClCompile Include="set.cpp">
       <Filter>源文件\标准模板库实例</Filter>
     </ClCompile>
-    <ClCompile Include="数学.cpp">
+    <ClCompile Include="math.cpp">
       <Filter>源文件\样例</Filter>
     </ClCompile>
     <ClCompile Include="vector.cpp">
@@ -581,6 +581,9 @@
     </ClCompile>
     <ClCompile Include="P1962 斐波那契数列.cpp">
       <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
+    <ClCompile Include="hdu 5019.cpp">
+      <Filter>源文件\待完成</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
