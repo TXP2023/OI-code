@@ -49,6 +49,9 @@
     <Filter Include="源文件\已完成的题目\spoj">
       <UniqueIdentifier>{832d0b6d-5f16-4109-ae6c-1279aa520058}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\比赛\anasonic Programming Contest 2025（AtCoder Beginner Contest 406）">
+      <UniqueIdentifier>{03e44e61-e007-438e-bd5b-2497c56e8884}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="模板.cpp">
@@ -584,6 +587,12 @@
     </ClCompile>
     <ClCompile Include="hdu 5019.cpp">
       <Filter>源文件\待完成</Filter>
+    </ClCompile>
+    <ClCompile Include="B - Product Calculator.cpp">
+      <Filter>源文件\比赛\anasonic Programming Contest 2025（AtCoder Beginner Contest 406）</Filter>
+    </ClCompile>
+    <ClCompile Include="F - Compare Tree Weights.cpp">
+      <Filter>源文件\比赛\anasonic Programming Contest 2025（AtCoder Beginner Contest 406）</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
