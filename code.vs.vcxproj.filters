@@ -594,6 +594,9 @@
     <ClCompile Include="F - Compare Tree Weights.cpp">
       <Filter>源文件\比赛\anasonic Programming Contest 2025（AtCoder Beginner Contest 406）</Filter>
     </ClCompile>
+    <ClCompile Include="A - Not Acceptable.cpp">
+      <Filter>源文件\比赛\anasonic Programming Contest 2025（AtCoder Beginner Contest 406）</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">

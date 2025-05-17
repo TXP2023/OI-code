@@ -20,7 +20,7 @@
 #define MAX_NUM_SIZE  35
 
 typedef long long int ll;
-typedef unsigned long long int ull;
+typedef unsigned long long int unill;
 
 //¿ì¶Áº¯ÊýÉùÃ÷
 #if READ
@@ -35,16 +35,7 @@ inline Type readf(Type* p = nullptr);
 template<typename Type>
 inline void writef(Type x);
 
-ull n, k, mul = 1, max_val = 1;
-
-inline ll get_num(ull val) {
-    ll ret = 0;
-    while (val) {
-        val /= 10;
-        ret++;
-    }
-    return ret;
-}
+ll a, b, c, d;
 
 int main() {
 #ifdef _FREOPEN
@@ -55,27 +46,20 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    readf(&n), readf(&k);
 
-    for (size_t i = 0; i < k; i++) {
-        max_val *= 10;
+    readf(&a), readf(&b), readf(&c), readf(&d);
+    if (a < c) {
+        puts("No");
+        return 0;
+    }
+    else if (a == c && b < d) {
+        puts("No");
+        return 0;
+    }
+    else {
+        puts("Yes");
     }
 
-    for (size_t i = 0; i < n; i++) {
-        ull val = readf<ull>();
-        if (get_num(val) + get_num(mul) - 1 > k) {
-            mul = 1;
-        }
-        else {
-            mul *= val;
-            if (mul >= max_val) {
-                mul = 1;
-            }
-        }
-        
-    }
-
-    printf("%llu\n", mul);
 
 
 #ifdef _RUN_TIME
