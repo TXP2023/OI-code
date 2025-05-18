@@ -12,8 +12,10 @@
 #include <cstdarg>
 #include <climits>
 #include <time.h>
+#include <cmath>
 #include <iostream>
 #include <stdint.h>
+#include <cstdlib>
 
 #define READ          false
 #define MAX_INF       1e18
@@ -168,7 +170,7 @@ int main() {
             //此时u是v的父节点
             ll sub_tree_sum = query(1, 1, n, id[edges[y].v], id[edges[y].v] + node_num[edges[y].v] - 1), sum;
             sum = seg_tree[1] - sub_tree_sum;
-            printf("%lld\n", (ll)std::abs(sum - sub_tree_sum));
+            printf("%lld\n", (ll)std::fabs(sum - sub_tree_sum));
         }
     }
 

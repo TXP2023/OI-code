@@ -600,6 +600,9 @@
     <ClCompile Include="D - Garbage Removal.cpp">
       <Filter>源文件\比赛\anasonic Programming Contest 2025（AtCoder Beginner Contest 406）</Filter>
     </ClCompile>
+    <ClCompile Include="P3811 【模板】模意义下的乘法逆元.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
