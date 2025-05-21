@@ -52,6 +52,9 @@
     <Filter Include="源文件\比赛\anasonic Programming Contest 2025（AtCoder Beginner Contest 406）">
       <UniqueIdentifier>{03e44e61-e007-438e-bd5b-2497c56e8884}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\已投降">
+      <UniqueIdentifier>{e4bd6f94-d1b9-4893-81b1-ce6bc5bcbef0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="模板.cpp">
@@ -102,9 +105,6 @@
     <ClCompile Include="P5200 [USACO19JAN] Sleepy Cow Sorting G.cpp">
       <Filter>源文件\待完成</Filter>
     </ClCompile>
-    <ClCompile Include="P3865 【模板】ST 表 &amp;&amp; RMQ 问题.cpp">
-      <Filter>源文件\待完成</Filter>
-    </ClCompile>
     <ClCompile Include="P2617 Dynamic Rankings.cpp">
       <Filter>源文件\待完成</Filter>
     </ClCompile>
@@ -130,9 +130,6 @@
       <Filter>源文件\已完成的题目\CodeForces</Filter>
     </ClCompile>
     <ClCompile Include="CF817E Choosing The Commander.cpp">
-      <Filter>源文件\待完成</Filter>
-    </ClCompile>
-    <ClCompile Include="P12213 [蓝桥杯 2023 国 Python B] 最长回文前后缀.cpp">
       <Filter>源文件\待完成</Filter>
     </ClCompile>
     <ClCompile Include="P4555 [国家集训队] 最长双回文串.cpp">
@@ -601,6 +598,18 @@
       <Filter>源文件\比赛\anasonic Programming Contest 2025（AtCoder Beginner Contest 406）</Filter>
     </ClCompile>
     <ClCompile Include="P3811 【模板】模意义下的乘法逆元.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
+    <ClCompile Include="P12213 [蓝桥杯 2023 国 Python B] 最长回文前后缀.cpp">
+      <Filter>源文件\已投降</Filter>
+    </ClCompile>
+    <ClCompile Include="P3865 【模板】ST 表 &amp;&amp; RMQ 问题.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
+    <ClCompile Include="P4085 [USACO17DEC] Haybale Feast G.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
+    <ClCompile Include="P1082 [NOIP 2012 提高组] 同余方程.cpp">
       <Filter>源文件\已完成的题目\luogu</Filter>
     </ClCompile>
   </ItemGroup>

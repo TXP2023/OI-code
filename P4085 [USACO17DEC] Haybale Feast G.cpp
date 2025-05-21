@@ -61,9 +61,9 @@ Log2<__MAX_VALUE>::Log2() {
     return;
 }
 
-ll arr[MAXN], stTable[MAXN][LOGN];
+ll sum[MAXN], stTable[MAXN][LOGN];
 Log2<MAXN> get_log2;
-ll n, m;
+ll n, m, ans = LLONG_MAX;
 
 //≥ı ºªØST±Ì
 inline void init() {
@@ -78,6 +78,11 @@ inline void init() {
     return;
 }
 
+inline ll stTableQuery(size_t range_begin, size_t range_end) {
+    size_t Log = get_log2(range_end - range_begin + 1);
+    return std::max(stTable[range_begin][Log], stTable[range_end - (1 << Log) + 1][Log]);
+}
+
 int main() {
 #ifdef _FREOPEN
     freopen("input.txt", "r", stdin);
@@ -90,19 +95,22 @@ int main() {
     readf(&n), readf(&m);
 
     for (size_t i = 1; i <= n; i++) {
+        sum[i] = sum[i - 1] + readf<ll>();
         readf(&stTable[i][0]);
     }
 
     init();
 
-    for (size_t i = 0; i < m; i++) {
-        ll range_begin, range_end;
-        readf(&range_begin), readf(&range_end);
-        size_t Log = get_log2(range_end - range_begin + 1);
-        printf("%lld\n" ,std::max(stTable[range_begin][Log], stTable[range_end - (1 << Log) + 1][Log]));
+    for (size_t first = 1, last = 1; last <= n; ) {
+        if (sum[last] - sum[first - 1] < m) {
+            ++last;
+            continue;
+        }
+        ans = std::min(ans, stTableQuery(first, last));
+        ++first;
     }
 
-
+    printf("%lld\n", ans);
 #ifdef _RUN_TIME
     printf("The running duration is not less than %ld ms\n", clock() - start);
 #endif // _RUN_TIME

@@ -18,8 +18,7 @@
 #define READ          false
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
-#define MAXN          (size_t)(1e5 + 5)
-#define LOGN          17
+#define MAX_SIZE      3000005
 
 typedef long long int ll;
 typedef unsigned long long int unill;
@@ -37,45 +36,21 @@ inline Type readf(Type* p = nullptr);
 template<typename Type>
 inline void writef(Type x);
 
-template<size_t __MAX_VALUE>
-class Log2 {
-public:
-    Log2();
+ll val_a, val_b;
 
-    int operator ()(const size_t& val) {
-        return log_[val];
+void exgcd(ll a, ll b, ll& x, ll& y) {
+    if (b == 0) {
+        x = 1; y = 0;
+        return;
     }
-
-private:
-    int log_[__MAX_VALUE + 1];
-};
-
-template<size_t __MAX_VALUE>
-Log2<__MAX_VALUE>::Log2() {
-    log_[1] = 0;
-    log_[1] = 0;
-    log_[2] = 1;
-    for (size_t i = 3; i <= __MAX_VALUE; i++) {
-        log_[i] = log_[i / 2] + 1;
-    }
-    return;
+    exgcd(b, a % b, y, x);
+    y -= (a / b) * x;
 }
 
-ll arr[MAXN], stTable[MAXN][LOGN];
-Log2<MAXN> get_log2;
-ll n, m;
-
-//≥ı ºªØST±Ì
-inline void init() {
-    for (size_t i = 1; i <= LOGN; i++) {
-        for (size_t j = 1; j + (1 << i) - 1 <= n; j++) {
-            stTable[j][i] = std::max(
-                stTable[j][i - 1],
-                stTable[j + (1 << (i - 1))][i - 1]
-            );
-        }
-    }
-    return;
+inline ll rev(ll a, ll p) {
+    ll x, y;
+    exgcd(a, p, x, y);
+    return (x + p) % p;
 }
 
 int main() {
@@ -87,21 +62,9 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    readf(&n), readf(&m);
-
-    for (size_t i = 1; i <= n; i++) {
-        readf(&stTable[i][0]);
-    }
-
-    init();
-
-    for (size_t i = 0; i < m; i++) {
-        ll range_begin, range_end;
-        readf(&range_begin), readf(&range_end);
-        size_t Log = get_log2(range_end - range_begin + 1);
-        printf("%lld\n" ,std::max(stTable[range_begin][Log], stTable[range_end - (1 << Log) + 1][Log]));
-    }
-
+    readf(&val_a), readf(&val_b);
+    
+    printf("%lld\n", rev(val_a, val_b));
 
 #ifdef _RUN_TIME
     printf("The running duration is not less than %ld ms\n", clock() - start);
