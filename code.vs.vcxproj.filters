@@ -612,6 +612,9 @@
     <ClCompile Include="P1082 [NOIP 2012 提高组] 同余方程.cpp">
       <Filter>源文件\已完成的题目\luogu</Filter>
     </ClCompile>
+    <ClCompile Include="P1638 逛画展.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
