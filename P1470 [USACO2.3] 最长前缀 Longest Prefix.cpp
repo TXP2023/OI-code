@@ -97,7 +97,21 @@ int main() {
         modLen[modNum] = strlen(modStrs[modNum] + 1);
     }
 
-    scanf("%s", text + 1);
+    //scanf("%s", text + 1);
+
+    ll cnt = 1;
+    while (1) {
+        char s[80];
+        if (~scanf("%s", s + 1)) {
+            size_t len = strlen(s + 1);
+            for (size_t i = 1; i <= len; i++) {
+                text[cnt++] = s[i];
+            }
+        }
+        else {
+            break;
+        }
+    }
     textLength = strlen(text + 1);
 
     for (size_t i = 1; i <= modNum; i++) {
