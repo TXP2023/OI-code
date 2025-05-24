@@ -132,12 +132,6 @@
     <ClCompile Include="CF817E Choosing The Commander.cpp">
       <Filter>源文件\待完成</Filter>
     </ClCompile>
-    <ClCompile Include="P4555 [国家集训队] 最长双回文串.cpp">
-      <Filter>源文件\待完成</Filter>
-    </ClCompile>
-    <ClCompile Include="P1659 [国家集训队] 拉拉队排练.cpp">
-      <Filter>源文件\待完成</Filter>
-    </ClCompile>
     <ClCompile Include="P3796 AC 自动机（简单版 II）.cpp">
       <Filter>源文件\待完成</Filter>
     </ClCompile>
@@ -614,6 +608,18 @@
     </ClCompile>
     <ClCompile Include="P1470 [USACO2.3] 最长前缀 Longest Prefix.cpp">
       <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
+    <ClCompile Include="P6190 [NOI Online #1 入门组] 魔法.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
+    <ClCompile Include="P1659 [国家集训队] 拉拉队排练.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
+    <ClCompile Include="P4555 [国家集训队] 最长双回文串.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
+    <ClCompile Include="P1360 [USACO07MAR] Gold Balanced Lineup G.cpp">
+      <Filter>源文件\待完成</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

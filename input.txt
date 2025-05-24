@@ -1,4 +1,8 @@
-A AB BA CA BBC
-.
-ABABAC
-ABAABC
+7 3
+7
+6
+7
+2
+1
+4
+2
