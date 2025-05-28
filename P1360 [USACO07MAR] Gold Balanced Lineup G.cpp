@@ -36,9 +36,9 @@ inline Type readf(Type* p = nullptr);
 template<typename Type>
 inline void writef(Type x);
 
-std::map<std::vector<int>, size_t> map;
+std::map<std::vector<ll>, ll> map;
 ll n, m;
-size_t ans;
+ll ans;
 
 int main() {
 #ifdef _FREOPEN
@@ -51,27 +51,31 @@ int main() {
 
     readf(&n), readf(&m);
 
-    std::vector<int> vec(m + 1, 0);
+    std::vector<ll> vec(m + 1, 0);
 
-    for (size_t j = 1; j <= n; j++) {
+    map[vec] = 0;
+    for (ll j = 1; j <= n; j++) {
         ll val;
-        ll flag = true;
+        bool flag = true;
         readf(&val);
-        for (size_t i = 1; i <= 30; i++) {
-            vec[i] += val & (1 << (i - 1));
-            flag = val & (1 << (i - 1));
+        for (size_t i = 1; i <= m; i++) {
+            vec[i] += ((val & (1 << (i - 1))) >> (i - 1));
+            if (vec[i] == 0) {
+                flag = false;
+            }
         }
-        for (size_t i = 1; flag && i <= 30; i++) {
+        for (size_t i = 1; flag && i <= m; i++) {
             --vec[i];
         }
         if (map.count(vec)) {
-            ans = std::max(ans, j - map[vec] + 1);
+            ans = std::max(ans, j - map[vec]);
         }
         else {
             map[vec] = j;
         }
     }
 
+    printf("%lld\n", ans);
 
 
 

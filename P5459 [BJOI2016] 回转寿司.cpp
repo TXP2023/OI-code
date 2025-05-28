@@ -6,6 +6,7 @@
 #pragma once
 #include <vector>
 #include <stdio.h>
+#include <string.h>
 #include <algorithm>
 #include <ctype.h>
 #include <cstdarg>
@@ -13,13 +14,14 @@
 #include <time.h>
 #include <iostream>
 #include <stdint.h>
+#include <map>
 
 #define READ          false
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
-#define MAXN          11
-#define MAXK          101
-#define MAX_SCHEME    (1 << MAXN)
+#define MAXN          (uint64_t)(1e5+5)
+#define LS(x)         ((x) << 1)
+#define RS(x)         ((x) << 1 | 1)
 
 typedef long long int ll;
 typedef unsigned long long int unill;
@@ -37,67 +39,65 @@ inline Type readf(Type* p = nullptr);
 template<typename Type>
 inline void writef(Type x);
 
-template<typename Type, size_t _MAX_SIZE>
-class Vector {
-public:
+std::map<ll, int> mapping;
+ll preSum[MAXN], arr[MAXN], segTree[MAXN << 2], disArr[MAXN];
+ll n, valMax, valMin, dis_size, ans = 0;
 
-    Vector() {
-        size_ = 0;
+inline size_t discretization() {
+    memcpy(disArr + 1, preSum + 1, n * 8);
+    std::sort(disArr, disArr + n + 1);
+    size_t cnt = std::unique(disArr, disArr + n + 1) - disArr - 1;
+    for (size_t i = 0; i <= cnt; i++) {
+        mapping[disArr[i]] = i;
+    }
+    return cnt;
+}
+
+void insert(size_t pos, size_t left, size_t right, ll val) {
+    ++segTree[pos];
+    if (left == right) {
         return;
     }
-
-    template<typename T>
-    inline Type& operator [] (T _Pos) {
-        return arr_[_Pos];
+    size_t mid = (left + right) >> 1;
+    if (val <= mid) {
+        insert(LS(pos), left, mid, val);
     }
-
-    inline void push_back(Type _Value) {
-        arr_[size_++] = _Value;
-        return;
+    else {
+        insert(RS(pos), mid + 1, right, val);
     }
+    return;
+}
 
-    inline size_t size() {
-        return size_;
+ll query(size_t pos, size_t left, size_t right, ll valFirst, ll valLast) {
+    if (valFirst > valLast) {
+        return 0;
     }
-
-    inline Type* begin() {
-        return arr_;
+    if (valFirst <= left && right <= valLast) {
+        return segTree[pos];
     }
-
-    inline Type* end() {
-        return &arr_[size_];
+    ll sum = 0, mid = (left + right) >> 1;
+    if (valFirst <= mid) {
+        sum += query(LS(pos), left, mid, valFirst, valLast);
     }
-
-private:
-    Type arr_[_MAX_SIZE];
-    size_t size_;
-};
-
-struct Scheme {
-    ll s;
-    ll cnt;
-    Scheme(ll _S, ll _Cnt) {
-        s = _S;
-        cnt = _Cnt;
-        return;
+    if (valLast > mid) {
+        sum += query(RS(pos), mid + 1, right, valFirst, valLast);
     }
+    return sum;
+}
 
-    Scheme() {
-        return;
+inline size_t small_bound(ll val) {
+    int res = -1, left = 0, right = dis_size;
+    while (left <= right) {
+        int mid = (left + right) >> 1;
+        if (disArr[mid] <= val) {
+            res = mid;
+            left = mid + 1;
+        }
+        else {
+            right = mid - 1;
+        }
     }
-};
-
-Vector<Scheme, (1 << MAXN) + 1> legit_scheme;
-uint64_t dp[MAXN][MAXK][MAX_SCHEME]; //第i行，要摆放j个国王，这行摆放的方案为k
-ll n, k, ans;
-
-inline uint64_t get_binary_1(uint64_t _Value) {
-    ll num = 0;
-    while (_Value) {
-        num += _Value % 2;
-        _Value >>= 1;
-    }
-    return num;
+    return res;
 }
 
 int main() {
@@ -109,35 +109,28 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    //TODO
-    readf(&n), readf(&k);
+    readf(&n), readf(&valMin), readf(&valMax);
 
-    for (size_t i = 0; i < (1 << n); i++) {
-        if (i & (i >> 1)) {
-            continue;
-        }
-        legit_scheme.push_back(Scheme(i, get_binary_1(i)));
+    for (size_t i = 1; i <= n; i++) {
+        readf(&arr[i]);
+        preSum[i] = preSum[i - 1] + arr[i];
     }
 
-    for (auto& scheme : legit_scheme) {
-        dp[1][scheme.cnt][scheme.s] = 1;
-    }
+    dis_size = discretization();
 
-    for (size_t line = 2; line <= n; ++line) {
-        for (auto& scheme : legit_scheme) {
-            for (auto& pre_scheme : legit_scheme) {
-                if ((pre_scheme.s & scheme.s) || ((pre_scheme.s >> 1) & scheme.s) || ((pre_scheme.s << 1) & scheme.s)) {
-                    continue;
-                }
-                for (size_t king_num = scheme.cnt + pre_scheme.cnt; king_num <= k; ++king_num) {
-                    dp[line][king_num][scheme.s] = dp[line][king_num][scheme.s] + dp[line - 1][king_num - scheme.cnt][pre_scheme.s];
-                }
-            }
-        }
-    }
-
-    for (auto& scheme : legit_scheme) {
-        ans += dp[n][k][scheme.s];
+    insert(1, 0, dis_size, 0);
+    for (size_t i = 1; i <= n; i++) {
+        insert(1, 0, dis_size, mapping[preSum[i]]);
+        ll max = preSum[i] - valMin, min = preSum[i] - valMax;
+        max = small_bound(max), min = std::lower_bound(disArr, disArr + dis_size + 1, min) - disArr;
+        ans += query(
+            1, 1, dis_size, 
+            min,
+            max
+        );
+        //0 1 2 3  4  5
+        //0 1 3 6 10 15
+        //0 1 2 3  4  5
     }
 
     printf("%lld\n", ans);
