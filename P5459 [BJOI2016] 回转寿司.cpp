@@ -39,15 +39,15 @@ inline Type readf(Type* p = nullptr);
 template<typename Type>
 inline void writef(Type x);
 
-std::map<ll, int> mapping;
+std::map<ll, ll> mapping;
 ll preSum[MAXN], arr[MAXN], segTree[MAXN << 2], disArr[MAXN];
 ll n, valMax, valMin, dis_size, ans = 0;
 
 inline size_t discretization() {
-    memcpy(disArr + 1, preSum + 1, n * 8);
-    std::sort(disArr, disArr + n + 1);
-    size_t cnt = std::unique(disArr, disArr + n + 1) - disArr - 1;
-    for (size_t i = 0; i <= cnt; i++) {
+    memcpy(disArr + 1, preSum + 1, (n+1) * 8);
+    std::sort(disArr + 1, disArr + n + 2);
+    size_t cnt = std::unique(disArr + 1, disArr + n + 2) - disArr - 1;
+    for (size_t i = 1; i <= cnt; i++) {
         mapping[disArr[i]] = i;
     }
     return cnt;
@@ -86,7 +86,7 @@ ll query(size_t pos, size_t left, size_t right, ll valFirst, ll valLast) {
 }
 
 inline size_t small_bound(ll val) {
-    int res = -1, left = 0, right = dis_size;
+    int res = -1, left = 1, right = dis_size;
     while (left <= right) {
         int mid = (left + right) >> 1;
         if (disArr[mid] <= val) {
@@ -99,6 +99,23 @@ inline size_t small_bound(ll val) {
     }
     return res;
 }
+
+inline size_t big_bound(ll val) {
+    int res = -1, left = 1, right = dis_size;
+    while (left <= right) {
+        int mid = (left + right) >> 1;
+        if (disArr[mid] >= val) {
+            res = mid;
+            right = mid - 1;
+        }
+        else {
+            left = mid + 1;
+        }
+    }
+    return res;
+}
+
+#define DEBUG false
 
 int main() {
 #ifdef _FREOPEN
@@ -118,11 +135,20 @@ int main() {
 
     dis_size = discretization();
 
-    insert(1, 0, dis_size, 0);
+    insert(1, 1, dis_size, mapping[0]);
+    //这个代码现在到9之前没问题
     for (size_t i = 1; i <= n; i++) {
-        insert(1, 0, dis_size, mapping[preSum[i]]);
+        insert(1, 1, dis_size, mapping[preSum[i]]);
+#if DEBUG
+        printf("%lld\n", mapping[preSum[i]]);
+#endif // DEBUG
+
         ll max = preSum[i] - valMin, min = preSum[i] - valMax;
-        max = small_bound(max), min = std::lower_bound(disArr, disArr + dis_size + 1, min) - disArr;
+        max = small_bound(max);
+        min = big_bound(min);
+        if (max == -1 || min == -1) {
+            continue;
+        }
         ans += query(
             1, 1, dis_size, 
             min,
