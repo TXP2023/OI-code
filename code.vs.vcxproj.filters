@@ -55,6 +55,9 @@
     <Filter Include="源文件\已投降">
       <UniqueIdentifier>{e4bd6f94-d1b9-4893-81b1-ce6bc5bcbef0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\比赛\AtCoder Beginner Contest 408">
+      <UniqueIdentifier>{876033a9-3613-4f72-9ec1-fd3c499b3f05}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="模板.cpp">
@@ -127,9 +130,6 @@
       <Filter>源文件\已完成的题目\CodeForces</Filter>
     </ClCompile>
     <ClCompile Include="CF817E Choosing The Commander.cpp">
-      <Filter>源文件\待完成</Filter>
-    </ClCompile>
-    <ClCompile Include="P3796 AC 自动机（简单版 II）.cpp">
       <Filter>源文件\待完成</Filter>
     </ClCompile>
     <ClCompile Include="#10221. 「一本通 6.5 例 3」Fibonacci 前 n 项和.cpp">
@@ -622,6 +622,15 @@
       <Filter>源文件\已完成的题目\luogu</Filter>
     </ClCompile>
     <ClCompile Include="P5459 [BJOI2016] 回转寿司.cpp">
+      <Filter>源文件\待完成</Filter>
+    </ClCompile>
+    <ClCompile Include="P1516 青蛙的约会.cpp">
+      <Filter>源文件\待完成</Filter>
+    </ClCompile>
+    <ClCompile Include="E - Minimum OR Path.cpp">
+      <Filter>源文件\比赛\AtCoder Beginner Contest 408</Filter>
+    </ClCompile>
+    <ClCompile Include="P3366 【模板】最小生成树.cpp">
       <Filter>源文件\待完成</Filter>
     </ClCompile>
   </ItemGroup>

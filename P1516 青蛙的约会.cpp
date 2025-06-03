@@ -45,7 +45,7 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    
+
 
 
 
@@ -81,7 +81,7 @@ inline Type readf(Type* p) {
         sgn |= ch == '-', ch = getchar();
     }
     while (isdigit(ch)) ret = ret * 10 + ch - '0', ch = getchar();
-    if (p != NULL){
+    if (p != NULL) {
         *p = Type(sgn ? -ret : ret);
     }
     return sgn ? -ret : ret;
@@ -115,7 +115,7 @@ inline void writef(Type x) {
  *      |  `-----------------'  | /      |((((     |  ,"
  *      +-----------------------+/       |         |,"
  *         /_)______________(_/          +---------+
- *    _______________________________    
+ *    _______________________________
  *   /  oooooooooooooooo  .o.  oooo /,   /-----------
  *  / ==ooooooooooooooo==.o.  ooo= //   /\--{)B     ,"
  * /_==__==========__==_ooo__ooo=_/'   /___________,"
