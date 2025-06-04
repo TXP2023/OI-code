@@ -14,10 +14,13 @@
 #include <time.h>
 #include <iostream>
 #include <stdint.h>
+#include <map>
+#include <set>
 
 #define READ          false
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
+#define MAXN          100005
 
 typedef long long int ll;
 typedef unsigned long long int ull;
@@ -35,20 +38,16 @@ inline Type readf(Type* p = nullptr);
 template<typename Type>
 inline void writef(Type x);
 
-ll x, y, m, n, l;
-ll exgcd_x, exgcd_y, ans;
+struct HayStack {
+    ll pos, weight;
+};
 
-//求解方程 _a*x + _b*y = 0
-inline ll exgcd(ll _a, ll _b, ll& _x, ll& _y) {
-    ll ret;
-    if (_b == 0) {
-        _x = 1; _y = 0;
-        return _a;
-    }
-    ret =  exgcd(_b, _a % _b, _y, _x);
-    _y -= (_a / _b) * _x;
-    return ret;
-}
+std::map<ll, int> mapping;
+std::set<ll> set;
+HayStack hays[MAXN];
+ll pos[MAXN];
+bool flag[MAXN];
+ll n, ans;
 
 int main() {
 #ifdef _FREOPEN
@@ -59,23 +58,61 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-	readf(&x), readf(&y), readf(&m), readf(&n), readf(&l);  
+    readf(&n);
 
-    ll s = x - y, w = n - m;
-
-    if (w < 0) {
-        s = -s;
-        w = -w;
+    for (size_t i = 1; i <= n; i++) {
+        readf(&hays[i].weight), readf(&hays[i].pos);
+        pos[i] = hays[i].pos;
     }
 
-    ans = exgcd(w, l, exgcd_x, exgcd_y);
-    //exgcd(n - m, l, exgcd_x, exgcd_y) (n - m)*x + l*exgcd_y = 0
-    if (s % ans) { //最后不能相遇  误解
-        puts("Impossible");
+    std::sort(pos + 1, pos + 1 + n, 
+        [](const ll &a, const ll &b) {
+            return a < b; 
+        }
+    );
+
+    for (size_t i = 1; i <= n; i++) {
+        mapping[pos[i]] = i;
     }
-    else {
-        printf("%lld\n", ((exgcd_x * (s / ans)) % (l / ans) + (l / ans)) % (l / ans));
+
+    std::sort(hays + 1, hays + 1 + n,
+        [](const HayStack &a, const HayStack &b) {
+            return a.weight > b.weight;
+        }
+    );
+
+    set.insert(hays[1].pos);
+
+    for (size_t i = 2; i <= n; i++) {
+        if (*(set.begin()) < hays[i].pos) {
+            //二分查找第一个大于hays[i].pos的位置
+            std::set<ll>::iterator it = --set.upper_bound(hays[i].pos);
+            ll left = mapping[*it], right = mapping[hays[i].pos];
+            if (pos[right] - pos[left] <= hays[i].weight && !flag[left]) {
+                for (size_t i = left; i < right; i++) {
+                    flag[i] = true;
+                }
+            }
+        }
+        if (*(--set.end()) > hays[i].pos) {
+            //二分查找第一个大于hays[i].pos的位置
+            std::set<ll>::iterator it = set.upper_bound(hays[i].pos);
+            ll left = mapping[hays[i].pos], right = mapping[*it];
+            if (pos[right] - pos[left] <= hays[i].weight && !flag[left]) {
+                for (size_t i = left; i < right; i++) {
+                    flag[i] = true;
+                }
+            }
+        }
     }
+
+    for (int i = 1; i < n; i++) {
+        if (flag[i]) {
+            ans += pos[i + 1] - pos[i];
+        }    
+    }
+
+    printf("%lld\n", ans);
 
 #ifdef _RUN_TIME
     printf("The running duration is not less than %ld ms\n", clock() - start);
