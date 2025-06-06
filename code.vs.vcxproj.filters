@@ -58,6 +58,9 @@
     <Filter Include="源文件\比赛\AtCoder Beginner Contest 408">
       <UniqueIdentifier>{876033a9-3613-4f72-9ec1-fd3c499b3f05}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\已完成的题目\shsbnu">
+      <UniqueIdentifier>{813ec2d3-d08e-4c15-ab75-b02bca40f067}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="模板.cpp">
@@ -634,6 +637,15 @@
       <Filter>源文件\已完成的题目\luogu</Filter>
     </ClCompile>
     <ClCompile Include="P3127 [USACO15OPEN] Trapped in the Haybales G.cpp">
+      <Filter>源文件\待完成</Filter>
+    </ClCompile>
+    <ClCompile Include="P1816 忠诚.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
+    <ClCompile Include="P2866 [USACO06NOV] Bad Hair Day S.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
+    <ClCompile Include="P8818 [CSP-S 2022] 策略游戏.cpp">
       <Filter>源文件\待完成</Filter>
     </ClCompile>
   </ItemGroup>

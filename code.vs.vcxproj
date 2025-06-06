@@ -318,6 +318,9 @@
     <ClCompile Include="P1792 [国家集训队] 种树.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="P1816 忠诚.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="P1879 [USACO06NOV] Corn Fields G.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
@@ -405,6 +408,9 @@
     <ClCompile Include="P2846 [USACO08NOV] Light Switching G.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="P2866 [USACO06NOV] Bad Hair Day S.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="P2894 [USACO08FEB] Hotel G 线段树法.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
@@ -414,7 +420,9 @@
     <ClCompile Include="P3076 [USACO13FEB] Taxi G.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="P3127 [USACO15OPEN] Trapped in the Haybales G.cpp" />
+    <ClCompile Include="P3127 [USACO15OPEN] Trapped in the Haybales G.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="P3128 [USACO15DEC] Max Flow P.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
@@ -607,6 +615,7 @@
     <ClCompile Include="P8805 [蓝桥杯 2022 国 B] 机房.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="P8818 [CSP-S 2022] 策略游戏.cpp" />
     <ClCompile Include="P8855 [POI2002] 商务旅行.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
