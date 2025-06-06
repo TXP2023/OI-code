@@ -18,6 +18,8 @@
 #define READ          false
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
+#define MAXN          (size_t)(1e5+5)
+#define MAXN_LOG2     (size_t)(17)
 
 typedef long long int ll;
 typedef unsigned long long int ull;
@@ -59,12 +61,20 @@ private:
 template<size_t _size, size_t _size_log>
 struct StTable {
     ll arrMax[_size + 1][_size_log + 1], arrMin[_size + 1][_size_log + 1];
-    ll arrMax
+    ll maxNeg[_size + 1][_size_log + 1]/*负数最大值*/, minUNeg[_size + 1][_size_log + 1];
     Log2<_size> get_log2;
 
     inline void insert(size_t pos, ll val) {
         arrMax[pos][0] = val;
         arrMin[pos][0] = val;
+        if (val >= 0) {
+            minUNeg[pos][0] = val;
+            maxNeg[pos][0] = LLONG_MIN;
+        }
+        else {
+            minUNeg[pos][0] = LLONG_MAX;
+            maxNeg[pos][0] = val;
+        }
         return;
     }
 
@@ -75,9 +85,17 @@ struct StTable {
                     arrMax[j][i - 1],
                     arrMax[j + (1 << (i - 1))][i - 1]
                 );
+                maxNeg[j][i] = std::max(
+                    maxNeg[j][i - 1],
+                    maxNeg[j + (1 << (i - 1))][i - 1]
+                );
                 arrMin[j][i] = std::min(
                     arrMin[j][i - 1],
                     arrMin[j + (1 << (i - 1))][i - 1]
+                );
+                minUNeg[j][i] = std::min(
+                    minUNeg[j][i - 1],
+                    minUNeg[j + (1 << (i - 1))][i - 1]
                 );
             }
         }
@@ -88,13 +106,24 @@ struct StTable {
         return std::max(arrMax[left][Log], arrMax[right - (1 << Log) + 1][Log]);
     }
 
+    inline ll get_maxNeg(size_t left, size_t right) {
+        size_t Log = get_log2(right - left + 1);
+        return std::max(maxNeg[left][Log], maxNeg[right - (1 << Log) + 1][Log]);
+    }
+
     inline ll get_min(size_t left, size_t right) {
         size_t Log = get_log2(right - left + 1);
         return std::min(arrMin[left][Log], arrMin[right - (1 << Log) + 1][Log]);
     }
 
+    inline ll get_minUNeg(size_t left, size_t right) {
+        size_t Log = get_log2(right - left + 1);
+        return std::min(minUNeg[left][Log], minUNeg[right - (1 << Log) + 1][Log]);
+    }
+
 };
 
+StTable<MAXN, MAXN_LOG2> arrA, arrB;
 ll n, m, q;
 
 int main() {
@@ -108,9 +137,35 @@ int main() {
 
     readf(&n), readf(&m), readf(&q);
 
+    for (size_t i = 1; i <= n; i++) {
+        arrA.insert(i, readf<ll>());
+    }
+    arrA.init();
 
+    for (size_t i = 1; i <= m; i++) {
+        arrB.insert(i, readf<ll>());
+    }
+    arrB.init();
+    
+    while (q--) {
+        size_t aLeft, aRight, bLeft, bRight;
+        readf(&aLeft), readf(&aRight), readf(&bLeft), readf(&bRight);
+        ll aMax = arrA.get_max(aLeft, aRight), aMin = arrA.get_min(aLeft, aRight);
+        ll aNegMax = arrA.get_maxNeg(aLeft, aRight), aUNegMin = arrA.get_minUNeg(aLeft, aRight);
+        ll bMax = arrB.get_max(bLeft, bRight), bMin = arrB.get_min(bLeft, bRight);
+        ll ans = LLONG_MIN;
 
-
+        ans = std::max(ans, aMax * (aMax >= 0 ? bMin : bMax));
+        ans = std::max(ans, aMin * (aMin >= 0 ? bMin : bMax));
+        if (aNegMax != LLONG_MIN) {
+            ans = std::max(ans, aNegMax* (aNegMax >= 0 ? bMin : bMax));
+        }
+            
+        if (aUNegMin != LLONG_MAX) {
+            ans = std::max(ans, aUNegMin * (aUNegMin >= 0 ? bMin : bMax));
+        }
+        printf("%lld\n", ans);
+    }
 
 #ifdef _RUN_TIME
     printf("The running duration is not less than %ld ms\n", clock() - start);

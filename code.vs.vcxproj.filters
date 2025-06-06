@@ -646,7 +646,7 @@
       <Filter>源文件\已完成的题目\luogu</Filter>
     </ClCompile>
     <ClCompile Include="P8818 [CSP-S 2022] 策略游戏.cpp">
-      <Filter>源文件\待完成</Filter>
+      <Filter>源文件\已完成的题目\luogu</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
