@@ -15,10 +15,10 @@
 #include <iostream>
 #include <stdint.h>
 
-#define READ           false
-#define MAX_INF        1e18
-#define MAX_NUM_SIZE   35
-#define MAX_STR_LENGTH (size_t)(1e5+5)
+#define READ          false
+#define MAX_INF       1e18
+#define MAX_NUM_SIZE  35
+#define MAXN          (size_t)(3e5+5)
 
 typedef long long int ll;
 typedef unsigned long long int ull;
@@ -36,54 +36,8 @@ inline Type readf(Type* p = nullptr);
 template<typename Type>
 inline void writef(Type x);
 
-char str[MAX_STR_LENGTH];
-ll strLength, t;
-
-inline void solve() {
-    readf(&strLength);
-    scanf("%s\n", str + 1);
-    if (strLength == 1) {
-        putchar(str[1]);
-        puts("");
-        return;
-    }
-    str[strLength + 1] = '\0';
-    bool flag2 = false;
-    for (size_t i = 1; i < strLength; i++) {
-        if (str[i] > str[i + 1]) {
-            flag2 = true;
-            for (size_t j = 1; j < i; j++) {
-                putchar(str[j]);
-            }
-            bool flag = false;
-            for (size_t j = i + 2; j <= strLength; j++) {
-                if (str[i] < str[j]) {
-                    flag = true;
-                    for (size_t k = i + 1; k < j; k++) {
-                        putchar(str[k]);
-                    }
-                    putchar(str[i]);
-                    for (size_t k = j; k <= strLength; k++) {
-                        putchar(str[k]);
-                    }
-                    break;
-                }
-            }
-            if (!flag) {
-                for (size_t j = i + 1; j <= strLength; j++) {
-                    putchar(str[j]);
-                }
-                putchar(str[i]);
-            }
-            break;
-        }
-    }
-    if (!flag2) {
-        printf("%s", str + 1);
-    }
-    puts("");
-    return;
-}
+ll preSum[MAXN], cnt[MAXN];
+ll n, l, ans;
 
 int main() {
 #ifdef _FREOPEN
@@ -94,11 +48,24 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    readf(&t);
-
-    while (t--) {
-        solve();
+    readf(&n), readf(&l);
+    if (l % 3) {
+        puts("0");
+        return 0;
     }
+    for (int i = 2; i <= n; i++) {
+        readf(&preSum[i]);
+        preSum[i] += preSum[i - 1];
+        preSum[i] %= l;
+        cnt[preSum[i]]++;
+    }
+    cnt[0]++;
+    l /= 3;
+    for (int i = 0; i < l; i++) {
+        ans += cnt[i] * cnt[i + l] * cnt[i + 2 * l];
+    }
+    printf("%lld\n", ans);
+
 
 
 #ifdef _RUN_TIME

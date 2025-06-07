@@ -35,6 +35,8 @@ inline Type readf(Type* p = nullptr);
 template<typename Type>
 inline void writef(Type x);
 
+std::string t, a;
+ll n;
 
 int main() {
 #ifdef _FREOPEN
@@ -45,7 +47,16 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-
+    readf(&n);
+    
+    std::cin >> t >> a;
+    for (int i = 0; i < n; i++) {
+        if (t[i] == a[i] and t[i] == 'o') {
+            puts("Yes"); 
+            return 0;
+        }
+    }
+    puts("No");
 
 
 
