@@ -70,7 +70,7 @@ int main() {
     ll ans;
     for (ll right = maxVal, left = 0; left >= 0 && left <= right; ) {
         ll mid = (right + left) >> 1;
-        if (mid <= get_cnt(mid)/*大等于arr[i]的数量*/) {
+        if (mid <= get_cnt(mid)/*大等于mid的arr[i]的数量*/) {
             ans = mid;
             left = mid + 1;
         }
