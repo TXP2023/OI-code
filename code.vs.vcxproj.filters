@@ -663,6 +663,12 @@
     <ClCompile Include="A - Conflict.cpp">
       <Filter>源文件\比赛\AtCoder Beginner Contest 409</Filter>
     </ClCompile>
+    <ClCompile Include="链式前向星存图.cpp">
+      <Filter>源文件\样例</Filter>
+    </ClCompile>
+    <ClCompile Include="P11379 [GESP202412 八级] 树上移动.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
