@@ -66,8 +66,6 @@ int main() {
     }
     printf("%lld\n", ans);
 
-
-
 #ifdef _RUN_TIME
     printf("The running duration is not less than %ld ms\n", clock() - start);
 #endif // _RUN_TIME
