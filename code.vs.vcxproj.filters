@@ -61,6 +61,9 @@
     <Filter Include="源文件\已完成的题目\shsbnu">
       <UniqueIdentifier>{813ec2d3-d08e-4c15-ab75-b02bca40f067}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\比赛\AtCoder Beginner Contest 409">
+      <UniqueIdentifier>{a3f832a9-4d51-49b2-b0ec-9b0541ed2644}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="模板.cpp">
@@ -647,6 +650,18 @@
     </ClCompile>
     <ClCompile Include="P8818 [CSP-S 2022] 策略游戏.cpp">
       <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
+    <ClCompile Include="D - String Rotation.cpp">
+      <Filter>源文件\比赛\AtCoder Beginner Contest 409</Filter>
+    </ClCompile>
+    <ClCompile Include="C - Equilateral Triangle.cpp">
+      <Filter>源文件\比赛\AtCoder Beginner Contest 409</Filter>
+    </ClCompile>
+    <ClCompile Include="B - Citation.cpp">
+      <Filter>源文件\比赛\AtCoder Beginner Contest 409</Filter>
+    </ClCompile>
+    <ClCompile Include="A - Conflict.cpp">
+      <Filter>源文件\比赛\AtCoder Beginner Contest 409</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
