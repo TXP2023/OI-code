@@ -18,8 +18,7 @@
 #define READ          false
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
-#define MAXN          105
-#define MAXM          10005
+#define MAXN          (size_t)(5e4+5)
 
 typedef long long int ll;
 typedef unsigned long long int ull;
@@ -39,41 +38,52 @@ inline void writef(Type x);
 
 struct Edge {
     size_t u, v;
-    ll w;
     size_t next;
 };
 
-size_t head[MAXN], inStamp[MAXN], outStamp[MAXN], dfs[MAXN];
-Edge edges[MAXM];
-ll color[MAXN];
-ll n, k, edgeCnt = 0, dfsCnt = 0, ans = 0;
+size_t head[MAXN];
+Edge edges[MAXN * 2];
+size_t edgeCnt = 0, n;
+ll size[MAXN], maxSubTree[MAXN], ans, sum;
 
-inline void addEdge(ll u, ll v, ll w) {
+inline void addEdge(ll u, ll v) {
     edges[++edgeCnt].u = u;
-    edges[++edgeCnt].v = v;
-    edges[++edgeCnt].w = w;
-    edges[++edgeCnt].next = head[u];
+    edges[edgeCnt].v = v;
+    edges[edgeCnt].next = head[u];
     head[u] = edgeCnt;
     return;
 }
 
-void get_dfs(ll u, ll father, ll val, ll num) {
-    ++num;
-    val += color[u];
-    if (val > k) {
-        return;
-    }
-    ans = std::max(ans, num);
-    for (size_t i = head[u]; i != 0; i = edges[i].next) {
-        if (edges[i].v == father) {
+void get_centroid(size_t u, size_t fa) {
+    size[u] = 1;
+    for (size_t i = head[u]; i; i = edges[i].next) {
+        if (edges[i].v == fa) {
             continue;
         }
-        get_dfs(edges[i].v, u, val, num);
+        get_centroid(edges[i].v, u);
+        size[u] += size[edges[i].v];
+        maxSubTree[u] = std::max(size[edges[i].v], maxSubTree[u]);
     }
+    maxSubTree[u] = std::max((ll)n - size[u], maxSubTree[u]);
+    if (maxSubTree[u] == maxSubTree[ans] && u < ans) {
+        ans = u;
+    }
+    if (maxSubTree[u] < maxSubTree[ans]) {
+        ans = u;
+    }
+    
     return;
 }
 
-
+void get_deep(ll u, ll fa, ll _deep) {
+    sum += _deep;
+    for (size_t i = head[u]; i; i = edges[i].next) {
+        if (edges[i].v == fa) {
+            continue;
+        }
+        get_deep(edges[i].v, u, _deep + 1);
+    }
+}
 
 int main() {
 #ifdef _FREOPEN
@@ -86,23 +96,19 @@ int main() {
 
     readf(&n);
 
-    for (size_t i = 1; i <= n; i++) {
-        readf(&color[i]);
+    for (size_t i = 0; i < n-1; i++) {
+        size_t u, v;
+        readf(&u), readf(&v);
+        addEdge(u, v);
+        addEdge(v, u);
     }
 
-    for (size_t i = 0; i < n; i++) {
-        ll u = readf<ll>(), v = readf<ll>(), w = readf<ll>();
-        addEdge(u, v, w);
-        addEdge(v, u, w);
-    }
+    maxSubTree[0] = INT32_MAX;
+    get_centroid(1, 0);
+    get_deep(ans, 0, 0);
 
-    
-    for (size_t i = 1; i <= n; i++) {
-        get_dfs(i, 0, 0, 0);
-    }
-
-    printf("%lld\n", ans);
-
+    printf("%lld %lld\n", ans, sum);
+ 
 #ifdef _RUN_TIME
     printf("The running duration is not less than %ld ms\n", clock() - start);
 #endif // _RUN_TIME

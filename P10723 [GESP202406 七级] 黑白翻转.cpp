@@ -18,10 +18,10 @@
 #define READ          false
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
-#define MAXN          105
+#define MAXN          1000005
 #define MAXM          10005
 
-typedef long long int ll;
+typedef int ll;
 typedef unsigned long long int ull;
 
 //¿ì¶Áº¯ÊýÉùÃ÷
@@ -38,42 +38,36 @@ template<typename Type>
 inline void writef(Type x);
 
 struct Edge {
-    size_t u, v;
-    ll w;
-    size_t next;
+    int u, v;
+    int next;
 };
 
-size_t head[MAXN], inStamp[MAXN], outStamp[MAXN], dfs[MAXN];
-Edge edges[MAXM];
-ll color[MAXN];
-ll n, k, edgeCnt = 0, dfsCnt = 0, ans = 0;
+int head[MAXN];
+Edge edges[MAXN * 2];
+bool color[MAXN];
+int n, edgeCnt = 0, ans = 0, sum;
 
-inline void addEdge(ll u, ll v, ll w) {
+inline void addEdge(ll u, ll v) {
     edges[++edgeCnt].u = u;
-    edges[++edgeCnt].v = v;
-    edges[++edgeCnt].w = w;
-    edges[++edgeCnt].next = head[u];
+    edges[edgeCnt].v = v;
+    edges[edgeCnt].next = head[u];
     head[u] = edgeCnt;
     return;
 }
 
-void get_dfs(ll u, ll father, ll val, ll num) {
-    ++num;
-    val += color[u];
-    if (val > k) {
-        return;
-    }
-    ans = std::max(ans, num);
+bool get_dfs(ll u, ll father) {
+    bool ret = false;
     for (size_t i = head[u]; i != 0; i = edges[i].next) {
         if (edges[i].v == father) {
             continue;
         }
-        get_dfs(edges[i].v, u, val, num);
+        ret |= get_dfs(edges[i].v, u);
     }
-    return;
+    if (ret) {
+        sum += (color[u] ^ 1);
+    }
+    return ret | color[u];
 }
-
-
 
 int main() {
 #ifdef _FREOPEN
@@ -87,18 +81,23 @@ int main() {
     readf(&n);
 
     for (size_t i = 1; i <= n; i++) {
-        readf(&color[i]);
+        color[i] = readf<ll>();
     }
 
-    for (size_t i = 0; i < n; i++) {
-        ll u = readf<ll>(), v = readf<ll>(), w = readf<ll>();
-        addEdge(u, v, w);
-        addEdge(v, u, w);
+    for (size_t i = 1; i <= n - 1; i++) {
+        ll u = readf<ll>(), v = readf<ll>();
+        addEdge(u, v);
+        addEdge(v, u);
     }
 
-    
+
+
     for (size_t i = 1; i <= n; i++) {
-        get_dfs(i, 0, 0, 0);
+        if (color[i]) {
+            get_dfs(1, 0);
+            ans = std::min(sum, ans);
+            sum = 0;
+        }
     }
 
     printf("%lld\n", ans);
