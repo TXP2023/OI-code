@@ -145,7 +145,8 @@ int main() {
 
         ll max = preSum[i] - valMin, min = preSum[i] - valMax;
         max = small_bound(max);
-        min = big_bound(min);
+        //min = big_bound(min);
+        min = std::lower_bound(disArr + 1, disArr + 1 + dis_size, min) - disArr;
         if (max == -1 || min == -1) {
             continue;
         }
