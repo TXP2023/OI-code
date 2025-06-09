@@ -138,26 +138,23 @@ int main() {
     insert(1, 1, dis_size, mapping[0]);
     //这个代码现在到9之前没问题
     for (size_t i = 1; i <= n; i++) {
-        insert(1, 1, dis_size, mapping[preSum[i]]);
+        
 #if DEBUG
         printf("%lld\n", mapping[preSum[i]]);
 #endif // DEBUG
 
-        ll max = preSum[i] - valMin, min = preSum[i] - valMax;
-        max = small_bound(max);
-        //min = big_bound(min);
-        min = std::lower_bound(disArr + 1, disArr + 1 + dis_size, min) - disArr;
-        if (max == -1 || min == -1) {
-            continue;
+        ll max, min;
+        max = small_bound(preSum[i] - valMin);
+        min = std::lower_bound(disArr + 1, disArr + 1 + dis_size, preSum[i] - valMax) - disArr;
+        if (max != -1 && min != -1) {
+            ans += query(
+                1, 1, dis_size,
+                min,
+                max
+            );
         }
-        ans += query(
-            1, 1, dis_size, 
-            min,
-            max
-        );
-        //0 1 2 3  4  5
-        //0 1 3 6 10 15
-        //0 1 2 3  4  5
+        
+        insert(1, 1, dis_size, mapping[preSum[i]]);
     }
 
     printf("%lld\n", ans);

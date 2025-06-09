@@ -627,9 +627,6 @@
     <ClCompile Include="P1896 [SCOI2005] 互不侵犯.cpp">
       <Filter>源文件\已完成的题目\luogu</Filter>
     </ClCompile>
-    <ClCompile Include="P5459 [BJOI2016] 回转寿司.cpp">
-      <Filter>源文件\待完成</Filter>
-    </ClCompile>
     <ClCompile Include="E - Minimum OR Path.cpp">
       <Filter>源文件\比赛\AtCoder Beginner Contest 408</Filter>
     </ClCompile>
@@ -673,6 +670,9 @@
       <Filter>源文件\待完成</Filter>
     </ClCompile>
     <ClCompile Include="P1395 会议.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
+    <ClCompile Include="P5459 [BJOI2016] 回转寿司.cpp">
       <Filter>源文件\已完成的题目\luogu</Filter>
     </ClCompile>
   </ItemGroup>
