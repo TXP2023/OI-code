@@ -14,14 +14,16 @@
 #include <time.h>
 #include <iostream>
 #include <stdint.h>
+#include <math.h>
+#include <cmath>
 
 #define READ          false
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
-#define MAXN          1000005
-#define MAXM          10005
+#define MAXN          (size_t)(1e6 + 5)
+#define BLOCKS_SIZE   (size_t)(1e3+5)
 
-typedef int ll;
+typedef long long int ll;
 typedef unsigned long long int ull;
 
 //¿ì¶Áº¯ÊýÉùÃ÷
@@ -37,36 +39,76 @@ inline Type readf(Type* p = nullptr);
 template<typename Type>
 inline void writef(Type x);
 
-struct Edge {
-    int u, v;
-    int next;
+struct Block {
+    std::vector<ll> vec;
+    ll tag;
 };
 
-int head[MAXN];
-Edge edges[MAXN * 2];
-bool color[MAXN];
-int n, edgeCnt = 0, ans = 0, sum, minTree = 0, blackNum = 0;
+Block blocks[BLOCKS_SIZE];
+size_t arr[MAXN], belong[MAXN];
+size_t blockSize, blockNum;
+ll n, q;
 
-inline void addEdge(ll u, ll v) {
-    edges[++edgeCnt].u = u;
-    edges[edgeCnt].v = v;
-    edges[edgeCnt].next = head[u];
-    head[u] = edgeCnt;
+inline void update(size_t index) {
+    for (size_t i = (index-1)*3+1, j = 0; j < blocks[index].vec.size(); j++, i++) {
+        blocks[index].vec[j] = arr[i];
+    }
+    std::sort(blocks[index].vec.begin(), blocks[index].vec.end());
+}
+
+inline void Add(size_t _First, size_t _Last, ll _Val) {
+    if (belong[_First] == belong[_Last]) {
+        for (size_t i = _First; i <= _Last; i++) {
+            arr[i] += _Val;
+        }
+        update(belong[_First]);
+    }
+    else {
+        for (size_t i = _First; i <= belong[_First]* blockSize; i++) {
+            arr[i] += _Val;
+        }
+        update(belong[_First]);
+        for (size_t i = belong[_First] + 1; i < belong[_Last]; i++) {
+            blocks[i].tag += _Val;
+        }
+        for (size_t i = (belong[_Last]-1)*blockSize+1; i <= _Last; i++) {
+            arr[i] += _Val;
+        }
+        update(belong[_Last]);
+    }
     return;
 }
 
-bool dfs(ll u, ll father) {
-    bool ret = false;
-    for (size_t i = head[u]; i != 0; i = edges[i].next) {
-        if (edges[i].v == father) {
-            continue;
+inline ll query(size_t _First, size_t _Last, ll _Val) {
+    ll res = 0;
+    if (belong[_First] == belong[_Last]) {
+        for (size_t i = _First; i <= _Last; i++) {
+            res += (arr[i] >= _Val - blocks[belong[_First]].tag);
         }
-        ret |= dfs(edges[i].v, u);
     }
-    if (ret || color[u]) {
-        ++sum;
+    else {
+        for (size_t i = _First; i <= belong[_First] * blockSize; i++) {
+            res += (arr[i] >= _Val);
+        }
+        for (size_t i = belong[_First] + 1; i < belong[_Last]; i++) {
+            ll ans = blockSize;
+            for (size_t left = 0, right = blockSize - 1; left <= right; ) {
+                ll mid = (left + right) >> 1;
+                if (blocks[i].vec[mid] >= _Val - blocks[i].tag) {
+                    ans = mid;
+                    right = mid - 1;
+                }
+                else {
+                    left = mid + 1;
+                }
+            }
+            res += blockSize - ans;
+        }
+        for (size_t i = (belong[_Last] - 1) * blockSize + 1; i <= _Last; i++) {
+            res += (arr[i] >= _Val - blocks[belong[_First]].tag);
+        }
     }
-    return ret | color[u];
+    return res;
 }
 
 int main() {
@@ -78,28 +120,38 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    readf(&n);
+    readf(&n), readf(&q);
+    blockSize = (int)(std::sqrt(n)) + 1;
+    blockNum = n / blockSize + (n % blockSize != 0);
 
     for (size_t i = 1; i <= n; i++) {
-        color[i] = readf<ll>();
-        blackNum += color[i];
+        readf(&arr[i]);
+        blocks[i / blockSize + 1].vec.push_back(arr[i]);
+        belong[i] = i / blockSize + 1;
     }
 
-    for (size_t i = 1; i <= n - 1; i++) {
-        ll u = readf<ll>(), v = readf<ll>();
-        addEdge(u, v);
-        addEdge(v, u);
+    for (size_t i = 1; i <= blockNum; i++) {
+        std::sort(blocks[i].vec.begin(), blocks[i].vec.end());
+        blocks[i].tag = 0;
     }
 
-    for (size_t i = 1; i <= n; i++) {
-        if (color[i]) {
-            dfs(i, 0);
-            break;
+    while (q--) {
+        char opt[2];
+        scanf("%s", opt);
+        if (opt[0] == 'M') {
+            size_t first = readf<size_t>(), last = readf<size_t>();
+            ll val = readf<ll>();
+            Add(first, last, val);
+        }
+        else {
+            size_t first = readf<size_t>(), last = readf<size_t>();
+            ll val = readf<ll>();
+            printf("%lld\n", query(first, last, val));
+
         }
     }
-    
 
-    printf("%lld\n", sum - blackNum);
+
 
 #ifdef _RUN_TIME
     printf("The running duration is not less than %ld ms\n", clock() - start);

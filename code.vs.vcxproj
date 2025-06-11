@@ -417,6 +417,7 @@
     <ClCompile Include="P2704 [NOI2001] 炮兵阵地.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="P2801 教主的魔法.cpp" />
     <ClCompile Include="P2824 [HEOI2016  TJOI2016] 排序 暴力模拟方法.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
