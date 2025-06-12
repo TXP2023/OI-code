@@ -50,7 +50,7 @@ size_t blockSize, blockNum;
 ll n, q;
 
 inline void update(size_t index) {
-    for (size_t i = (index-1)*3+1, j = 0; j < blocks[index].vec.size(); j++, i++) {
+    for (size_t i = (index-1)* blockSize +1, j = 0; j < blocks[index].vec.size(); j++, i++) {
         blocks[index].vec[j] = arr[i];
     }
     std::sort(blocks[index].vec.begin(), blocks[index].vec.end());
@@ -83,18 +83,18 @@ inline ll query(size_t _First, size_t _Last, ll _Val) {
     ll res = 0;
     if (belong[_First] == belong[_Last]) {
         for (size_t i = _First; i <= _Last; i++) {
-            res += (arr[i] >= _Val - blocks[belong[_First]].tag);
+            res += (arr[i] + blocks[belong[_First]].tag >= _Val);
         }
     }
     else {
         for (size_t i = _First; i <= belong[_First] * blockSize; i++) {
-            res += (arr[i] >= _Val);
+            res += (arr[i] + blocks[belong[_First]].tag >= _Val);
         }
         for (size_t i = belong[_First] + 1; i < belong[_Last]; i++) {
             ll ans = blockSize;
-            for (size_t left = 0, right = blockSize - 1; left <= right; ) {
+            for (ll left = 0, right = blockSize - 1; left <= right; ) {
                 ll mid = (left + right) >> 1;
-                if (blocks[i].vec[mid] >= _Val - blocks[i].tag) {
+                if (blocks[i].vec[mid] + blocks[i].tag >= _Val) {
                     ans = mid;
                     right = mid - 1;
                 }
@@ -105,7 +105,7 @@ inline ll query(size_t _First, size_t _Last, ll _Val) {
             res += blockSize - ans;
         }
         for (size_t i = (belong[_Last] - 1) * blockSize + 1; i <= _Last; i++) {
-            res += (arr[i] >= _Val - blocks[belong[_First]].tag);
+            res += (arr[i] + blocks[belong[_Last]].tag >= _Val);
         }
     }
     return res;
@@ -126,8 +126,8 @@ int main() {
 
     for (size_t i = 1; i <= n; i++) {
         readf(&arr[i]);
-        blocks[i / blockSize + 1].vec.push_back(arr[i]);
-        belong[i] = i / blockSize + 1;
+        blocks[i / blockSize + (i % blockSize != 0)].vec.push_back(arr[i]);
+        belong[i] = i / blockSize + (i%blockSize != 0);
     }
 
     for (size_t i = 1; i <= blockNum; i++) {
@@ -149,6 +149,7 @@ int main() {
             printf("%lld\n", query(first, last, val));
 
         }
+        //puts("Debug");
     }
 
 
