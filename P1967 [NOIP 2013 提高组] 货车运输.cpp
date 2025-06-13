@@ -20,6 +20,7 @@
 #define MAX_NUM_SIZE  35
 #define MAXN          (size_t)(1e4+5)
 #define MAXM          (size_t)(5e4+5)
+#define MAX_LOG       15
 
 typedef long long int ll;
 typedef unsigned long long int ull;
@@ -62,10 +63,56 @@ struct Edge {
 	}
 };
 
+template<size_t __MAX_VALUE>
+class Log2 {
+public:
+    Log2();
+
+    int operator ()(const size_t& val) {
+        return log_[val];
+    }
+
+private:
+    int log_[__MAX_VALUE + 1];
+};
+
+template<size_t __MAX_VALUE>
+Log2<__MAX_VALUE>::Log2() {
+    log_[1] = 0;
+    log_[1] = 0;
+    log_[2] = 1;
+    for (size_t i = 3; i <= __MAX_VALUE; i++) {
+        log_[i] = log_[i / 2] + 1;
+    }
+    return;
+}
+
 Edge graph[MAXM], edges[MAXM], tree[MAXM];
-ll head[MAXN], tree_head[MAXN], set[MAXN];
-size_t graph_cnt = 0, tree_cnt;
-ll n, m;
+ll head[MAXN], tree_head[MAXN], set[MAXN], weight[MAXN];
+ll deep[MAXN], father[MAXN], heavy_son[MAXN], top[MAXN], node_num[MAXN], id[MAXN];
+ll stTable[MAXN][MAX_LOG];
+size_t graph_cnt = 0, tree_cnt = 0, cnt = 0;
+Log2<MAXN> get_log2;
+ll n, m, q;
+
+//初始化ST表
+inline void init_stTable() {
+    for (size_t i = 1; i <= MAX_LOG; i++) {
+        for (size_t j = 1; j + (1 << i) - 1 <= n; j++) {
+            stTable[j][i] = std::min(
+                stTable[j][i - 1],
+                stTable[j + (1 << (i - 1))][i - 1]
+            );
+        }
+    }
+    return;
+}
+
+inline ll stTableQuery(size_t range_begin, size_t range_end) {
+    size_t Log = get_log2(range_end - range_begin + 1);
+    return std::min(stTable[range_begin][Log], stTable[range_end - (1 << Log) + 1][Log]);
+}
+
 
 void add_edge(size_t u, size_t v, ll w, size_t &cnt, Edge* _Edges, ll* _Head) {
 	cnt++;
@@ -93,16 +140,78 @@ inline size_t find_set(size_t x) {
 
 inline void build_max_tree() {
     //kruskal
-    ll cnt = 1;
+    ll edge_num = 1;
     std::sort(edges + 1, edges + 1 + m);
 	//一个树有 n - 1 条边
     for (size_t i = 1; i <= n - 1; i++) {
-        if (find_set(edges[cnt].u) != find_set(edges[cnt].v)) {
-            set[find_set(edges[cnt].u)] = set[find_set(edges[cnt].v)];
-            
+        while (find_set(edges[edge_num].u) == find_set(edges[edge_num].v)) {
+            ++edge_num;
+        }
+        set[find_set(edges[edge_num].u)] = set[find_set(edges[edge_num].v)];
+        add_edge(edges[edge_num].u, edges[edge_num].v, edges[edge_num].w, tree_cnt, tree, tree_head);
+    }
+    return;
+}
+
+// 这个函数要初始化树的deep， father， heavy_son, node_num数组为有效值
+inline void tree_init(ll _u, ll _father, ll _deep) {
+    deep[_u] = _deep;
+    father[_u] = _father;
+    node_num[_u] = 1;
+    for (size_t i = tree_head[_u]; i; i = tree[i].next) {
+        if (tree[i].v == _father) {
+            continue;
+        }
+        ll v = tree[i].v;
+        tree_init(v, _u, _deep + 1);
+        node_num[_u] += node_num[v];
+        if (!heavy_son[_u] || node_num[heavy_son[_u]] < node_num[v]) {
+            heavy_son[_u] = v;
         }
     }
+    return;
+}
 
+inline void tree_init_heavy_chain(ll _u, ll _top, ll _father, size_t &cnt) {
+    id[_u] = ++cnt;
+    top[_u] = _top; //记录这个点的链头
+    //newSequence[id[_u]] = sequence[_u];
+    if (!heavy_son[_u]) /*这个点为叶子节点 即这个点没有重儿子 即没有儿子*/ {
+        return;
+    }
+    tree_init_heavy_chain(heavy_son[_u], _top, _u, cnt); //先构建重链
+    //遍历剩下的所有轻链
+    for (size_t i = tree_head[_u]; i; i = tree[i].next) {
+        ll v = tree[i].v;
+        if (v != _father && v != heavy_son[_u]) {
+            /*这是一个轻儿子 轻儿子不是重儿子也不是父节点*/
+            tree_init_heavy_chain(v, v, _u, cnt);
+            //遍历到这个轻儿子 由于这个点是轻儿子 故这将新建一个重链 这个重链的链头就是这个轻儿子
+        }
+    }
+    return;
+}
+
+//如何借助树剖求lca，对于点u，v的lca分类讨论
+//1）点u，v在一条重链上 节点深度低的就是
+//2）点u，v不在一条重链上 让深度低的往上跳，直到 1）
+
+inline ll query(ll _u, ll _v) {
+    ll res = INT_MAX;
+    while (top[_u] != top[_v]) {
+        //在跳的过程中 存在点u和点v不再一个树链上 故要将点u移动至点u所在树链的链头的父节点，即向上提一个重链
+        if (deep[top[_u]] < deep[top[_v]]) {
+            std::swap(_u, _v);
+        }
+        res = std::min(id[top[_u]], id[_u]);
+        //注意更新原来点u所在的重链
+        _u = father[top[_u]];
+    }
+    if (deep[_u] < deep[_v]) {
+        std::swap(_u, _v);
+    }
+    res = std::min(id[_v], id[_u]);
+    return res;
 }
 
 int main() {
@@ -123,6 +232,29 @@ int main() {
 		add_edge(v, u, w, graph_cnt, edges, head); // 无向图
 		edges[i] = Edge(u, v, w);
     }
+
+    set_init();
+    build_max_tree();
+
+    tree_init(1, 0, 1);
+    tree_init_heavy_chain(1, 1, 0, cnt);
+
+    for (size_t i = 1; i <= tree_cnt; i+=2) {
+        ll u = edges[i].u, v = edges[i].v;
+        if (deep[u] < deep[v]) {
+            std::swap(u, v);
+        }
+        stTable[u][0] = edges[i].w;
+    }
+    
+    readf(&q);
+
+    while (q--) {
+        ll u, v;
+        readf(&u), readf(&v);
+        printf("%lld\n", query(u, v));
+    }
+    
 
 #ifdef _RUN_TIME
     printf("The running duration is not less than %ld ms\n", clock() - start);

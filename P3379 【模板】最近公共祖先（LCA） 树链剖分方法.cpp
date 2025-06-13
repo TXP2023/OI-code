@@ -17,6 +17,7 @@
 #define READ false
 #define MAX_INF 1e18
 #define MAX_NUM_SIZE 35
+#define MAXN         (size_t)(5e5+5)
 
 typedef long long int ll;
 typedef long long int* llp;
@@ -35,55 +36,68 @@ inline Type readf(Type* p = NULL);
 template<typename Type>
 inline void writef(Type x);
 
-std::vector<std::vector<ll>> graph;
-ll* deep, * father, * heavy_son, * node_num, * top;
+std::vector<ll> graph[MAXN];
+ll deep[MAXN], father[MAXN], heavy_son[MAXN], node_num[MAXN], chain_top[MAXN];
 ll n, m, s;//n个节点
 
-inline ll/*返回值是节点p为根节点的子树的节点数量*/ tree_init(ll _p, ll _deep, ll _father) {
-    deep[_p] = _deep;
-    father[_p] = _father;
-    if (graph[_p].size() == 1 && _p != s) {
-        node_num[_p] = 1;
-        return 1;
-    }
-    ll sum = 0;
-    ll num = -1;
-    for (size_t i = 0; i < graph[_p].size(); i++) {
-        if (graph[_p][i] != _father) {
-            sum += tree_init(graph[_p][i], _deep + 1, _p);
-        }
-    }
-    heavy_son[_p] = graph[_p].front();
-    for (size_t i = 1; i < graph[_p].size(); i++) {
-        if (graph[_p][i] != _father && node_num[heavy_son[_p]] < node_num[graph[_p][i]]) {
-            heavy_son[_p] = graph[_p][i];
-        }
-    }
+//dppe[u]为节点u的深度， father[u]为节点u的父节点, node_num[u]为以节点u为根节点的子树的节点数量， 
+// chain_top[u]为节点u的重链的头节点
 
-    return node_num[_p] = sum + 1;
-}
+//heavy_son[u]为节点u的重子节点，对于一个节点的重子节点为这个节点的所有子节点
+//中，以该子节点为根的子树最大的的点
 
-inline void tree_init_2(ll _p, ll _father) {
-    top[_p] = _father;
-    if (heavy_son[_p] == -1) {
-        return;
-    }
-    tree_init_2(heavy_son[_p], _father);
-    for (size_t i = 0; i < graph[_p].size(); i++) {
-        if (graph[_p][i] != father[_p] && heavy_son[_p] != graph[_p][i]) {
-            tree_init_2(graph[_p][i], graph[_p][i]);
+// 这个函数要初始化树的deep， father， heavy_son, node_num数组为有效值
+inline void tree_init(ll _u, ll _father, ll _deep) {
+    deep[_u] = _deep;
+    father[_u] = _father;
+    node_num[_u] = 1;
+    for (size_t i = 0; i < graph[_u].size(); i++) {
+        if (graph[_u][i] == _father) {
+            continue;
+        }
+        ll v = graph[_u][i];
+        tree_init(v, _u, _deep + 1);
+        node_num[_u] += node_num[v];
+        if (!heavy_son[_u] || node_num[heavy_son[_u]] < node_num[v]) {
+            heavy_son[_u] = v;
         }
     }
     return;
 }
 
+inline void tree_init_heavy_chain(ll _u, ll _top, ll _father) {
+    chain_top[_u] = _top; //记录这个点的链头
+    //newSequence[id[_u]] = sequence[_u];
+    if (!heavy_son[_u]) /*这个点为叶子节点 即这个点没有重儿子 即没有儿子*/ {
+        return;
+    }
+    tree_init_heavy_chain(heavy_son[_u], _top, _u); //先构建重链
+    //遍历剩下的所有轻链
+    for (size_t i = 0; i < graph[_u].size(); i++) {
+        ll v = graph[_u][i];
+        if (v != _father && v != heavy_son[_u]) {
+            /*这是一个轻儿子 轻儿子不是重儿子也不是父节点*/
+            tree_init_heavy_chain(v, v, _u); 
+            //遍历到这个轻儿子 由于这个点是轻儿子 故这将新建一个重链 这个重链的链头就是这个轻儿子
+        }
+    }
+    return;
+}
+
+//如何借助树剖求lca，对于点u，v的lca分类讨论
+//1）点u，v在一条重链上 节点深度低的就是
+//2）点u，v不在一条重链上 让深度低的往上跳，直到 1）
+
 inline ll lca(ll _u, ll _v) {
-    while (top[_u] != top[_v]) {
-        if (deep[top[_u]] < deep[top[_v]]) {
+    while (chain_top[_u] != chain_top[_v]) {
+        //在跳的过程中 存在点u和点v不再一个树链上 故要将点u移动至点u所在树链的链头的父节点，即向上提一个重链
+        if (deep[chain_top[_u]] < deep[chain_top[_v]]) {
             std::swap(_u, _v);
         }
-        _u = father[top[_u]];
+        //注意更新原来点u所在的重链
+        _u = father[chain_top[_u]];
     }
+    
     return (deep[_u] < deep[_v]) ? _u : _v;
 }
 
@@ -94,34 +108,23 @@ int main() {
 
     readf(&n), readf(&m), readf(&s);
 
-    graph.resize(n);
     for (size_t i = 0; i < n - 1; i++) {
         ll u, v;
         readf(&u), readf(&v);
-        graph[--u].push_back(--v);
+        graph[u].push_back(v);
         graph[v].push_back(u);
     }
 
-    top = new ll[n];
-    deep = new ll[n];
-    father = new ll[n];
-    node_num = new ll[n];
-    heavy_son = new ll[n];
-    std::fill(heavy_son, heavy_son + n, -1);
+    std::fill(heavy_son + 1, heavy_son + n + 1, 0);
 
-    tree_init(--s, 1, s);
-    tree_init_2(s, s);
+    tree_init(s, 0, 1);
+    tree_init_heavy_chain(s, s, 1);
 
     for (size_t i = 0; i < m; i++) {
         ll u, v;
         readf(&u), readf(&v);
-        printf("%lld\n", lca(--u, --v) + 1);
+        printf("%lld\n", lca(u, v));
     }
-    delete[] top;
-    delete[] deep;
-    delete[] father;
-    delete[] node_num;
-    delete[] heavy_son;
     return 0;
 }
 
