@@ -291,7 +291,7 @@ int main() {
     while (q--) {
         ll u, v;
         readf(&u), readf(&v);
-        if (!id[u] || !id[v]) {
+        if (set[find_set(u)] != set[find_set(v)]) {
             puts("-1");
             continue;
         }

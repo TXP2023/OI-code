@@ -685,7 +685,7 @@
       <Filter>源文件\比赛\AtCoder Beginner Contest 410</Filter>
     </ClCompile>
     <ClCompile Include="P1967 [NOIP 2013 提高组] 货车运输.cpp">
-      <Filter>源文件\待完成</Filter>
+      <Filter>源文件\已完成的题目\luogu</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
