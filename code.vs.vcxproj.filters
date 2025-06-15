@@ -64,6 +64,9 @@
     <Filter Include="源文件\比赛\AtCoder Beginner Contest 409">
       <UniqueIdentifier>{a3f832a9-4d51-49b2-b0ec-9b0541ed2644}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\比赛\AtCoder Beginner Contest 410">
+      <UniqueIdentifier>{22e7c795-15c5-43d7-be3f-fc14e1b3122c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="模板.cpp">
@@ -677,6 +680,12 @@
     </ClCompile>
     <ClCompile Include="P2801 教主的魔法.cpp">
       <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
+    <ClCompile Include="D - XOR Shortest Walk.cpp">
+      <Filter>源文件\比赛\AtCoder Beginner Contest 410</Filter>
+    </ClCompile>
+    <ClCompile Include="P1967 [NOIP 2013 提高组] 货车运输.cpp">
+      <Filter>源文件\待完成</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
