@@ -231,6 +231,7 @@
     <ClCompile Include="P1082 [NOIP 2012 提高组] 同余方程.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="P1083 [NOIP 2012 提高组] 借教室.cpp" />
     <ClCompile Include="P1102 A-B 数对.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
