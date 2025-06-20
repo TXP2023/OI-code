@@ -694,6 +694,9 @@
       <Filter>源文件\已完成的题目\luogu</Filter>
     </ClCompile>
     <ClCompile Include="P1525 [NOIP 2010 提高组] 关押罪犯.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
+    <ClCompile Include="P1955 [NOI2015] 程序自动分析.cpp">
       <Filter>源文件\待完成</Filter>
     </ClCompile>
   </ItemGroup>

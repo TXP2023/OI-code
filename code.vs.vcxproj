@@ -324,7 +324,9 @@
     <ClCompile Include="P1516 青蛙的约会.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="P1525 [NOIP 2010 提高组] 关押罪犯.cpp" />
+    <ClCompile Include="P1525 [NOIP 2010 提高组] 关押罪犯.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="P1533 可怜的狗狗.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
@@ -364,6 +366,7 @@
     <ClCompile Include="P1941 [NOIP2014 提高组] 飞扬的小鸟.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="P1955 [NOI2015] 程序自动分析.cpp" />
     <ClCompile Include="P1958 上学路线.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>

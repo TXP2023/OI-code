@@ -8,17 +8,19 @@
 #include <stdio.h>
 #include <string.h>
 #include <algorithm>
-#include <numeric>
 #include <ctype.h>
 #include <cstdarg>
+#include <numeric>
 #include <climits>
 #include <time.h>
 #include <iostream>
 #include <stdint.h>
+#include <map>
 
 #define READ          false
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
+#define MAXN          (size_t)(1e5)
 
 typedef long long int ll;
 typedef unsigned long long int ull;
@@ -36,6 +38,86 @@ inline Type readf(Type* p = nullptr);
 template<typename Type>
 inline void writef(Type x);
 
+struct Task {
+    ll u, v, opt;
+};
+
+Task tasks[MAXN + 5];
+ll setEq[MAXN + 5], setNe[MAXN + 5];
+ll t, n, m;
+std::map<ll, int> mapping;
+
+ll find(ll x, ll* _Set) {
+    if (_Set[x] == x) {
+        return x;
+    }
+    else {
+        return _Set[x] = find(_Set[x], _Set);
+    }
+}
+
+inline bool same_set(ll x, ll y, ll* _Set) {
+    return find(x, _Set) == find(y, _Set);
+}
+
+inline void merge(ll x, ll y, ll* _Set) {
+    _Set[find(x, _Set)] = _Set[find(y, _Set)];
+    return;
+}
+
+inline void Discretization() {
+    ll cnt = 0, num_cnt[MAXN*2 + 1];
+    for (size_t i = 1; i <= m; i++) {
+        num_cnt[i * 2 - 1] = tasks[i].u;
+        num_cnt[i * 2] = tasks[i].v;
+    }
+    cnt = std::unique(num_cnt + 1, num_cnt + 1 + m * 2) - num_cnt;
+    for (size_t i = 1; i <= cnt; i++) {
+        mapping[num_cnt[i]] = i;
+    }
+    return;
+}
+
+inline bool slove() {
+    //多种情况
+    // 让 u！=v
+    // 判断此时u？=v， 如果为true，那么就无法成立
+    //否则可以成立
+    //让 u==v
+    bool flag = true;//
+    readf(&m);
+    std::iota(setEq + 1, setEq + 1 + MAXN, 1);
+    std::iota(setNe + 1, setNe + 1 + MAXN, 1);
+    for (size_t i = 1; i <= m; i++) {
+        ll opt, u, v;
+        readf(&u), readf(&v), readf(&opt);
+        tasks[i].opt = opt;
+        tasks[i].u = u;
+        tasks[i].v = v;
+    }
+    Discretization();
+    for (size_t i = 1; i <= m; i++) {
+        ll opt = tasks[i].opt, u = mapping[tasks[i].u], v = mapping[tasks[i].v];
+        if (opt == 1) {
+            if (same_set(u, mapping[v], setNe)) {
+                flag = false;
+            }
+            else {
+                merge(mapping[u], mapping[v], setEq);
+            }
+        }
+        else {
+            if (same_set(mapping[u], mapping[v], setEq)) {
+                flag = false;
+            }
+            else {
+                merge(mapping[u], mapping[v], setNe);
+            }
+        }
+    }
+    mapping.clear();
+    return flag;
+}
 
 int main() {
 #ifdef _FREOPEN
@@ -46,7 +128,11 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    
+    readf(&t);
+
+    while (t--) {
+        puts(slove() ? "YES" : "NO");
+    }
 
 
 
@@ -82,7 +168,7 @@ inline Type readf(Type* p) {
         sgn |= ch == '-', ch = getchar();
     }
     while (isdigit(ch)) ret = ret * 10 + ch - '0', ch = getchar();
-    if (p != NULL){
+    if (p != NULL) {
         *p = Type(sgn ? -ret : ret);
     }
     return sgn ? -ret : ret;
@@ -116,7 +202,7 @@ inline void writef(Type x) {
  *      |  `-----------------'  | /      |((((     |  ,"
  *      +-----------------------+/       |         |,"
  *         /_)______________(_/          +---------+
- *    _______________________________    
+ *    _______________________________
  *   /  oooooooooooooooo  .o.  oooo /,   /-----------
  *  / ==ooooooooooooooo==.o.  ooo= //   /\--{)B     ,"
  * /_==__==========__==_ooo__ooo=_/'   /___________,"
