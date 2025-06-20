@@ -690,6 +690,12 @@
     <ClCompile Include="P1083 [NOIP 2012 提高组] 借教室.cpp">
       <Filter>源文件\待完成</Filter>
     </ClCompile>
+    <ClCompile Include="P3371 【模板】单源最短路径（弱化版）.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
+    <ClCompile Include="P1525 [NOIP 2010 提高组] 关押罪犯.cpp">
+      <Filter>源文件\待完成</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
