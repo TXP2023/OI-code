@@ -67,6 +67,9 @@
     <Filter Include="源文件\比赛\AtCoder Beginner Contest 410">
       <UniqueIdentifier>{22e7c795-15c5-43d7-be3f-fc14e1b3122c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\比赛\AtCoder Beginner Contest 411">
+      <UniqueIdentifier>{e82d204b-8133-4f88-b14d-066e9ef2f4a8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="模板.cpp">
