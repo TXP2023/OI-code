@@ -702,6 +702,18 @@
     <ClCompile Include="P1955 [NOI2015] 程序自动分析.cpp">
       <Filter>源文件\待完成</Filter>
     </ClCompile>
+    <ClCompile Include="A - Required Length.cpp">
+      <Filter>源文件\比赛\AtCoder Beginner Contest 411</Filter>
+    </ClCompile>
+    <ClCompile Include="B - Distance Table.cpp">
+      <Filter>源文件\比赛\AtCoder Beginner Contest 411</Filter>
+    </ClCompile>
+    <ClCompile Include="C - Black Intervals.cpp">
+      <Filter>源文件\比赛\AtCoder Beginner Contest 411</Filter>
+    </ClCompile>
+    <ClCompile Include="D - Conflict 2.cpp">
+      <Filter>源文件\比赛\AtCoder Beginner Contest 411</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
