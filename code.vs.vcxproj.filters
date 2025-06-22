@@ -717,6 +717,12 @@
     <ClCompile Include="P1144 最短路计数.cpp">
       <Filter>源文件\已完成的题目\luogu</Filter>
     </ClCompile>
+    <ClCompile Include="P1613 跑路.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
+    <ClCompile Include="P4568 [JLOI2011] 飞行路线.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">

@@ -3,98 +3,49 @@
 //      By txp2024 www.luogu.com.cn  TXP2023 www.github.com
 // 
 //+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+
 #pragma once
 #include <vector>
 #include <stdio.h>
 #include <string.h>
 #include <algorithm>
+#include <numeric>
 #include <ctype.h>
 #include <cstdarg>
 #include <climits>
 #include <time.h>
 #include <iostream>
-#include <queue>
 #include <stdint.h>
 
-#define READ          false
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
-#define MAXN          (size_t)(1e6+5)
-#define MAXM          (size_t)(2e6+5)
-#define MOD           100003
+#define MAXN          55
 
 typedef long long int ll;
 typedef unsigned long long int ull;
 
 //快读函数声明
-#if READ
-template< typename T >
-inline T readf();
-#else
 template< typename Type >
 inline Type readf(Type* p = nullptr);
-#endif
 
 //快速输出函数
 template<typename Type>
 inline void writef(Type x);
 
-struct Edge {
-    ll v, w;
-    size_t next;
+ll dist[MAXN][MAXN];
+bool jump[MAXN][MAXN][64];
+ll n, m;
 
-    inline bool operator <(const Edge& other)const {
-        return w > other.w;
-    }
-
-    Edge() {
-        return;
-    }
-
-    Edge(ll v, ll w) {
-        this->v = v;
-        this->w = w;
-        return;
-    }
-
-};
-
-Edge edges[MAXM];
-size_t head[MAXN];
-ll dist[MAXN], cnt_path[MAXN];
-ll n, m, s, edges_cnt = 0;
-
-//添加一条有向边
-inline void add_edge(ll u, ll v, ll w) {
-    ++edges_cnt;
-    edges[edges_cnt].v = v;
-    edges[edges_cnt].w = w;
-    edges[edges_cnt].v = v;
-    edges[edges_cnt].next = head[u];
-    head[u] = edges_cnt;
-}
-
-inline void djstl(ll _start) {
-    std::priority_queue<Edge> que;
-    //bool flag[MAXN]; //记录每个点是否被访问过
-    std::fill(dist + 1, dist + 1 + n, INT32_MAX);
-    dist[_start] = 0;
-    cnt_path[_start] = 1;
-    que.push(Edge(_start, 0));
-    while (!que.empty()) {
-        ll u = que.top().v;
-        que.pop();
-        for (size_t i = head[u]; i; i = edges[i].next) {
-            if (dist[edges[i].v] == dist[u] + edges[i].w) {
-                cnt_path[edges[i].v] += cnt_path[u];
-                cnt_path[edges[i].v] %= MOD;
-                //que.push(Edge(edges[i].v, dist[edges[i].v]));
-            }
-            if (dist[edges[i].v] > dist[u] + edges[i].w) {
-                dist[edges[i].v] = dist[u] + edges[i].w;
-                cnt_path[edges[i].v] = cnt_path[u];
-                cnt_path[edges[i].v] %= MOD;
-                que.push(Edge(edges[i].v, dist[edges[i].v]));
+inline void init() {
+    for (size_t i = 1; i < 64; i++) {
+        for (size_t u = 1; u <= n; u++) {
+            for (size_t v = 1; v <= n; v++) {
+                for (size_t k = 1; k <= n; k++) {
+                    if (jump[u][k][i - 1] && jump[k][v][i - 1]) {
+                        jump[u][v][i] = true;
+                        dist[u][v] = 1;
+                    }
+                }
             }
         }
     }
@@ -112,20 +63,27 @@ int main() {
 
     readf(&n), readf(&m);
 
+    memset(dist, 1, sizeof(dist));
+
     for (size_t i = 0; i < m; i++) {
         ll u, v;
         readf(&u), readf(&v);
-        add_edge(u, v, 1);
-        add_edge(v, u, 1);
+        dist[u][v] = 1;
+        jump[u][v][0] = true;
     }
 
-    djstl(1);
+    init();
 
-    for (size_t i = 1; i <= n; i++) {
-        printf("%lld\n", cnt_path[i]);
+    for (size_t k = 1; k <= n; k++) {
+        for (size_t u = 1; u <= n; u++) {
+            for (size_t v = 1; v <= n; v++) {
+                dist[u][v] = std::min(dist[u][v], dist[u][k] + dist[k][v]);
+            }
+        }
     }
+    
 
-
+    printf("%lld\n", dist[1][n]);
 
 #ifdef _RUN_TIME
     printf("The running duration is not less than %ld ms\n", clock() - start);
@@ -133,25 +91,6 @@ int main() {
     return 0;
 }
 
-#if READ
-template< typename T >
-inline T readf() {
-#if false
-    T sum = 0;
-    char ch = getchar();
-    while (ch > '9' || ch < '0') ch = getchar();
-    while (ch >= '0' && ch <= '9') sum = sum * 10 + ch - 48, ch = getchar();
-    return sum;
-#else
-    T ret = 0, sgn = 0, ch = getchar();
-    while (!isdigit(ch)) {
-        sgn |= ch == '-', ch = getchar();
-    }
-    while (isdigit(ch)) ret = ret * 10 + ch - '0', ch = getchar();
-    return sgn ? -ret : ret;
-#endif
-}
-#else
 template< typename Type >
 inline Type readf(Type* p) {
     Type ret = 0, sgn = 0, ch = getchar();
@@ -159,12 +98,12 @@ inline Type readf(Type* p) {
         sgn |= ch == '-', ch = getchar();
     }
     while (isdigit(ch)) ret = ret * 10 + ch - '0', ch = getchar();
-    if (p != NULL) {
+    if (p != nullptr) {
         *p = Type(sgn ? -ret : ret);
     }
     return sgn ? -ret : ret;
 }
-#endif
+
 
 template<typename Type>
 inline void writef(Type x) {

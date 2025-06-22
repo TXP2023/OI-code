@@ -19,9 +19,9 @@
 #define READ          false
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
-#define MAXN          (size_t)(1e6+5)
-#define MAXM          (size_t)(2e6+5)
-#define MOD           100003
+#define MAXN          (size_t)(1e4+5)
+#define MAXM          (size_t)(5e5+5)
+#define MAXK          11
 
 typedef long long int ll;
 typedef unsigned long long int ull;
@@ -40,7 +40,7 @@ template<typename Type>
 inline void writef(Type x);
 
 struct Edge {
-    ll v, w;
+    ll u, v, w;
     size_t next;
 
     inline bool operator <(const Edge& other)const {
@@ -61,12 +61,13 @@ struct Edge {
 
 Edge edges[MAXM];
 size_t head[MAXN];
-ll dist[MAXN], cnt_path[MAXN];
-ll n, m, s, edges_cnt = 0;
+ll dist[MAXN][MAXK];
+ll n, m, k, s, t, edges_cnt = 0;
 
 //添加一条有向边
 inline void add_edge(ll u, ll v, ll w) {
     ++edges_cnt;
+    edges[edges_cnt].u = u;
     edges[edges_cnt].v = v;
     edges[edges_cnt].w = w;
     edges[edges_cnt].v = v;
@@ -76,26 +77,35 @@ inline void add_edge(ll u, ll v, ll w) {
 
 inline void djstl(ll _start) {
     std::priority_queue<Edge> que;
-    //bool flag[MAXN]; //记录每个点是否被访问过
-    std::fill(dist + 1, dist + 1 + n, INT32_MAX);
-    dist[_start] = 0;
-    cnt_path[_start] = 1;
+    bool flag[MAXN]; //记录每个点是否被访问过
+    memset(dist, 1, sizeof(dist));
+    //std::fill(dist + 1, dist + 1 + n, INT32_MAX);
+    //for (size_t i = 1; i <= n; i++) {
+    //    dist[i][0] = INT32_MAX;
+    //}
+    std::fill(flag + 1, flag + 1 + n, 0);
+    memset(dist[_start], 0, sizeof(dist[_start]));
     que.push(Edge(_start, 0));
     while (!que.empty()) {
         ll u = que.top().v;
         que.pop();
+        flag[u] = true;
         for (size_t i = head[u]; i; i = edges[i].next) {
-            if (dist[edges[i].v] == dist[u] + edges[i].w) {
-                cnt_path[edges[i].v] += cnt_path[u];
-                cnt_path[edges[i].v] %= MOD;
-                //que.push(Edge(edges[i].v, dist[edges[i].v]));
+            if (dist[edges[i].v][0] > dist[u][0] + edges[i].w) {
+                dist[edges[i].v][0] = dist[u][0] + edges[i].w;
+                que.push(Edge(edges[i].v, dist[edges[i].v][0]));
             }
-            if (dist[edges[i].v] > dist[u] + edges[i].w) {
-                dist[edges[i].v] = dist[u] + edges[i].w;
-                cnt_path[edges[i].v] = cnt_path[u];
-                cnt_path[edges[i].v] %= MOD;
-                que.push(Edge(edges[i].v, dist[edges[i].v]));
+            for (size_t j = 1; j <= k; j++) {
+                if (dist[edges[i].v][j] > dist[u][j - 1]) {
+                    dist[edges[i].v][j] = dist[u][j - 1];
+                    que.push(Edge(edges[i].v, dist[edges[i].v][j]));
+                }
+                if (dist[edges[i].v][j] > dist[u][j] + edges[i].w) {
+                    dist[edges[i].v][j] = dist[u][j] + edges[i].w;
+                    que.push(Edge(edges[i].v, dist[edges[i].v][j]));
+                }
             }
+            
         }
     }
     return;
@@ -110,20 +120,20 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    readf(&n), readf(&m);
+    readf(&n), readf(&m), readf(&k), readf(&s), readf(&t);
 
     for (size_t i = 0; i < m; i++) {
-        ll u, v;
-        readf(&u), readf(&v);
-        add_edge(u, v, 1);
-        add_edge(v, u, 1);
+        ll u, v, w;
+        readf(&u), readf(&v), readf(&w);
+        add_edge(++u, ++v, w);
+        add_edge(v, u, w);
     }
 
-    djstl(1);
+    djstl(++s);
 
-    for (size_t i = 1; i <= n; i++) {
-        printf("%lld\n", cnt_path[i]);
-    }
+    
+
+    printf("%lld\n", dist[++t][k]);
 
 
 
