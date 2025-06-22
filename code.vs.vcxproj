@@ -540,6 +540,7 @@
     <ClCompile Include="P3401 洛谷树.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="P3402 可持久化并查集.cpp" />
     <ClCompile Include="P3435 [POI 2006] OKR-Periods of Words.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
