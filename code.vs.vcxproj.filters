@@ -714,6 +714,9 @@
     <ClCompile Include="D - Conflict 2.cpp">
       <Filter>源文件\比赛\AtCoder Beginner Contest 411</Filter>
     </ClCompile>
+    <ClCompile Include="P1144 最短路计数.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
