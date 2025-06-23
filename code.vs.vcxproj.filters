@@ -726,6 +726,9 @@
     <ClCompile Include="P3402 可持久化并查集.cpp">
       <Filter>源文件\待完成</Filter>
     </ClCompile>
+    <ClCompile Include="P4822 [BJWC2012] 冻结.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
