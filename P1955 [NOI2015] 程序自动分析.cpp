@@ -3,21 +3,21 @@
 //      By txp2024 www.luogu.com.cn  TXP2023 www.github.com
 // 
 //+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+
 #pragma once
 #include <vector>
 #include <stdio.h>
 #include <string.h>
 #include <algorithm>
+#include <numeric>
 #include <ctype.h>
 #include <cstdarg>
-#include <numeric>
 #include <climits>
 #include <time.h>
 #include <iostream>
 #include <stdint.h>
 #include <map>
 
-#define READ          false
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
 #define MAXN          (size_t)(1e5)
@@ -26,13 +26,8 @@ typedef long long int ll;
 typedef unsigned long long int ull;
 
 //快读函数声明
-#if READ
-template< typename T >
-inline T readf();
-#else
 template< typename Type >
 inline Type readf(Type* p = nullptr);
-#endif
 
 //快速输出函数
 template<typename Type>
@@ -42,40 +37,45 @@ struct Task {
     ll u, v, opt;
 };
 
-Task tasks[MAXN + 5];
-ll setEq[MAXN + 5], setNe[MAXN + 5];
-ll t, n, m;
+Task tasks[MAXN];
+ll diff[MAXN], set[MAXN];
 std::map<ll, int> mapping;
+ll t, n, cnt;
 
-ll find(ll x, ll* _Set) {
-    if (_Set[x] == x) {
-        return x;
-    }
-    else {
-        return _Set[x] = find(_Set[x], _Set);
-    }
-}
-
-inline bool same_set(ll x, ll y, ll* _Set) {
-    return find(x, _Set) == find(y, _Set);
-}
-
-inline void merge(ll x, ll y, ll* _Set) {
-    _Set[find(x, _Set)] = _Set[find(y, _Set)];
-    return;
-}
-
-inline void Discretization() {
-    ll cnt = 0, num_cnt[MAXN*2 + 1];
-    for (size_t i = 1; i <= m; i++) {
+inline void init() {
+    ll num_cnt[MAXN * 2 + 1];
+    for (size_t i = 1; i <= n; i++) {
         num_cnt[i * 2 - 1] = tasks[i].u;
         num_cnt[i * 2] = tasks[i].v;
     }
-    cnt = std::unique(num_cnt + 1, num_cnt + 1 + m * 2) - num_cnt;
+    std::sort(num_cnt + 1, num_cnt + 1 + n * 2);
+    cnt = (std::unique(num_cnt + 1, num_cnt + 1 + n * 2) - (num_cnt + 1));
     for (size_t i = 1; i <= cnt; i++) {
         mapping[num_cnt[i]] = i;
     }
+    std::iota(set + 1, set + 1 + cnt, 1);
+    std::sort(tasks + 1, tasks + 1 + n, [](const Task& a, const Task& b) {
+        return a.opt > b.opt;
+        }
+    );
     return;
+}
+
+ll find(ll x) {
+    if (set[x] == x) {
+        return x;
+    }
+    else {
+        return set[x] = find(set[x]);
+    }
+}
+
+inline void merge(ll x, ll y) {
+    set[find(x)] = set[find(y)];
+    return;
+}
+inline bool same_set(ll x, ll y) {
+    return find(x) == find(y);
 }
 
 inline bool slove() {
@@ -85,38 +85,30 @@ inline bool slove() {
     //否则可以成立
     //让 u==v
     bool flag = true;//
-    readf(&m);
-    std::iota(setEq + 1, setEq + 1 + MAXN, 1);
-    std::iota(setNe + 1, setNe + 1 + MAXN, 1);
-    for (size_t i = 1; i <= m; i++) {
+    readf(&n);
+    
+    for (size_t i = 1; i <= n; i++) {
         ll opt, u, v;
         readf(&u), readf(&v), readf(&opt);
         tasks[i].opt = opt;
         tasks[i].u = u;
         tasks[i].v = v;
     }
-    Discretization();
-    for (size_t i = 1; i <= m; i++) {
+    init();
+
+    for (size_t i = 1; i <= n; i++) {
         ll opt = tasks[i].opt, u = mapping[tasks[i].u], v = mapping[tasks[i].v];
-        if (opt == 1) {
-            if (same_set(u, mapping[v], setNe)) {
-                flag = false;
-            }
-            else {
-                merge(mapping[u], mapping[v], setEq);
-            }
+        if (opt == 1) { //相同
+            merge(u, v);
         }
         else {
-            if (same_set(mapping[u], mapping[v], setEq)) {
-                flag = false;
-            }
-            else {
-                merge(mapping[u], mapping[v], setNe);
+            //不同
+            if (same_set(u, v)) {
+                return false;
             }
         }
     }
-    mapping.clear();
-    return flag;
+    return true;
 }
 
 int main() {
@@ -129,7 +121,6 @@ int main() {
 #endif // _RUN_TIME
 
     readf(&t);
-
     while (t--) {
         puts(slove() ? "YES" : "NO");
     }
@@ -142,25 +133,6 @@ int main() {
     return 0;
 }
 
-#if READ
-template< typename T >
-inline T readf() {
-#if false
-    T sum = 0;
-    char ch = getchar();
-    while (ch > '9' || ch < '0') ch = getchar();
-    while (ch >= '0' && ch <= '9') sum = sum * 10 + ch - 48, ch = getchar();
-    return sum;
-#else
-    T ret = 0, sgn = 0, ch = getchar();
-    while (!isdigit(ch)) {
-        sgn |= ch == '-', ch = getchar();
-    }
-    while (isdigit(ch)) ret = ret * 10 + ch - '0', ch = getchar();
-    return sgn ? -ret : ret;
-#endif
-}
-#else
 template< typename Type >
 inline Type readf(Type* p) {
     Type ret = 0, sgn = 0, ch = getchar();
@@ -168,12 +140,12 @@ inline Type readf(Type* p) {
         sgn |= ch == '-', ch = getchar();
     }
     while (isdigit(ch)) ret = ret * 10 + ch - '0', ch = getchar();
-    if (p != NULL) {
+    if (p != nullptr) {
         *p = Type(sgn ? -ret : ret);
     }
     return sgn ? -ret : ret;
 }
-#endif
+
 
 template<typename Type>
 inline void writef(Type x) {
