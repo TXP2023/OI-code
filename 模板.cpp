@@ -1,4 +1,4 @@
-//+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+ï»¿//+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 //
 //      By txp2024 www.luogu.com.cn  TXP2023 www.github.com
 // 
@@ -23,11 +23,11 @@
 typedef long long int ll;
 typedef unsigned long long int ull;
 
-//¿ì¶Áº¯ÊýÉùÃ÷
+//å¿«è¯»å‡½æ•°å£°æ˜Ž
 template< typename Type >
 inline Type readf(Type* p = nullptr);
 
-//¿ìËÙÊä³öº¯Êý
+//å¿«é€Ÿè¾“å‡ºå‡½æ•°
 template<typename Type>
 inline void writef(Type x);
 
@@ -72,7 +72,7 @@ inline void writef(Type x) {
     do {
         sta[top++] = x % 10, x /= 10;
     } while (x);
-    while (top) putchar(sta[--top] + '0');  // 48 ÊÇ '0'
+    while (top) putchar(sta[--top] + '0');  // 48 æ˜¯ '0'
     return;
 }
 
