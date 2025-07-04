@@ -729,6 +729,12 @@
     <ClCompile Include="P1955 [NOI2015] 程序自动分析.cpp">
       <Filter>源文件\已完成的题目\luogu</Filter>
     </ClCompile>
+    <ClCompile Include="P1522 [USACO2.4] 牛的旅行 Cow Tours.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
+    <ClCompile Include="1734 Sightseeing trip.cpp">
+      <Filter>源文件\已完成的题目\Poj</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
