@@ -1,11 +1,3 @@
-//+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
-//
-//      By txp2024 www.luogu.com.cn  TXP2023 www.github.com
-// 
-//+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
-
-#pragma once
-#include <vector>
 #include <stdio.h>
 #include <string.h>
 #include <algorithm>
@@ -16,60 +8,63 @@
 #include <time.h>
 #include <iostream>
 #include <stdint.h>
-
-#define MAX_INF       1e18
-#define MAX_NUM_SIZE  35
-#define MAXN          (size_t)(1e6+5)
+#define MAXN          (size_t)(1e6+1)
 
 typedef long long int ll;
-typedef unsigned long long int ull;
 
 //快读函数声明
 template< typename Type >
 inline Type readf(Type* p = nullptr);
 
-//快速输出函数
-template<typename Type>
-inline void writef(Type x);
+int barrel[MAXN][64];
+int n, q, max_val = 0;
 
-ll barrel[64][MAXN];
-ll n, q, max_val = 0;
+#define fast_read true
 
 int main() {
-#ifdef _FREOPEN
-    freopen("input.txt", "r", stdin);
-#endif // _FREOPEN
-
-#ifdef _RUN_TIME
-    clock_t start = clock();
-#endif // _RUN_TIME
-
+#if fast_read
     readf(&n);
+#else
+    std::ios::sync_with_stdio(false);
+    std::cin.tie(0);
+    std::cin >> n;
+#endif // fast_read
 
-    for (size_t i = 1; i <= n; i++) {
+    for (int i = 1; i <= n; i++) {
+#if fast_read
         int val = readf<int>();
-        for (size_t j = 1; j <= 63; j++) {
-            barrel[j][i] = barrel[j][i - 1] ^ (j == val);
+#else
+        int val;
+        std::cin >> val;
+#endif // fast_read
+        for (int j = 1; j <= 63; ++j) {
+            barrel[i][j] = barrel[i - 1][j] ^ (j == val);
         }
     }
 
+#if fast_read
     readf(&q);
+#else
+    std::cin >> q;
+#endif // fast_read
 
-    for (size_t i = 0; i < q; i++) {
+    while(q--) {
+#if fast_read
         int l = readf<int>(), r = readf<int>();
+#else
+        int l, r;
+        std::cin >> l >> r;
+#endif // fast_read
         bool flag = false;
-        for (size_t j = 1; j <= 63; j++) {
-            if ((barrel[j][r] ^ barrel[j][l - 1])) {
+        for (int j = 1; j <= 63; ++j) {
+            if (barrel[r][j] ^ barrel[l - 1][j]) {
                 flag = true;
                 break;
             }
         }
-        puts(flag? "YES" : "NO");
+        puts(flag ? "YES" : "NO");
     }
 
-#ifdef _RUN_TIME
-    printf("The running duration is not less than %ld ms\n", clock() - start);
-#endif // _RUN_TIME
     return 0;
 }
 
@@ -85,38 +80,3 @@ inline Type readf(Type* p) {
     }
     return sgn ? -ret : ret;
 }
-
-
-template<typename Type>
-inline void writef(Type x) {
-    int sta[MAX_NUM_SIZE];
-    int top = 0;
-    do {
-        sta[top++] = x % 10, x /= 10;
-    } while (x);
-    while (top) putchar(sta[--top] + '0');  // 48 是 '0'
-    return;
-}
-
-
-
-/**
- *              ,----------------,              ,---------,
- *         ,-----------------------,          ,"        ,"|
- *       ,"                      ,"|        ,"        ,"  |
- *      +-----------------------+  |      ,"        ,"    |
- *      |  .-----------------.  |  |     +---------+      |
- *      |  |                 |  |  |     | -==----'|      |
- *      |  |  By txp2024     |  |  |     |         |      |
- *      |  |                 |  |  |     |`---=    |      |
- *      |  |  C:\>_          |  |  |     |==== ooo |      ;
- *      |  |                 |  |  |     |(((( [33]|    ,"
- *      |  `-----------------'  | /      |((((     |  ,"
- *      +-----------------------+/       |         |,"
- *         /_)______________(_/          +---------+
- *    _______________________________
- *   /  oooooooooooooooo  .o.  oooo /,   /-----------
- *  / ==ooooooooooooooo==.o.  ooo= //   /\--{)B     ,"
- * /_==__==========__==_ooo__ooo=_/'   /___________,"
- *
- */
