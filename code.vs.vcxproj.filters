@@ -750,6 +750,9 @@
     <ClCompile Include="前缀统计.cpp">
       <Filter>源文件\比赛\2025年暑假测试</Filter>
     </ClCompile>
+    <ClCompile Include="17054 贴广告.cpp">
+      <Filter>源文件\已完成的题目\shsbnu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
