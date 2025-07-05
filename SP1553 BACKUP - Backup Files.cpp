@@ -55,9 +55,9 @@ inline void del(ll _x) {
 }
 
 void main_() {
-    //freopen("input.txt", "r", stdin);
+    
 
-    n = readf< ll >(), k = readf< ll >();
+    n = readf< ll >(), k = n / 2;
 
     roads.resize(n + 1);
     std::vector< road >(roads).swap(roads);
@@ -96,6 +96,7 @@ void main_() {
 }
 
 int main() {
+    freopen("input.txt", "r", stdin);
     int t = readf< ll >();
     while (t--) {
         main_();

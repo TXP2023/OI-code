@@ -70,6 +70,9 @@
     <Filter Include="源文件\比赛\AtCoder Beginner Contest 411">
       <UniqueIdentifier>{e82d204b-8133-4f88-b14d-066e9ef2f4a8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\比赛\2025年暑假测试">
+      <UniqueIdentifier>{81f063bd-895f-443d-bc8f-f7b454839047}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="模板.cpp">
@@ -734,6 +737,18 @@
     </ClCompile>
     <ClCompile Include="1734 Sightseeing trip.cpp">
       <Filter>源文件\已完成的题目\Poj</Filter>
+    </ClCompile>
+    <ClCompile Include="17062 偷蛋行动.cpp">
+      <Filter>源文件\已完成的题目\shsbnu</Filter>
+    </ClCompile>
+    <ClCompile Include="Hash测试.cpp">
+      <Filter>源文件\比赛\2025年暑假测试</Filter>
+    </ClCompile>
+    <ClCompile Include="KMP测试.cpp">
+      <Filter>源文件\比赛\2025年暑假测试</Filter>
+    </ClCompile>
+    <ClCompile Include="前缀统计.cpp">
+      <Filter>源文件\比赛\2025年暑假测试</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
