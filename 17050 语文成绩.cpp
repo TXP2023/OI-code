@@ -1,4 +1,4 @@
-ï»¿//+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+//+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 //
 //      By txp2024 www.luogu.com.cn  TXP2023 www.github.com
 // 
@@ -19,18 +19,20 @@
 
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
+#define MAXN          (size_t)(2e6+5)
 
 typedef long long int ll;
 typedef unsigned long long int ull;
 
-//å¿«è¯»å‡½æ•°å£°æ˜Ž
+//¿ì¶Áº¯ÊýÉùÃ÷
 template< typename Type >
 inline Type readf(Type* p = nullptr);
 
-//å¿«é€Ÿè¾“å‡ºå‡½æ•°
+//¿ìËÙÊä³öº¯Êý
 template<typename Type>
 inline void writef(Type x);
 
+ll arr[MAXN], old_val = 0, n, m, ans = LLONG_MAX;
 
 int main() {
 #ifdef _FREOPEN
@@ -41,9 +43,27 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
+    readf(&n), readf(&m);
+    
+    for (size_t i = 1; i <= n; i++) {
+        arr[i] = readf<ll>() - old_val;
+        old_val += arr[i];
+    }
 
+    for (size_t i = 0; i < m; i++) {
+        ll left, right, val;
+        readf(&left), readf(&right), readf(&val);
+        arr[left] += val;
+        arr[right + 1] -= val;
+    }
 
+    ll sum = 0;
+    for (size_t i = 1; i <= n; i++) {
+        sum += arr[i];
+        ans = std::min(ans, sum);
+    }
 
+    printf("%lld\n", ans);
 
 #ifdef _RUN_TIME
     printf("The running duration is not less than %ld ms\n", clock() - start);
@@ -72,7 +92,7 @@ inline void writef(Type x) {
     do {
         sta[top++] = x % 10, x /= 10;
     } while (x);
-    while (top) putchar(sta[--top] + '0');  // 48 æ˜¯ '0'
+    while (top) putchar(sta[--top] + '0');  // 48 ÊÇ '0'
     return;
 }
 

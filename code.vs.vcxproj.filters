@@ -765,14 +765,26 @@
     <ClCompile Include="17047 领地选择.cpp">
       <Filter>源文件\已完成的题目\shsbnu</Filter>
     </ClCompile>
-    <ClCompile Include="17048 乐得天下背运空.cpp">
-      <Filter>源文件\待完成</Filter>
-    </ClCompile>
     <ClCompile Include="manacher.cpp">
       <Filter>源文件\比赛\2025-7-6年暑假测试</Filter>
     </ClCompile>
     <ClCompile Include="错误集.txt">
       <Filter>资源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="17051 不要62.cpp">
+      <Filter>源文件\已完成的题目\shsbnu</Filter>
+    </ClCompile>
+    <ClCompile Include="17048 乐得天下背运空.cpp">
+      <Filter>源文件\已完成的题目\shsbnu</Filter>
+    </ClCompile>
+    <ClCompile Include="17050 语文成绩.cpp">
+      <Filter>源文件\已完成的题目\shsbnu</Filter>
+    </ClCompile>
+    <ClCompile Include="17060 简单题.cpp">
+      <Filter>源文件\已完成的题目\shsbnu</Filter>
+    </ClCompile>
+    <ClCompile Include="17071 跳远.cpp">
+      <Filter>源文件\已完成的题目\shsbnu</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
