@@ -36,11 +36,11 @@ inline Type readf(Type* p = nullptr);
 template<typename Type>
 inline void writef(Type x);
 
-char str[MAX_LENGTH * 2];
+char str[MAX_LENGTH * 2 + 5];
 size_t length = 0;
 
 inline size_t _Manacher(const char* str) {
-    size_t radius[MAX_LENGTH * 2], len = strlen(str), max_length = 0;
+    size_t radius[MAX_LENGTH * 2 + 5], len = strlen(str), max_length = 0;
     std::fill(radius, radius + len, 0);
     radius[1] = 1;
     for (size_t i = 2, right_pos = 1, left_pos; i < len; i++) {

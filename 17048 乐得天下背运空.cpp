@@ -58,7 +58,7 @@ int main() {
         bool flag = false;
         for (int j = 1; j <= 63; ++j) {
             if (barrel[r][j] ^ barrel[l - 1][j]) {
-                flag = true;
+                flag = true; //f[i][1] ~ f[i][63]    f[1][i] ~ f[63][i]
                 break;
             }
         }

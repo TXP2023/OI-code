@@ -73,6 +73,9 @@
     <Filter Include="源文件\比赛\2025年暑假测试">
       <UniqueIdentifier>{81f063bd-895f-443d-bc8f-f7b454839047}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\比赛\2025-7-6年暑假测试">
+      <UniqueIdentifier>{e09338c8-6de8-4306-9ea3-fe671ea05638}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="模板.cpp">
@@ -764,6 +767,12 @@
     </ClCompile>
     <ClCompile Include="17048 乐得天下背运空.cpp">
       <Filter>源文件\待完成</Filter>
+    </ClCompile>
+    <ClCompile Include="manacher.cpp">
+      <Filter>源文件\比赛\2025-7-6年暑假测试</Filter>
+    </ClCompile>
+    <ClCompile Include="错误集.txt">
+      <Filter>资源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
