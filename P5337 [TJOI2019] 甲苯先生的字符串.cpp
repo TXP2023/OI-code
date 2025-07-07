@@ -19,7 +19,7 @@
 
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
-#define MAX_LENGTH    30
+#define MAX_LENGTH    (size_t)(1e5+7)
 #define MOD           (size_t)(1e9+7)
 
 typedef unsigned long long int ll;
