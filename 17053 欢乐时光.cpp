@@ -1,4 +1,4 @@
-ï»¿//+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+//+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 //
 //      By txp2024 www.luogu.com.cn  TXP2023 www.github.com
 // 
@@ -19,18 +19,47 @@
 
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
+#define MAXN          5005
 
 typedef long long int ll;
 typedef unsigned long long int ull;
 
-//å¿«è¯»å‡½æ•°å£°æ˜Ž
+//¿ì¶Áº¯ÊýÉùÃ÷
 template< typename Type >
 inline Type readf(Type* p = nullptr);
 
-//å¿«é€Ÿè¾“å‡ºå‡½æ•°
+//¿ìËÙÊä³öº¯Êý
 template<typename Type>
 inline void writef(Type x);
 
+ll arr[MAXN];
+ll t, n, ans;
+
+inline void slove() {
+    readf(&n);
+
+    ans = 0;
+    memset(arr, 0, sizeof(arr));
+    for (size_t i = 1; i <= n; i++) {
+        arr[i] += getchar() - '0';
+    }
+
+    scanf("\n");
+
+    for (size_t i = 1; i <= n; i++) {
+        arr[i] += getchar() - '0';
+    }
+
+    for (size_t i = 1; i <= n; i++) {
+        if (arr[i] == 2) {
+            ll left = i, right;
+            while (arr[++i] == 2);
+            ans += (1 + (i - left)) * (i - left) / 2;
+        }
+    }
+
+    printf("%lld\n", ans);
+}
 
 int main() {
 #ifdef _FREOPEN
@@ -41,7 +70,11 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
+    readf(&t);
 
+    while (t--) {
+        slove();
+    }
 
 
 
@@ -72,7 +105,7 @@ inline void writef(Type x) {
     do {
         sta[top++] = x % 10, x /= 10;
     } while (x);
-    while (top) putchar(sta[--top] + '0');  // 48 æ˜¯ '0'
+    while (top) putchar(sta[--top] + '0');  // 48 ÊÇ '0'
     return;
 }
 
@@ -85,9 +118,9 @@ inline void writef(Type x) {
  *      +-----------------------+  |      ,"        ,"    |
  *      |  .-----------------.  |  |     +---------+      |
  *      |  |                 |  |  |     | -==----'|      |
- *      |  |                 |  |  |     |         |      |
- *      |  |  C:\>rp++       |  |  |     |`---=    |      |
- *      |  |                 |  |  |     |==== ooo |      ;
+ *      |  |  By txp2024     |  |  |     |         |      |
+ *      |  |                 |  |  |     |`---=    |      |
+ *      |  |  C:\>_          |  |  |     |==== ooo |      ;
  *      |  |                 |  |  |     |(((( [33]|    ,"
  *      |  `-----------------'  | /      |((((     |  ,"
  *      +-----------------------+/       |         |,"

@@ -34,8 +34,8 @@ inline void writef(Type x);
 
 ll n, m, ans, t;
 
-inline int64_t fast_pow(int64_t a, int64_t n, int64_t mod) {
-    int64_t base = a, ret = 1;
+inline uint64_t fast_pow(uint64_t a, uint64_t n, uint64_t mod) {
+    uint64_t base = a, ret = 1;
     while (n) {
         if (n & 1) {
             ret = ret * base;
@@ -57,7 +57,7 @@ inline void slove() {
     }
 
     printf("%lld\n", ans);
-
+    ans = 0;
 }
 
 int main() {

@@ -1,4 +1,4 @@
-ï»¿//+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+//+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 //
 //      By txp2024 www.luogu.com.cn  TXP2023 www.github.com
 // 
@@ -19,18 +19,22 @@
 
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
+#define MAXN          (size_t)(1e5+5)
+#define MAX_VAL       (size_t)(4e5+5)
 
 typedef long long int ll;
 typedef unsigned long long int ull;
 
-//å¿«è¯»å‡½æ•°å£°æ˜Ž
+//¿ì¶Áº¯ÊýÉùÃ÷
 template< typename Type >
 inline Type readf(Type* p = nullptr);
 
-//å¿«é€Ÿè¾“å‡ºå‡½æ•°
+//¿ìËÙÊä³öº¯Êý
 template<typename Type>
 inline void writef(Type x);
 
+ll bucket[MAX_VAL];
+ll n, c, ans = 0;
 
 int main() {
 #ifdef _FREOPEN
@@ -41,9 +45,32 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
+    readf(&n), readf(&c);
 
 
 
+    for (size_t i = 1; i <= n; i++) {
+        ll val = readf<ll>();
+        ++bucket[val];
+    }
+
+    if (c == 0) {
+        for (size_t i = 1; i <= 2e5 - c; i++) {
+            if (bucket[i]) {
+                for (size_t i = bucket[i] - 1; i >= 1; --i) {
+                    ans += i;
+                }
+            }
+        }
+        printf("%lld\n", ans);
+        return 0;
+    }
+
+    for (size_t i = 1; i <= 3e5; i++) {
+        ans += bucket[i] * bucket[i + c];
+    }
+
+    printf("%lld\n", ans);
 
 #ifdef _RUN_TIME
     printf("The running duration is not less than %ld ms\n", clock() - start);
@@ -72,7 +99,7 @@ inline void writef(Type x) {
     do {
         sta[top++] = x % 10, x /= 10;
     } while (x);
-    while (top) putchar(sta[--top] + '0');  // 48 æ˜¯ '0'
+    while (top) putchar(sta[--top] + '0');  // 48 ÊÇ '0'
     return;
 }
 

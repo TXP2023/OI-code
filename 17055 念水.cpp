@@ -1,4 +1,4 @@
-ï»¿//+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+//+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 //
 //      By txp2024 www.luogu.com.cn  TXP2023 www.github.com
 // 
@@ -23,14 +23,27 @@
 typedef long long int ll;
 typedef unsigned long long int ull;
 
-//å¿«è¯»å‡½æ•°å£°æ˜Ž
+//¿ì¶Áº¯ÊýÉùÃ÷
 template< typename Type >
 inline Type readf(Type* p = nullptr);
 
-//å¿«é€Ÿè¾“å‡ºå‡½æ•°
+//¿ìËÙÊä³öº¯Êý
 template<typename Type>
 inline void writef(Type x);
 
+ll t, a, b, n, s;
+
+inline void slove() {
+    readf(&a), readf(&b), readf(&n), readf(&s);
+
+    if (s - s / n * n <= b && a * n + b >= s) {
+        puts("YES");
+    }
+    else {
+        puts("NO");
+    }
+    return;
+}
 
 int main() {
 #ifdef _FREOPEN
@@ -41,7 +54,11 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
+    readf(&t);
 
+    while (t--) {
+        slove();
+    }
 
 
 
@@ -72,7 +89,7 @@ inline void writef(Type x) {
     do {
         sta[top++] = x % 10, x /= 10;
     } while (x);
-    while (top) putchar(sta[--top] + '0');  // 48 æ˜¯ '0'
+    while (top) putchar(sta[--top] + '0');  // 48 ÊÇ '0'
     return;
 }
 
@@ -85,9 +102,9 @@ inline void writef(Type x) {
  *      +-----------------------+  |      ,"        ,"    |
  *      |  .-----------------.  |  |     +---------+      |
  *      |  |                 |  |  |     | -==----'|      |
- *      |  |                 |  |  |     |         |      |
- *      |  |  C:\>rp++       |  |  |     |`---=    |      |
- *      |  |                 |  |  |     |==== ooo |      ;
+ *      |  |  By txp2024     |  |  |     |         |      |
+ *      |  |                 |  |  |     |`---=    |      |
+ *      |  |  C:\>_          |  |  |     |==== ooo |      ;
  *      |  |                 |  |  |     |(((( [33]|    ,"
  *      |  `-----------------'  | /      |((((     |  ,"
  *      +-----------------------+/       |         |,"

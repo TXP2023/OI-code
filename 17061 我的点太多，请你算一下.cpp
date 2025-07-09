@@ -1,4 +1,4 @@
-ï»¿//+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+//+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 //
 //      By txp2024 www.luogu.com.cn  TXP2023 www.github.com
 // 
@@ -23,14 +23,15 @@
 typedef long long int ll;
 typedef unsigned long long int ull;
 
-//å¿«è¯»å‡½æ•°å£°æ˜Ž
+//¿ì¶Áº¯ÊýÉùÃ÷
 template< typename Type >
 inline Type readf(Type* p = nullptr);
 
-//å¿«é€Ÿè¾“å‡ºå‡½æ•°
+//¿ìËÙÊä³öº¯Êý
 template<typename Type>
 inline void writef(Type x);
 
+ll n, sum1, sum2, temp1, temp2, ans;
 
 int main() {
 #ifdef _FREOPEN
@@ -41,8 +42,20 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
+    readf(&n);
 
+    for (ll i = 1; i <= n; i++) {
+        int x, y;
+        readf(&x), readf(&y);
+        sum1 += x;
+        sum2 += y;
+        temp1 += x * x;
+        temp2 += y * y;
+    }
 
+    ll ans = n * (temp1 + temp2) - (sum1 * sum1 + sum2 * sum2);
+
+    printf("%lld\n", ans);
 
 
 #ifdef _RUN_TIME
@@ -72,7 +85,7 @@ inline void writef(Type x) {
     do {
         sta[top++] = x % 10, x /= 10;
     } while (x);
-    while (top) putchar(sta[--top] + '0');  // 48 æ˜¯ '0'
+    while (top) putchar(sta[--top] + '0');  // 48 ÊÇ '0'
     return;
 }
 

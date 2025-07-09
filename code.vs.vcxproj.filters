@@ -792,17 +792,32 @@
     <ClCompile Include="P5337 [TJOI2019] 甲苯先生的字符串.cpp">
       <Filter>源文件\已完成的题目\luogu</Filter>
     </ClCompile>
-    <ClCompile Include="P2261 [CQOI2007] 余数求和.cpp">
-      <Filter>源文件\待完成</Filter>
-    </ClCompile>
-    <ClCompile Include="17052 打扫教室.cpp">
-      <Filter>源文件\已完成的题目\luogu</Filter>
-    </ClCompile>
     <ClCompile Include="17049 观音赴会问原因，小圣施威降大圣.cpp">
       <Filter>源文件\已完成的题目\luogu</Filter>
     </ClCompile>
     <ClCompile Include="约数例题.cpp">
       <Filter>源文件\已完成的题目\例题</Filter>
+    </ClCompile>
+    <ClCompile Include="P2261 [CQOI2007] 余数求和.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
+    <ClCompile Include="17052 打扫教室.cpp">
+      <Filter>源文件\已完成的题目\shsbnu</Filter>
+    </ClCompile>
+    <ClCompile Include="17053 欢乐时光.cpp">
+      <Filter>源文件\已完成的题目\shsbnu</Filter>
+    </ClCompile>
+    <ClCompile Include="17055 念水.cpp">
+      <Filter>源文件\已完成的题目\shsbnu</Filter>
+    </ClCompile>
+    <ClCompile Include="17058 种花.cpp">
+      <Filter>源文件\已完成的题目\shsbnu</Filter>
+    </ClCompile>
+    <ClCompile Include="17059 数对，数对！.cpp">
+      <Filter>源文件\已完成的题目\shsbnu</Filter>
+    </ClCompile>
+    <ClCompile Include="17061 我的点太多，请你算一下.cpp">
+      <Filter>源文件\已完成的题目\shsbnu</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
