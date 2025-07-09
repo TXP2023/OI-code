@@ -76,6 +76,9 @@
     <Filter Include="源文件\比赛\2025-7-6年暑假测试">
       <UniqueIdentifier>{e09338c8-6de8-4306-9ea3-fe671ea05638}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\已完成的题目\例题">
+      <UniqueIdentifier>{809cd20f-0a80-47b1-9eeb-524337f282fc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="模板.cpp">
@@ -788,6 +791,18 @@
     </ClCompile>
     <ClCompile Include="P5337 [TJOI2019] 甲苯先生的字符串.cpp">
       <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
+    <ClCompile Include="P2261 [CQOI2007] 余数求和.cpp">
+      <Filter>源文件\待完成</Filter>
+    </ClCompile>
+    <ClCompile Include="17052 打扫教室.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
+    <ClCompile Include="17049 观音赴会问原因，小圣施威降大圣.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
+    <ClCompile Include="约数例题.cpp">
+      <Filter>源文件\已完成的题目\例题</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
