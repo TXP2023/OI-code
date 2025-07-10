@@ -744,9 +744,6 @@
     <ClCompile Include="1734 Sightseeing trip.cpp">
       <Filter>源文件\已完成的题目\Poj</Filter>
     </ClCompile>
-    <ClCompile Include="17062 偷蛋行动.cpp">
-      <Filter>源文件\已完成的题目\shsbnu</Filter>
-    </ClCompile>
     <ClCompile Include="Hash测试.cpp">
       <Filter>源文件\比赛\2025年暑假测试</Filter>
     </ClCompile>
@@ -817,6 +814,15 @@
       <Filter>源文件\已完成的题目\shsbnu</Filter>
     </ClCompile>
     <ClCompile Include="17061 我的点太多，请你算一下.cpp">
+      <Filter>源文件\已完成的题目\shsbnu</Filter>
+    </ClCompile>
+    <ClCompile Include="17062 偷蛋行动（Easy Version）.cpp">
+      <Filter>源文件\已完成的题目\shsbnu</Filter>
+    </ClCompile>
+    <ClCompile Include="17092 传球游戏.cpp">
+      <Filter>源文件\已完成的题目\shsbnu</Filter>
+    </ClCompile>
+    <ClCompile Include="17063 电梯Plus.cpp">
       <Filter>源文件\已完成的题目\shsbnu</Filter>
     </ClCompile>
   </ItemGroup>

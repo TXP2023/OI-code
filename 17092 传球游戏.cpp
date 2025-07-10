@@ -19,7 +19,8 @@
 
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
-#define MAXN          (size_t)(1e5+5)
+#define GET_POS(pos)        ((pos - 1) % n + n) % n + 1
+#define MAXN          35
 
 typedef long long int ll;
 typedef unsigned long long int ull;
@@ -32,8 +33,8 @@ inline Type readf(Type* p = nullptr);
 template<typename Type>
 inline void writef(Type x);
 
-ll eggs[MAXN];
-ll n;
+ll dp[MAXN][MAXN];
+ll n, m;
 
 int main() {
 #ifdef _FREOPEN
@@ -44,8 +45,17 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    readf(&n);
+    readf(&n), readf(&m);
 
+    dp[0][1] = 1;
+    for (size_t i = 1; i <= m; i++) {
+        for (size_t j = 1; j <= n; j++) {
+            ll l = GET_POS(j + n - 1), r = GET_POS(j + 1);
+            dp[i][j] = dp[i - 1][GET_POS(j + n - 1)] + dp[i - 1][GET_POS(j + 1)];
+        }
+    }
+
+    printf("%lld\n", dp[m][1]);
 
 
 #ifdef _RUN_TIME
@@ -88,9 +98,9 @@ inline void writef(Type x) {
  *      +-----------------------+  |      ,"        ,"    |
  *      |  .-----------------.  |  |     +---------+      |
  *      |  |                 |  |  |     | -==----'|      |
- *      |  |  By txp2024     |  |  |     |         |      |
- *      |  |                 |  |  |     |`---=    |      |
- *      |  |  C:\>_          |  |  |     |==== ooo |      ;
+ *      |  |                 |  |  |     |         |      |
+ *      |  |  C:\>rp++       |  |  |     |`---=    |      |
+ *      |  |                 |  |  |     |==== ooo |      ;
  *      |  |                 |  |  |     |(((( [33]|    ,"
  *      |  `-----------------'  | /      |((((     |  ,"
  *      +-----------------------+/       |         |,"
