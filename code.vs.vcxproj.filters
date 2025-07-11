@@ -825,6 +825,12 @@
     <ClCompile Include="17063 电梯Plus.cpp">
       <Filter>源文件\已完成的题目\shsbnu</Filter>
     </ClCompile>
+    <ClCompile Include="P1983 [NOIP 2013 普及组] 车站分级.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
+    <ClCompile Include="P1038 [NOIP 2003 提高组] 神经网络.cpp">
+      <Filter>源文件\待完成</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
