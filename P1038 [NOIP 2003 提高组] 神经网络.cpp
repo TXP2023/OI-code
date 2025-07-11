@@ -16,9 +16,11 @@
 #include <time.h>
 #include <iostream>
 #include <stdint.h>
+#include <queue>
 
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
+#define MAXN          105
 
 typedef long long int ll;
 typedef unsigned long long int ull;
@@ -31,6 +33,60 @@ inline Type readf(Type* p = nullptr);
 template<typename Type>
 inline void writef(Type x);
 
+struct Neuron {
+    ll state, val; //×´Ì¬ºÍãÐÖµ
+};
+
+struct Edge {
+    ll v, weight;
+    size_t next;
+};
+
+Neuron neurons[MAXN];
+Edge edges[MAXN * MAXN];
+ll head[MAXN], indegree[MAXN], outdegree[MAXN];
+ll n, p, edge_cnt;
+
+inline void add_edge(ll u, ll v, ll weight) {
+#ifdef _DEBUG
+    printf("%lld %lld\n", u, v);
+#endif // _DEBUG
+
+    ++outdegree[u];
+    ++indegree[v];
+    edges[++edge_cnt].v = v;
+    edges[edge_cnt].weight = weight;
+    edges[edge_cnt].next = head[u];
+    head[u] = edge_cnt;
+    return;
+}
+
+inline void get_ans() {
+    std::queue<ll> que;
+    for (size_t i = 1; i <= n; i++) {
+        if (!indegree[i]) {
+            neurons[i].state += neurons[i].val;
+            que.push(i);
+        }
+    }
+
+    while (!que.empty()) {
+        ll u = que.front();
+        que.pop();
+        neurons[u].state -= neurons[u].val;
+        if (neurons[u].state > 0) {
+            for (size_t i = head[u], v = edges[i].v; i; i = edges[i].next, v = edges[i].v) {
+                --indegree[v];
+                neurons[v].state += edges[i].weight * neurons[u].state;
+                if (!indegree[v]) {
+                    que.push(v);
+                }
+            }
+        }
+
+    }
+    return;
+}
 
 int main() {
 #ifdef _FREOPEN
@@ -41,9 +97,31 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
+    readf(&n), readf(&p);
 
+    for (size_t i = 1; i <= n; i++) {
+        readf(&neurons[i].state), readf(&neurons[i].val);
+    }
 
+    for (size_t i = 0; i < p; i++) {
+        ll u, v, w;
+        readf(&u), readf(&v), readf(&w);
+        add_edge(u, v, w);
+    }
 
+    get_ans();
+
+    bool flag = false;
+    for (size_t i = 1; i <= n; i++) {
+        if (neurons[i].state > 0 && !outdegree[i]) {
+            printf("%lld %lld\n", i, neurons[i].state);
+            flag = true;
+        }
+    }
+
+    if (!flag) {
+        puts("NULL");
+    }
 
 #ifdef _RUN_TIME
     printf("The running duration is not less than %ld ms\n", clock() - start);

@@ -288,7 +288,9 @@
     <ClCompile Include="P10115 [LMXOI Round 1] Placer.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="P1038 [NOIP 2003 提高组] 神经网络.cpp" />
+    <ClCompile Include="P1038 [NOIP 2003 提高组] 神经网络.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="P1038 [NOIP2003 提高组] 神经网络.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
