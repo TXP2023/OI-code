@@ -831,6 +831,33 @@
     <ClCompile Include="P1038 [NOIP 2003 提高组] 神经网络.cpp">
       <Filter>源文件\已完成的题目\luogu</Filter>
     </ClCompile>
+    <ClCompile Include="17064 油田问题.cpp">
+      <Filter>源文件\已完成的题目\shsbnu</Filter>
+    </ClCompile>
+    <ClCompile Include="17065 全排列.cpp">
+      <Filter>源文件\已完成的题目\shsbnu</Filter>
+    </ClCompile>
+    <ClCompile Include="17066 爱看知乎的小A.cpp">
+      <Filter>源文件\已完成的题目\shsbnu</Filter>
+    </ClCompile>
+    <ClCompile Include="17074 阶乘之和.cpp">
+      <Filter>源文件\已完成的题目\shsbnu</Filter>
+    </ClCompile>
+    <ClCompile Include="17067 能源.cpp">
+      <Filter>源文件\已完成的题目\shsbnu</Filter>
+    </ClCompile>
+    <ClCompile Include="17068 两厢情愿.cpp">
+      <Filter>源文件\已完成的题目\shsbnu</Filter>
+    </ClCompile>
+    <ClCompile Include="17069 加减排列.cpp">
+      <Filter>源文件\待完成</Filter>
+    </ClCompile>
+    <ClCompile Include="17096.cpp">
+      <Filter>源文件\待完成</Filter>
+    </ClCompile>
+    <ClCompile Include="17091 新型斐波那契数列.cpp">
+      <Filter>源文件\已完成的题目\shsbnu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
