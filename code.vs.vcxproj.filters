@@ -858,6 +858,9 @@
     <ClCompile Include="17091 新型斐波那契数列.cpp">
       <Filter>源文件\已完成的题目\shsbnu</Filter>
     </ClCompile>
+    <ClCompile Include="17073 珠心算测验.cpp">
+      <Filter>源文件\已完成的题目\shsbnu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
