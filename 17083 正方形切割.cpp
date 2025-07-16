@@ -19,7 +19,6 @@
 
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
-#define MAXN          (size_t)(1e5+5)
 
 typedef long long int ll;
 typedef unsigned long long int ull;
@@ -32,40 +31,13 @@ inline Type readf(Type* p = nullptr);
 template<typename Type>
 inline void writef(Type x);
 
-ll arr[MAXN], sum;
-ll t, n, ans;
+ll h, w;
 
-inline void slove() {
-    readf(&n);
-
-    for (size_t i = 1; i <= n; i++) {
-        readf(&arr[i]);
-        sum += arr[i] - 1;
-    }
-
-
-    if ((1 + n - 1) * (n - 1) / 2 == sum) {
-        ans = n;
-    }
-    else {
-        for (size_t l = 1, r = n; l <= r && r <= n; ) {
-            ll mid = (l + r) >> 1;
-            if (mid == n) {
-                break;
-            }
-            if ((1 + mid - 1) * (mid - 1) / 2 <= sum) {
-                ans = mid;
-                l = mid + 1;
-            }
-            else {
-                r = mid - 1;
-            }
-        }
-    }
-
-    printf("%lld\n", ans);
-    sum = 0;
-    return;
+ll gcd(ll a, ll b) {
+    if (b == 0) {
+        return a;
+    } 
+    return gcd(b, a % b);
 }
 
 int main() {
@@ -77,12 +49,23 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    readf(&t);
+    readf(&w), readf(&h);
 
-    while (t--) {
-        slove();
+    if (w % 2 == 0 && h % 2 == 0) {
+        printf("%lld\n", w / 2 * h / 2);
     }
-
+    else {
+        ll GCD = gcd(h, w);
+        if (GCD == 1) {
+            puts("0");
+            return 0;
+        }
+        for (size_t i = 3; i <= GCD; i+=2) {
+            if (w % i == 0 && h % i == 0) {
+                printf("%lld\n", w / i * h / i);
+            }
+        }
+    }
 
 #ifdef _RUN_TIME
     printf("The running duration is not less than %ld ms\n", clock() - start);

@@ -19,7 +19,9 @@
 
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
-#define MAXN          (size_t)(1e5+5)
+#define MAXN          3005
+#define MAX_VAL       6007
+#define OFFSET        +1000
 
 typedef long long int ll;
 typedef unsigned long long int ull;
@@ -32,41 +34,9 @@ inline Type readf(Type* p = nullptr);
 template<typename Type>
 inline void writef(Type x);
 
-ll arr[MAXN], sum;
-ll t, n, ans;
 
-inline void slove() {
-    readf(&n);
-
-    for (size_t i = 1; i <= n; i++) {
-        readf(&arr[i]);
-        sum += arr[i] - 1;
-    }
-
-
-    if ((1 + n - 1) * (n - 1) / 2 == sum) {
-        ans = n;
-    }
-    else {
-        for (size_t l = 1, r = n; l <= r && r <= n; ) {
-            ll mid = (l + r) >> 1;
-            if (mid == n) {
-                break;
-            }
-            if ((1 + mid - 1) * (mid - 1) / 2 <= sum) {
-                ans = mid;
-                l = mid + 1;
-            }
-            else {
-                r = mid - 1;
-            }
-        }
-    }
-
-    printf("%lld\n", ans);
-    sum = 0;
-    return;
-}
+ll arr[MAXN], bucket[MAX_VAL];
+ll n, ans = 0;
 
 int main() {
 #ifdef _FREOPEN
@@ -77,12 +47,43 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    readf(&t);
+    readf(&n);
 
-    while (t--) {
-        slove();
+    for (size_t i = 1; i <= n; i++) {
+        readf(&arr[i]);
+        ++bucket[arr[i] OFFSET];
     }
 
+    //std::sort(arr + 1, arr + n + 1);
+    //n = std::unique(arr + 1, arr + 1 + n) - (arr + 1);
+
+    for (size_t i = 0; i <= 2000; i++) {
+        if (!bucket[i]) {
+            continue;
+        }
+        --bucket[i];
+        for (size_t j = i; j <= 2000; j++) {
+            if (!bucket[j]) {
+                continue;
+            }
+            --bucket[j];
+            //ll k = 0 - (i - 1000) - (j- 1000);
+            //if (k == j || k == i || i == j) {
+            //    continue;
+            //}
+            //确保不会有2个相同的值同时出现在三元组中
+            if (i + j > 3000) {
+                break;
+            }
+            if (3000 - i - j >= j && bucket[3000 - i - j]) {
+                ++ans;
+            }
+            ++bucket[j];
+        }
+        ++bucket[i];
+    }
+
+    printf("%lld\n", ans);
 
 #ifdef _RUN_TIME
     printf("The running duration is not less than %ld ms\n", clock() - start);

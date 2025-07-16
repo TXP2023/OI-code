@@ -19,7 +19,6 @@
 
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
-#define MAXN          (size_t)(1e5+5)
 
 typedef long long int ll;
 typedef unsigned long long int ull;
@@ -32,39 +31,20 @@ inline Type readf(Type* p = nullptr);
 template<typename Type>
 inline void writef(Type x);
 
-ll arr[MAXN], sum;
-ll t, n, ans;
+ll arr[21][21];
+ll n;
 
 inline void slove() {
-    readf(&n);
-
-    for (size_t i = 1; i <= n; i++) {
-        readf(&arr[i]);
-        sum += arr[i] - 1;
-    }
-
-
-    if ((1 + n - 1) * (n - 1) / 2 == sum) {
-        ans = n;
-    }
-    else {
-        for (size_t l = 1, r = n; l <= r && r <= n; ) {
-            ll mid = (l + r) >> 1;
-            if (mid == n) {
-                break;
-            }
-            if ((1 + mid - 1) * (mid - 1) / 2 <= sum) {
-                ans = mid;
-                l = mid + 1;
-            }
-            else {
-                r = mid - 1;
-            }
+    memset(arr, 0, sizeof(arr));
+    arr[1][1] = 1;
+    puts("1");
+    for (size_t i = 2; i <= n; i++) {
+        for (size_t j = 1; j <= i; j++) {
+            arr[i][j] = arr[i - 1][j] + arr[i - 1][j - 1];
+            printf("%lld ", arr[i][j]);
         }
+        puts("");
     }
-
-    printf("%lld\n", ans);
-    sum = 0;
     return;
 }
 
@@ -77,11 +57,10 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    readf(&t);
-
-    while (t--) {
+    while (n = readf<ll>()) {
         slove();
     }
+
 
 
 #ifdef _RUN_TIME

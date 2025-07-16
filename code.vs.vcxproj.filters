@@ -849,9 +849,6 @@
     <ClCompile Include="17068 两厢情愿.cpp">
       <Filter>源文件\已完成的题目\shsbnu</Filter>
     </ClCompile>
-    <ClCompile Include="17069 加减排列.cpp">
-      <Filter>源文件\待完成</Filter>
-    </ClCompile>
     <ClCompile Include="17096.cpp">
       <Filter>源文件\待完成</Filter>
     </ClCompile>
@@ -860,6 +857,24 @@
     </ClCompile>
     <ClCompile Include="17073 珠心算测验.cpp">
       <Filter>源文件\已完成的题目\shsbnu</Filter>
+    </ClCompile>
+    <ClCompile Include="17069 加减排列.cpp">
+      <Filter>源文件\已完成的题目\shsbnu</Filter>
+    </ClCompile>
+    <ClCompile Include="17075 三数之和.cpp">
+      <Filter>源文件\已完成的题目\shsbnu</Filter>
+    </ClCompile>
+    <ClCompile Include="17076 杨辉三角形.cpp">
+      <Filter>源文件\已完成的题目\shsbnu</Filter>
+    </ClCompile>
+    <ClCompile Include="17083 正方形切割.cpp">
+      <Filter>源文件\已完成的题目\shsbnu</Filter>
+    </ClCompile>
+    <ClCompile Include="17077 终章.cpp">
+      <Filter>源文件\已完成的题目\shsbnu</Filter>
+    </ClCompile>
+    <ClCompile Include="17078 菱形数字.cpp">
+      <Filter>源文件\待完成</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

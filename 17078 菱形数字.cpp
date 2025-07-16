@@ -16,10 +16,10 @@
 #include <time.h>
 #include <iostream>
 #include <stdint.h>
+#include <set>
 
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
-#define MAXN          (size_t)(1e5+5)
 
 typedef long long int ll;
 typedef unsigned long long int ull;
@@ -32,41 +32,8 @@ inline Type readf(Type* p = nullptr);
 template<typename Type>
 inline void writef(Type x);
 
-ll arr[MAXN], sum;
-ll t, n, ans;
-
-inline void slove() {
-    readf(&n);
-
-    for (size_t i = 1; i <= n; i++) {
-        readf(&arr[i]);
-        sum += arr[i] - 1;
-    }
-
-
-    if ((1 + n - 1) * (n - 1) / 2 == sum) {
-        ans = n;
-    }
-    else {
-        for (size_t l = 1, r = n; l <= r && r <= n; ) {
-            ll mid = (l + r) >> 1;
-            if (mid == n) {
-                break;
-            }
-            if ((1 + mid - 1) * (mid - 1) / 2 <= sum) {
-                ans = mid;
-                l = mid + 1;
-            }
-            else {
-                r = mid - 1;
-            }
-        }
-    }
-
-    printf("%lld\n", ans);
-    sum = 0;
-    return;
-}
+std::set<char> s[6], set;
+char ch;
 
 int main() {
 #ifdef _FREOPEN
@@ -77,13 +44,69 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    readf(&t);
+    std::cin >> ch;
+    s[3].insert(ch);
 
-    while (t--) {
-        slove();
+    std::cin >> ch;
+    s[2].insert(ch);
+    set.insert(ch);
+    std::cin >> ch;
+    s[3].insert(ch);
+    set.insert(ch);
+    std::cin >> ch;
+    s[4].insert(ch);
+    set.insert(ch);
+    if (set.size() < 3) {
+        puts("Yes");
+        return 0;
+    }
+    set.clear();
+
+    std::cin >> ch;
+    s[1].insert(ch);
+    set.insert(ch);
+    std::cin >> ch;
+    s[2].insert(ch);
+    set.insert(ch);
+    std::cin >> ch;
+    s[3].insert(ch);
+    set.insert(ch);
+    std::cin >> ch;
+    s[4].insert(ch);
+    set.insert(ch);
+    std::cin >> ch;
+    s[5].insert(ch);
+    set.insert(ch);
+    if (set.size() < 5) {
+        puts("Yes");
+        return 0;
+    }
+    set.clear();
+
+    std::cin >> ch;
+    s[2].insert(ch);
+    set.insert(ch);
+    std::cin >> ch;
+    s[3].insert(ch);
+    set.insert(ch);
+    std::cin >> ch;
+    s[4].insert(ch);
+    set.insert(ch);
+    if (set.size() < 3) {
+        puts("Yes");
+        return 0;
+    }
+    set.clear();
+
+    std::cin >> ch;
+    s[3].insert(ch);
+
+    if (s[2].size() < 3 || s[3].size() < 5 || s[2].size() < 3 ) {
+        puts("Yes");
+        return 0;
     }
 
-
+    puts("No");
 #ifdef _RUN_TIME
     printf("The running duration is not less than %ld ms\n", clock() - start);
 #endif // _RUN_TIME

@@ -19,7 +19,6 @@
 
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
-#define MAXN          (size_t)(1e5+5)
 
 typedef long long int ll;
 typedef unsigned long long int ull;
@@ -32,41 +31,7 @@ inline Type readf(Type* p = nullptr);
 template<typename Type>
 inline void writef(Type x);
 
-ll arr[MAXN], sum;
-ll t, n, ans;
-
-inline void slove() {
-    readf(&n);
-
-    for (size_t i = 1; i <= n; i++) {
-        readf(&arr[i]);
-        sum += arr[i] - 1;
-    }
-
-
-    if ((1 + n - 1) * (n - 1) / 2 == sum) {
-        ans = n;
-    }
-    else {
-        for (size_t l = 1, r = n; l <= r && r <= n; ) {
-            ll mid = (l + r) >> 1;
-            if (mid == n) {
-                break;
-            }
-            if ((1 + mid - 1) * (mid - 1) / 2 <= sum) {
-                ans = mid;
-                l = mid + 1;
-            }
-            else {
-                r = mid - 1;
-            }
-        }
-    }
-
-    printf("%lld\n", ans);
-    sum = 0;
-    return;
-}
+ll n, ans, cnt = 1;
 
 int main() {
 #ifdef _FREOPEN
@@ -77,12 +42,50 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    readf(&t);
+    readf(&n);
 
-    while (t--) {
-        slove();
+    for ( cnt = 1;; ++cnt) {
+        if (cnt > n) {
+            puts("s");
+            return 0;
+        }
+        if (getchar() == 's') {
+            ans = cnt++;
+            break;
+        }
+    }
+    for (; ; ++cnt) {
+        if (cnt > n) {
+            puts("c");
+            return 0;
+        }
+        if (getchar() == 'c') {
+            cnt++;
+            break;
+        }
+    }
+    for (; ; ++cnt) {
+        if (cnt > n) {
+            puts("p");
+            return 0;
+        }
+        if (getchar() == 'p') {
+            cnt++;
+            break;
+        }
+    }
+    for (; ; ++cnt) {
+        if (cnt > n) {
+            puts("c");
+            return 0;
+        }
+        if (getchar() == 'c') {
+            cnt++;
+            break;
+        }
     }
 
+    printf("%lld\n", ans);
 
 #ifdef _RUN_TIME
     printf("The running duration is not less than %ld ms\n", clock() - start);
