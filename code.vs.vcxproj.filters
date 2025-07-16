@@ -879,6 +879,12 @@
     <ClCompile Include="17081 山.cpp">
       <Filter>源文件\已完成的题目\shsbnu</Filter>
     </ClCompile>
+    <ClCompile Include="P1313 [NOIP 2011 提高组] 计算系数.cpp">
+      <Filter>源文件\待完成</Filter>
+    </ClCompile>
+    <ClCompile Include="数学.cpp">
+      <Filter>头文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
