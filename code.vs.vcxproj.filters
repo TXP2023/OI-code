@@ -874,7 +874,10 @@
       <Filter>源文件\已完成的题目\shsbnu</Filter>
     </ClCompile>
     <ClCompile Include="17078 菱形数字.cpp">
-      <Filter>源文件\待完成</Filter>
+      <Filter>源文件\已完成的题目\shsbnu</Filter>
+    </ClCompile>
+    <ClCompile Include="17081 山.cpp">
+      <Filter>源文件\已完成的题目\shsbnu</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
