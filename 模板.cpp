@@ -19,6 +19,7 @@
 
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
+#define FAST_READ     true
 
 typedef long long int ll;
 typedef unsigned long long int ull;
@@ -33,8 +34,10 @@ inline void writef(Type x);
 
 
 int main() {
+#if FAST_READ
     std::ios::sync_with_stdio(false);
     std::cin.tie(nullptr);
+#endif // FAST_READ
 
 #ifdef _FREOPEN
     freopen("input.txt", "r", stdin);
