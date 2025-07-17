@@ -1,4 +1,4 @@
-ï»¿//+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+//+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 //
 //      By txp2024 www.luogu.com.cn  TXP2023 www.github.com
 // 
@@ -19,22 +19,44 @@
 
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
-#define FAST_READ     true
+#define MOD           1000000007
 
 typedef long long int ll;
 typedef unsigned long long int ull;
 
-//å¿«è¯»å‡½æ•°å£°æ˜Ž
+//¿ì¶Áº¯ÊýÉùÃ÷
 template< typename Type >
 inline Type readf(Type* p = nullptr);
 
-//å¿«é€Ÿè¾“å‡ºå‡½æ•°
+//¿ìËÙÊä³öº¯Êý
 template<typename Type>
 inline void writef(Type x);
 
+ll a, b, k, n, m;
+ll ans = 1;
+
+inline int64_t fpow(int64_t a, int64_t n, int64_t mod = MOD) {
+    int64_t base = a, ret = 1;
+    while (n) {
+        if (n & 1) {
+            ret = ret * base;
+            ret %= mod;
+        }
+        base = base * base;
+        base %= mod;
+        n >>= 1;
+    }
+    return ret % mod;
+}
+
+inline ll f(ll val) {
+    if (val == 1) {
+        return 1;
+    }
+    return (val * f(val - 1) )% MOD;
+}
 
 int main() {
-
 #ifdef _FREOPEN
     freopen("input.txt", "r", stdin);
 #endif // _FREOPEN
@@ -43,7 +65,21 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
+    scanf("%lld%lld%lld%lld%lld", &a, &b, &k, &n, &m);
 
+
+    a %= MOD, b %= MOD;
+
+    ans *= (fpow(a, n) * fpow(b, m)) % MOD;
+
+    if (n > m) {
+        n = m;
+    }
+
+    ans *= f(k)*fpow((f(m)*f(n)) % MOD, MOD - 2) % MOD;
+    ans %= MOD;
+
+    printf("%lld\n", ans);
 
 
 
@@ -74,7 +110,7 @@ inline void writef(Type x) {
     do {
         sta[top++] = x % 10, x /= 10;
     } while (x);
-    while (top) putchar(sta[--top] + '0');  // 48 æ˜¯ '0'
+    while (top) putchar(sta[--top] + '0');  // 48 ÊÇ '0'
     return;
 }
 

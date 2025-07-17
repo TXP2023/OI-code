@@ -879,9 +879,6 @@
     <ClCompile Include="17081 山.cpp">
       <Filter>源文件\已完成的题目\shsbnu</Filter>
     </ClCompile>
-    <ClCompile Include="P1313 [NOIP 2011 提高组] 计算系数.cpp">
-      <Filter>源文件\待完成</Filter>
-    </ClCompile>
     <ClCompile Include="数学.cpp">
       <Filter>头文件</Filter>
     </ClCompile>
@@ -889,6 +886,21 @@
       <Filter>源文件\已完成的题目\shsbnu</Filter>
     </ClCompile>
     <ClCompile Include="17084 有效三角形的个数.cpp">
+      <Filter>源文件\已完成的题目\shsbnu</Filter>
+    </ClCompile>
+    <ClCompile Include="17086 研究兔子的土豪.cpp">
+      <Filter>源文件\已完成的题目\shsbnu</Filter>
+    </ClCompile>
+    <ClCompile Include="17089 [NOIP 2015 普及组] 金币.cpp">
+      <Filter>源文件\已完成的题目\shsbnu</Filter>
+    </ClCompile>
+    <ClCompile Include="17087 寻路.cpp">
+      <Filter>源文件\已完成的题目\shsbnu</Filter>
+    </ClCompile>
+    <ClCompile Include="P1313 [NOIP 2011 提高组] 计算系数.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
+    <ClCompile Include="17082 多项式展开.cpp">
       <Filter>源文件\已完成的题目\shsbnu</Filter>
     </ClCompile>
   </ItemGroup>

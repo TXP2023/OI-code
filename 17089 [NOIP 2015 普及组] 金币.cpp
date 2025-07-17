@@ -1,4 +1,4 @@
-ï»¿//+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+//+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 //
 //      By txp2024 www.luogu.com.cn  TXP2023 www.github.com
 // 
@@ -13,6 +13,7 @@
 #include <ctype.h>
 #include <cstdarg>
 #include <climits>
+#include <math.h>
 #include <time.h>
 #include <iostream>
 #include <stdint.h>
@@ -24,14 +25,15 @@
 typedef long long int ll;
 typedef unsigned long long int ull;
 
-//å¿«è¯»å‡½æ•°å£°æ˜Ž
+//¿ì¶Áº¯ÊýÉùÃ÷
 template< typename Type >
 inline Type readf(Type* p = nullptr);
 
-//å¿«é€Ÿè¾“å‡ºå‡½æ•°
+//¿ìËÙÊä³öº¯Êý
 template<typename Type>
 inline void writef(Type x);
 
+ll k, temp;
 
 int main() {
 
@@ -43,7 +45,10 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-
+    int n, d;
+    std::cin >> d;
+    n = (sqrt(1 + (d << 3)) - 1) / 2;
+    std::cout << n * (d * 1.0 - (n + 1) * (n + 2) / 6.0) + d;
 
 
 
@@ -74,7 +79,7 @@ inline void writef(Type x) {
     do {
         sta[top++] = x % 10, x /= 10;
     } while (x);
-    while (top) putchar(sta[--top] + '0');  // 48 æ˜¯ '0'
+    while (top) putchar(sta[--top] + '0');  // 48 ÊÇ '0'
     return;
 }
 
