@@ -1,4 +1,4 @@
-ï»¿//+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+//+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 //
 //      By txp2024 www.luogu.com.cn  TXP2023 www.github.com
 // 
@@ -19,23 +19,46 @@
 
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
+#define MAXN          1005
 
 typedef long long int ll;
 typedef unsigned long long int ull;
 
-//å¿«è¯»å‡½æ•°å£°æ˜Ž
+//¿ì¶Áº¯ÊýÉùÃ÷
 template< typename Type >
 inline Type readf(Type* p = nullptr);
 
-//å¿«é€Ÿè¾“å‡ºå‡½æ•°
+//¿ìËÙÊä³öº¯Êý
 template<typename Type>
 inline void writef(Type x);
 
+void read(ll& x) {
+    bool neg = false;
+    x = 0;
+    char ch = 0;
+    while (ch < '0' || ch > '9') {
+        if (ch == '-') neg = true;
+        ch = getchar();
+    }
+    if (neg) {
+        while (ch >= '0' && ch <= '9') {
+            x = x * 10 + ('0' - ch);
+            ch = getchar();
+        }
+    }
+    else {
+        while (ch >= '0' && ch <= '9') {
+            x = x * 10 + (ch - '0');
+            ch = getchar();
+        }
+    }
+}
+
+
+ll edges[MAXN]; //ÀëÉ¢»¯È¥ÖØÊý×é
+ll n, ans;
 
 int main() {
-    std::ios::sync_with_stdio(false);
-    std::cin.tie(nullptr);
-
 #ifdef _FREOPEN
     freopen("input.txt", "r", stdin);
 #endif // _FREOPEN
@@ -45,8 +68,31 @@ int main() {
 #endif // _RUN_TIME
 
 
+    std::cin >> n;
 
+    for (size_t i = 1; i <= n; i++) {
+        //readf(&edges[i]);
+        //std::cin >> edges[i];
+        //edges[i] = readf<ll>();
+        read(edges[i]);
+    }
 
+    std::sort(edges + 1, edges + 1 + n);
+
+    for (size_t i = 1; i <= n; i++) {
+        for (size_t j = i + 1; j <= n; j++) {
+            for (size_t k = j + 1; k <= n; k++) {
+                if (edges[i] + edges[j] > edges[k]) {
+                    ++ans;
+                }
+                else {
+                    break;
+                }
+            }
+        }
+    }
+
+	printf("%lld\n", ans);
 
 #ifdef _RUN_TIME
     printf("The running duration is not less than %ld ms\n", clock() - start);
@@ -54,8 +100,35 @@ int main() {
     return 0;
 }
 
+
 template< typename Type >
 inline Type readf(Type* p) {
+#if true
+    bool neg = false;
+    Type x = 0;
+    char ch = 0;
+    while (ch < '0' || ch > '9') {
+        if (ch == '-') neg = true;
+        ch = getchar();
+    }
+    if (neg) {
+        while (ch >= '0' && ch <= '9') {
+            x = x * 10 + ('0' - ch);
+            ch = getchar();
+        }
+    }
+    else {
+        while (ch >= '0' && ch <= '9') {
+            x = x * 10 + (ch - '0');
+            ch = getchar();
+        }
+    }
+    if (p != nullptr) {
+        *p = x;
+    }
+    return x;
+#else
+
     Type ret = 0, sgn = 0, ch = getchar();
     while (!isdigit(ch)) {
         sgn |= ch == '-', ch = getchar();
@@ -65,6 +138,7 @@ inline Type readf(Type* p) {
         *p = Type(sgn ? -ret : ret);
     }
     return sgn ? -ret : ret;
+#endif // READ
 }
 
 
@@ -75,7 +149,7 @@ inline void writef(Type x) {
     do {
         sta[top++] = x % 10, x /= 10;
     } while (x);
-    while (top) putchar(sta[--top] + '0');  // 48 æ˜¯ '0'
+    while (top) putchar(sta[--top] + '0');  // 48 ÊÇ '0'
     return;
 }
 

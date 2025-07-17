@@ -885,6 +885,12 @@
     <ClCompile Include="数学.cpp">
       <Filter>头文件</Filter>
     </ClCompile>
+    <ClCompile Include="17088 a+b problem.cpp">
+      <Filter>源文件\已完成的题目\shsbnu</Filter>
+    </ClCompile>
+    <ClCompile Include="17084 有效三角形的个数.cpp">
+      <Filter>源文件\已完成的题目\shsbnu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
