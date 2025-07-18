@@ -1,7 +1,15 @@
 #pragma once
-#include <string>
-#include <iostream>
 #include <vector>
+#include <stdio.h>
+#include <string.h>
+#include <algorithm>
+#include <numeric>
+#include <ctype.h>
+#include <cstdarg>
+#include <climits>
+#include <time.h>
+#include <iostream>
+#include <stdint.h>
 
 typedef long long int ll;
 
@@ -10,7 +18,7 @@ public:
     unsigned_large_int() {
         number = "0";
     }
-     
+
     inline const char* show_to_const_char();
 
     inline std::string show_to_string();
@@ -33,6 +41,13 @@ public:
     //重载+
     unsigned_large_int operator +(const unsigned_large_int other);
 
+    unsigned_large_int operator -(const unsigned_large_int& other);
+
+    unsigned_large_int operator /(const unsigned_large_int& other);
+
+    template<typename Type>
+    unsigned_large_int operator /(Type other);
+
     //重载*
     unsigned_large_int operator *(const unsigned_large_int other);
 
@@ -44,6 +59,18 @@ private:
     std::string number;
 
     inline ll length();
+
+    // 私有辅助函数：比较两个数的大小
+   // 返回: 1 (this > other), 0 (相等), -1 (this < other)
+    int compare(const unsigned_large_int& other) const {
+        if (number.length() > other.number.length()) return 1;
+        if (number.length() < other.number.length()) return -1;
+        for (int i = number.length() - 1; i >= 0; --i) {
+            if (number[i] > other.number[i]) return 1;
+            if (number[i] < other.number[i]) return -1;
+        }
+        return 0;
+    }
 };
 
 inline ll unsigned_large_int::length() {
@@ -207,4 +234,167 @@ unsigned_large_int unsigned_large_int::operator*(Type other) {
     }
 
     return *this * num;
+}
+
+unsigned_large_int unsigned_large_int::operator -(const unsigned_large_int& other) {
+    unsigned_large_int result;
+    // 检查被减数是否小于减数
+    if (this->compare(other) < 0) {
+        std::cerr << "Error: Minuend is less than subtrahend." << std::endl;
+        result.number = "0";
+        return result;
+    }
+
+    result.number = this->number; // 复制当前对象
+    int borrow = 0;
+    size_t i;
+
+    // 逐位减法
+    for (i = 0; i < other.number.size(); ++i) {
+        int digit_this = (result.number[i] - '0') - borrow;
+        int digit_other = other.number[i] - '0';
+        borrow = 0;
+
+        if (digit_this < digit_other) {
+            digit_this += 10;
+            borrow = 1;
+        }
+        result.number[i] = '0' + (digit_this - digit_other);
+    }
+
+    // 处理剩余借位
+    while (borrow && i < result.number.size()) {
+        if (result.number[i] > '0') {
+            result.number[i]--;
+            borrow = 0;
+        }
+        else {
+            result.number[i] = '9';
+            ++i;
+        }
+    }
+
+    // 移除前导零（从末尾开始）
+    while (result.number.size() > 1 && result.number.back() == '0') {
+        result.number.pop_back();
+    }
+
+    return result;
+}
+
+// 高精度除以高精度实现
+unsigned_large_int unsigned_large_int::operator/(const unsigned_large_int& other) {
+    unsigned_large_int quotient;
+    // 除零检查
+    if (other.number == "0") {
+        std::cerr << "Error: Division by zero." << std::endl;
+        quotient.number = "0";
+        return quotient;
+    }
+
+    int cmp = this->compare(other);
+    if (cmp < 0) { // 被除数小于除数
+        quotient.number = "0";
+        return quotient;
+    }
+    if (cmp == 0) { // 被除数等于除数
+        quotient.number = "1";
+        return quotient;
+    }
+
+    // 转换为正序字符串（高位在前）
+    std::string dividend = this->show_to_string();
+    unsigned_large_int temp = other;
+    std::string divisor_str = temp.show_to_string();
+    std::string quotient_str;
+
+    unsigned_large_int current;
+    current.number = "0";
+
+    for (size_t i = 0; i < dividend.size(); ++i) {
+        // 将当前数字加入current
+        if (current.number == "0") {
+            current.number[0] = dividend[i];
+        }
+        else {
+            current.number.push_back(dividend[i]);
+        }
+
+        // 移除可能的前导零（在正序中）
+        size_t start = 0;
+        while (start < current.number.size() - 1 && current.number[start] == '0') {
+            start++;
+        }
+        current.number = current.number.substr(start);
+
+        // 试商
+        int digit = 0;
+        unsigned_large_int temp = other;
+        while (current.compare(temp) >= 0) {
+            digit++;
+            temp = temp + other; // 使用加法模拟乘法
+        }
+
+        if (digit > 0) {
+            // 更新current
+            temp = temp - other; // 回退到最后一次小于等于current的值
+            current = current - temp;
+        }
+
+        quotient_str.push_back('0' + digit);
+    }
+
+    // 移除商的前导零
+    size_t start = 0;
+    while (start < quotient_str.size() - 1 && quotient_str[start] == '0') {
+        start++;
+    }
+    quotient_str = quotient_str.substr(start);
+
+    // 转换为逆序存储
+    std::reverse(quotient_str.begin(), quotient_str.end());
+    quotient.number = quotient_str;
+
+    return quotient;
+}
+
+// 高精度除以整数模板实现
+template<typename Type>
+unsigned_large_int unsigned_large_int::operator/(Type other) {
+    unsigned_large_int quotient;
+    // 除零检查
+    if (other == 0) {
+        std::cerr << "Error: Division by zero." << std::endl;
+        quotient.number = "0";
+        return quotient;
+    }
+
+    std::string quotient_str;
+    Type remainder = 0;
+    ll n = number.size();
+
+    // 从最高位（逆序存储的末尾）开始处理
+    for (ll i = n - 1; i >= 0; --i) {
+        Type current = remainder * 10 + (number[i] - '0');
+        Type digit = current / other;
+        remainder = current % other;
+        quotient_str.push_back('0' + digit);
+    }
+
+    // 移除前导零（正序字符串的开头）
+    size_t start = 0;
+    while (start < quotient_str.size() && quotient_str[start] == '0') {
+        start++;
+    }
+
+    if (start == quotient_str.size()) {
+        quotient.number = "0";
+    }
+    else {
+        quotient_str = quotient_str.substr(start);
+        std::reverse(quotient_str.begin(), quotient_str.end());
+        quotient.number = quotient_str;
+    }
+
+    return quotient;
 }
