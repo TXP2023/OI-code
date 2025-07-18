@@ -903,8 +903,8 @@
     <ClCompile Include="17082 多项式展开.cpp">
       <Filter>源文件\已完成的题目\shsbnu</Filter>
     </ClCompile>
-    <ClCompile Include="工业化.cpp">
-      <Filter>源文件\待完成</Filter>
+    <ClCompile Include="17101 工业化.cpp">
+      <Filter>源文件\已完成的题目\shsbnu</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
