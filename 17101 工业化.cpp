@@ -80,7 +80,7 @@ int main() {
 
 #ifdef _FREOPEN
     freopen("input.txt", "r", stdin);
-    //freopen("output.txt", "w", stdout);
+    freopen("output.txt", "w", stdout);
 #endif // _FREOPEN
 
 
@@ -118,7 +118,7 @@ int main() {
     //readf(&q);
 
     while (q--) {
-        ll x, s, t, val = 0, temp;
+        ll x, s, t, val = 0, temp, cnt = 0;
 
         scanf("%lld%lld%lld", &x, &s, &t);
         //readf(&x), readf(&s), readf(&t);
@@ -126,30 +126,27 @@ int main() {
             flag[x] = true;
             get_path(x);
         }
+        bool tag = false;
         while (s != t) {
             s = pre[s];
             ++val;
             if (s == 0) {
-                for (size_t i = 0; i < n; i++) {
-                    putchar('0');
-                    putchar(' ');
-                }
-                goto LOOP;
+                puts("0");
+                tag = true;
+                break;
             }
+        }
+        if (tag) {
+            continue;
         }
         temp = val % 2;
         for (size_t i = 1; i <= n; i++) {
             if (dist[x][temp][i] <= val) {
-                putchar('1');
-                putchar(' ');
-            }
-            else {
-                putchar('0');
-                putchar(' ');
+                ++cnt;
             }
         }
-    LOOP:
-        puts("");
+    
+        printf("%lld\n", cnt);
     }
 
 
