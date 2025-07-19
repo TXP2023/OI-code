@@ -20,6 +20,7 @@
 #define _FREAD        true
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
+#define MAXN          (size_t)(5e4+5)
 
 typedef long long int ll;
 typedef unsigned long long int ull;
@@ -32,6 +33,8 @@ inline Type readf(Type* p = nullptr);
 template<typename Type>
 inline void writef(Type x);
 
+ll arr[MAXN];
+ll n;
 
 int main() {
 
@@ -72,7 +75,7 @@ inline Type readf(Type* p) {
     }
     scanf("%lld", p);
     return *p;
-    
+
 
 #endif // _FREAD
 }

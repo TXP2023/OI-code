@@ -906,6 +906,18 @@
     <ClCompile Include="17101 工业化.cpp">
       <Filter>源文件\已完成的题目\shsbnu</Filter>
     </ClCompile>
+    <ClCompile Include="P1494 [国家集训队] 小 Z 的袜子.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
+    <ClCompile Include="P5268 [SNOI2017] 一个简单的询问.cpp">
+      <Filter>源文件\待完成</Filter>
+    </ClCompile>
+    <ClCompile Include="P4462 [CQOI2018] 异或序列.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
+    <ClCompile Include="P4145.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
@@ -1085,6 +1097,9 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="output.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="思路.txt">
       <Filter>资源文件</Filter>
     </Text>
   </ItemGroup>

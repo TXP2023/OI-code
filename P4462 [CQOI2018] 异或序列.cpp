@@ -15,11 +15,14 @@
 #include <climits>
 #include <time.h>
 #include <iostream>
+#include <cmath>
 #include <stdint.h>
 
 #define _FREAD        true
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
+#define MAXN          (size_t)(1e5+5)
+#define MAX_VAL       (size_t)(1e5+5)
 
 typedef long long int ll;
 typedef unsigned long long int ull;
@@ -32,6 +35,15 @@ inline Type readf(Type* p = nullptr);
 template<typename Type>
 inline void writef(Type x);
 
+struct Task {
+    ll l, r, id;
+};
+
+ll arr[MAXN], preSum[MAXN], cnt[MAX_VAL];
+Task tasks[MAXN];
+ll res[MAXN];
+ll n, m, k, blocks_size, ans;
+
 
 int main() {
 
@@ -43,8 +55,58 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
+    readf(&n), readf(&m), readf(&k);
 
+    blocks_size = std::sqrt(n);
+    for (size_t i = 1; i <= n; i++) {
+        readf(&arr[i]);
+        preSum[i] = preSum[i - 1] ^ arr[i];
+    }
 
+    for (size_t i = 1; i <= m; i++) {
+        readf(&tasks[i].l), readf(&tasks[i].r);
+        tasks[i].id = i;
+    }
+
+    std::sort(tasks + 1, tasks + 1 + m, [](const Task& a, const Task& b) {
+        if ((a.l + 1) / blocks_size != (b.l + 1) / blocks_size) {
+            return (a.l + 1) / blocks_size < (b.l + 1) / blocks_size;
+        }
+        if ((b.l + 1) / blocks_size & 1) {
+            return a.r < b.r;
+        }
+        return a.r > b.r;
+    });
+
+    //cnt[0] = 1;
+    for (size_t i = 1, l = 1, r = 0; i <= m; i++) {
+        ll rangeL = tasks[i].l - 1, rangeR = tasks[i].r, id = tasks[i].id;
+        while (l < rangeL) {
+            --cnt[preSum[l]];
+            ans -= cnt[preSum[l] ^ k];
+            ++l;
+        }
+        while (l > rangeL) {
+            --l;
+            ans += cnt[preSum[l] ^ k];
+            ++cnt[preSum[l]];
+        }
+        while (r < rangeR) {
+            ++r;
+            ans += cnt[preSum[r] ^ k];
+            ++cnt[preSum[r]];
+        }
+        while (r > rangeR) {
+            --cnt[preSum[r]];
+            ans -= cnt[preSum[r] ^ k];
+            --r;
+        }
+        res[id] = ans;
+    }
+
+    for (size_t i = 1; i <= m; i++) {
+        printf("%lld\n", res[i]);
+    }
 
 
 #ifdef _RUN_TIME
@@ -72,7 +134,7 @@ inline Type readf(Type* p) {
     }
     scanf("%lld", p);
     return *p;
-    
+
 
 #endif // _FREAD
 }
