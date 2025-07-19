@@ -79,6 +79,9 @@
     <Filter Include="源文件\已完成的题目\例题">
       <UniqueIdentifier>{809cd20f-0a80-47b1-9eeb-524337f282fc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\比赛\AtCoder Beginner Contest 415">
+      <UniqueIdentifier>{3931720f-c131-4310-b69a-df6aec41c964}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="模板.cpp">
@@ -917,6 +920,12 @@
     </ClCompile>
     <ClCompile Include="P4145.cpp">
       <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
+    <ClCompile Include="A - Unsupported Type.cpp">
+      <Filter>源文件\比赛\AtCoder Beginner Contest 415</Filter>
+    </ClCompile>
+    <ClCompile Include="B - Pick Two.cpp">
+      <Filter>源文件\比赛\AtCoder Beginner Contest 415</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
