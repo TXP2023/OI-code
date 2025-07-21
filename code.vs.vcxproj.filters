@@ -138,9 +138,6 @@
     <ClCompile Include="My_Vector.cpp">
       <Filter>头文件</Filter>
     </ClCompile>
-    <ClCompile Include="P3401 洛谷树.cpp">
-      <Filter>源文件\待完成</Filter>
-    </ClCompile>
     <ClCompile Include="Hash.cpp">
       <Filter>源文件\样例</Filter>
     </ClCompile>
@@ -912,9 +909,6 @@
     <ClCompile Include="P1494 [国家集训队] 小 Z 的袜子.cpp">
       <Filter>源文件\已完成的题目\luogu</Filter>
     </ClCompile>
-    <ClCompile Include="P5268 [SNOI2017] 一个简单的询问.cpp">
-      <Filter>源文件\待完成</Filter>
-    </ClCompile>
     <ClCompile Include="P4462 [CQOI2018] 异或序列.cpp">
       <Filter>源文件\已完成的题目\luogu</Filter>
     </ClCompile>
@@ -926,6 +920,18 @@
     </ClCompile>
     <ClCompile Include="B - Pick Two.cpp">
       <Filter>源文件\比赛\AtCoder Beginner Contest 415</Filter>
+    </ClCompile>
+    <ClCompile Include="P3401 洛谷树.cpp">
+      <Filter>源文件\待完成</Filter>
+    </ClCompile>
+    <ClCompile Include="GSS4 - Can you answer these queries IV.cpp">
+      <Filter>源文件\已完成的题目\spoj</Filter>
+    </ClCompile>
+    <ClCompile Include="P5268 [SNOI2017] 一个简单的询问.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
+    <ClCompile Include="P3901 数列找不同.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

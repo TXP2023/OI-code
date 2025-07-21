@@ -13,16 +13,16 @@
 #include <ctype.h>
 #include <cstdarg>
 #include <climits>
+#include <cmath>
 #include <time.h>
 #include <iostream>
-#include <cmath>
 #include <stdint.h>
 
 #define _FREAD        true
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
-#define MAXN          (size_t)(5e4+5)
-#define MAXQ          (size_t)(5e4+5)
+#define MAXN          (size_t)(1e5+5)
+#define MAXQ          (size_t)(1e5+5)
 
 typedef long long int ll;
 typedef unsigned long long int ull;
@@ -36,24 +36,17 @@ template<typename Type>
 inline void writef(Type x);
 
 struct Task {
-    ll l, r; //求get(1,l,x)*get(1, r,x)
-    ll id, type; //是+(1)还是-(-1)
-    Task() : l(0), r(0), id(0), type(0){}
-
-    Task(ll _L, ll _R, ll _Id, ll _Type) {
-        l = std::min(_L, _R);
-        r = std::max(_L, _R);
-        id = _Id;
-        type = _Type;
-        return;
-    }
+    ll l, r;
+    size_t id;
 };
 
-Task tasks[MAXQ * 4];
-ll arr[MAXN], res[MAXQ], cntL[MAXN], cntR[MAXN];
-ll n, q, block_size, cnt, sum;
+Task tasks[MAXQ];
+ll arr[MAXN];
+bool res[MAXQ];
+ll n, q, block_size, cnt = 0, bucket[MAXN];
 
 int main() {
+
 #ifdef _FREOPEN
     freopen("input.txt", "r", stdin);
 #endif // _FREOPEN
@@ -62,30 +55,20 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    readf(&n);
+    readf(&n), readf(&q);
 
     block_size = std::sqrt(n);
     for (size_t i = 1; i <= n; i++) {
         readf(&arr[i]);
     }
 
-    readf(&q);
-
     for (size_t i = 1; i <= q; i++) {
-        ll L1, R1, L2, R2;
-        readf(&L1), readf(&R1), readf(&L2), readf(&R2);
-        //Get(x) = get(1, x)
-        //Sigma(get(L1, R1)*get(L2, R2))
-        // =Get(R1)*Get(R2) - Get(R1)*Get(L2-1) - Get(L1-1)*Get(R2) + Get(L1 - 1)*Get(L2 - 1)
-        //下面强拆至4个子问题
-        tasks[++cnt] = Task(R1, R2, i, 1);
-        tasks[++cnt] = Task(R1, L2 - 1, i, -1);
-        tasks[++cnt] = Task(L1 - 1, R2, i, -1);
-        tasks[++cnt] = Task(L1 - 1, L2 - 1, i, 1);
+        readf(&tasks[i].l), readf(&tasks[i].r);
+        tasks[i].id = i;
     }
 
-    std::sort(tasks + 1, tasks + 1 + 4 * q, [](const Task& a, const Task& b) {
-        if ((a.l + 1)/block_size != (b.l + 1) / block_size) {
+    std::sort(tasks + 1, tasks + 1 + q, [](const Task& a, const Task& b) {
+        if ((a.l + 1) / block_size != (b.l + 1) / block_size) {
             return (a.l + 1) / block_size < (b.l + 1) / block_size;
         }
         if (((a.l + 1) / block_size) & 1) {
@@ -95,38 +78,47 @@ int main() {
             return a.r > b.r;
         }
     });
-
-    //如果cntL+1, 那么相当于加上cntR
-    //反之
-
-    for (ll i = 1, l = 0, r = -1; i <= cnt; i++) {
-        ll rangeL = tasks[i].l, rangeR = tasks[i].r, id = tasks[i].id, type = tasks[i].type;
+    
+    for (size_t i = 1, l = 1, r = 0; i <= q; i++) {
+        ll rangeL = tasks[i].l, rangeR = tasks[i].r, id = tasks[i].id;
         while (l < rangeL) {
+            --bucket[arr[l]];
+            if (!bucket[arr[l]]) {
+                --cnt;
+            }
             ++l;
-            sum += cntR[arr[l]];
-            ++cntL[arr[l]];
         }
         while (l > rangeL) {
-            --cntL[arr[l]];
-            sum -= cntR[arr[l]];
             --l;
+            if (!bucket[arr[l]]) {
+                ++cnt;
+            }
+            ++bucket[arr[l]];
         }
         while (r > rangeR) {
-            --cntR[arr[r]];
-            sum -= cntL[arr[r]];
+            --bucket[arr[r]];
+            if (!bucket[arr[r]]) {
+                --cnt;
+            }
             --r;
         }
         while (r < rangeR) {
             ++r;
-            ++cntR[arr[r]];
-            sum += cntL[arr[r]];
+            if (!bucket[arr[r]]) {
+                ++cnt;
+            }
+            ++bucket[arr[r]];
         }
-        res[id] += type * sum;
+        if (cnt == rangeR - rangeL + 1) {
+            res[id] = true;
+        }
     }
 
     for (size_t i = 1; i <= q; i++) {
-        printf("%lld\n", res[i]);
+        puts(res[i] ? "Yes" : "No");
     }
+
+
 
 #ifdef _RUN_TIME
     printf("The running duration is not less than %ld ms\n", clock() - start);
@@ -153,8 +145,6 @@ inline Type readf(Type* p) {
     }
     scanf("%lld", p);
     return *p;
-
-
 #endif // _FREAD
 }
 
