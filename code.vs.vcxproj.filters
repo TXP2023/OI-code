@@ -985,6 +985,9 @@
       <Filter>源文件\已完成的题目\CodeForces</Filter>
     </ClCompile>
     <ClCompile Include="P7384 「EZEC-6」分组.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
+    <ClCompile Include="CF1271D Portals.cpp">
       <Filter>源文件\待完成</Filter>
     </ClCompile>
   </ItemGroup>
