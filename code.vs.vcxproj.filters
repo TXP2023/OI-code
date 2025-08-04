@@ -984,6 +984,9 @@
     <ClCompile Include="CF2082B.cpp">
       <Filter>源文件\已完成的题目\CodeForces</Filter>
     </ClCompile>
+    <ClCompile Include="P7384 「EZEC-6」分组.cpp">
+      <Filter>源文件\待完成</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">

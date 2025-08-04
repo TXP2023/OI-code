@@ -888,6 +888,7 @@
     <ClCompile Include="P7076 [CSP-S2020] 动物园.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="P7384 「EZEC-6」分组.cpp" />
     <ClCompile Include="P7469 [NOI Online 2021 提高组] 积木小赛.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
