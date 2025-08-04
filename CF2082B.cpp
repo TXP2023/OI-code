@@ -1,4 +1,4 @@
-//+-+-+-+-+-+-+          -+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+//+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 //
 //      By txp2024 www.luogu.com.cn  TXP2023 www.github.com
 // 
@@ -14,6 +14,7 @@
 #include <cstdarg>
 #include <climits>
 #include <time.h>
+#include <cmath>
 #include <iostream>
 #include <stdint.h>
 
@@ -24,14 +25,39 @@
 typedef long long int ll;
 typedef unsigned long long int ull;
 
-//快读函数声明
 template< typename Type >
 inline Type readf(Type* p = nullptr);
 
-//快速输出函数
 template<typename Type>
 inline void writef(Type x);
 
+ll t, x, n, m;
+
+ll get_floor(ll _x, ll _y) {
+    while (_y--) {
+        if (!_x) {
+            return 0;
+        }
+        _x >>= 1;
+    }
+    return _x;
+}
+
+ll get_ceil(ll _x, ll _y) {
+    while (_y--) {
+        if (_x < 2) {
+            return _x;
+        }
+        _x = _x + 1 >> 1;
+    }
+    return _x;
+}
+
+inline void slove() {
+    //readf(&x), readf(&n), readf(&m);
+    printf("%lld %lld\n", get_floor(get_ceil(x, m), n) , get_ceil(get_floor(x, n), m));
+    return;
+}
 
 int main() {
 
@@ -43,7 +69,11 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
+    readf(&t);
 
+    while (t--) {
+        slove();
+    }
 
 
 
@@ -56,7 +86,8 @@ int main() {
 template< typename Type >
 inline Type readf(Type* p) {
 #if _FREAD
-    Type ret = 0, sgn = 0, ch = getchar();
+    Type ret = 0, sgn = 0;
+    uint64_t ch = getchar();
     while (!isdigit(ch)) {
         sgn |= ch == '-', ch = getchar();
     }
@@ -85,7 +116,7 @@ inline void writef(Type x) {
     do {
         sta[top++] = x % 10, x /= 10;
     } while (x);
-    while (top) putchar(sta[--top] + '0');  // 48 是 '0'
+    while (top) putchar(sta[--top] + '0');  // 48 ?? '0'
     return;
 }
 

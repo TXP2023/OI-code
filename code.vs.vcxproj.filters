@@ -88,6 +88,9 @@
     <Filter Include="源文件\比赛\北师大夏利营2024">
       <UniqueIdentifier>{7a518bf6-10bd-42ab-a6bf-47e17e22aa2b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\已完成的题目\AtCoder">
+      <UniqueIdentifier>{cd4416ce-cb1e-4450-a040-95004b1046e7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="模板.cpp">
@@ -973,6 +976,12 @@
       <Filter>源文件\比赛\北师大夏利营2024</Filter>
     </ClCompile>
     <ClCompile Include="P1485 火枪打怪.cpp">
+      <Filter>源文件\待完成</Filter>
+    </ClCompile>
+    <ClCompile Include="AGC032E.cpp">
+      <Filter>源文件\已完成的题目\AtCoder</Filter>
+    </ClCompile>
+    <ClCompile Include="CF2082B.cpp">
       <Filter>源文件\待完成</Filter>
     </ClCompile>
   </ItemGroup>
