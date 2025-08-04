@@ -54,8 +54,8 @@ ll get_ceil(ll _x, ll _y) {
 }
 
 inline void slove() {
-    //readf(&x), readf(&n), readf(&m);
-    std::cin >> x >> n >> m;
+    readf(&x), readf(&n), readf(&m);
+    //std::cin >> x >> n >> m;
     printf("%lld %lld\n", get_floor(get_ceil(x, m), n), get_ceil(get_floor(x, n), m));
     return;
 }
@@ -71,7 +71,8 @@ int main() {
 #endif // _RUN_TIME
 
 
-    std::cin >> t;
+    //std::cin >> t;
+    readf(&t);
 
     while (t--) {
         slove();

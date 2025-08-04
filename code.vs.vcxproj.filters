@@ -982,7 +982,7 @@
       <Filter>源文件\已完成的题目\AtCoder</Filter>
     </ClCompile>
     <ClCompile Include="CF2082B.cpp">
-      <Filter>源文件\待完成</Filter>
+      <Filter>源文件\已完成的题目\CodeForces</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
