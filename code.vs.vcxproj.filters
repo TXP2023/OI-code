@@ -991,7 +991,7 @@
       <Filter>源文件\已完成的题目\CodeForces</Filter>
     </ClCompile>
     <ClCompile Include="P2619 [国家集训队] Tree I.cpp">
-      <Filter>源文件\待完成</Filter>
+      <Filter>源文件\已完成的题目\luogu</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
