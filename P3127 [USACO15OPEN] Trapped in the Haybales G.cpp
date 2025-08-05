@@ -25,7 +25,7 @@
 typedef long long int ll;
 typedef unsigned long long int ull;
 
-//¿ì¶Áº¯ÊıÉùÃ÷
+//å¿«è¯»å‡½æ•°å£°æ˜
 #if READ
 template< typename T >
 inline T readf();
@@ -34,7 +34,7 @@ template< typename Type >
 inline Type readf(Type* p = nullptr);
 #endif
 
-//¿ìËÙÊä³öº¯Êı
+//å¿«é€Ÿè¾“å‡ºå‡½æ•°
 template<typename Type>
 inline void writef(Type x);
 
@@ -85,7 +85,7 @@ int main() {
 
     for (size_t i = 2; i <= n; i++) {
         if (*(set.begin()) < hays[i].pos) {
-            //¶ş·Ö²éÕÒµÚÒ»¸ö´óÓÚhays[i].posµÄÎ»ÖÃ
+            //äºŒåˆ†æŸ¥æ‰¾ç¬¬ä¸€ä¸ªå¤§äºhays[i].posçš„ä½ç½®
             std::set<ll>::iterator it = --set.upper_bound(hays[i].pos);
             ll left = mapping[*it], right = mapping[hays[i].pos];
             if (pos[right] - pos[left] <= hays[i].weight && !flag[left]) {
@@ -95,7 +95,7 @@ int main() {
             }
         }
         if (*(--set.end()) > hays[i].pos) {
-            //¶ş·Ö²éÕÒµÚÒ»¸ö´óÓÚhays[i].posµÄÎ»ÖÃ
+            //äºŒåˆ†æŸ¥æ‰¾ç¬¬ä¸€ä¸ªå¤§äºhays[i].posçš„ä½ç½®
             std::set<ll>::iterator it = set.upper_bound(hays[i].pos);
             ll left = mapping[hays[i].pos], right = mapping[*it];
             if (pos[right] - pos[left] <= hays[i].weight && !flag[left]) {
@@ -160,7 +160,7 @@ inline void writef(Type x) {
     do {
         sta[top++] = x % 10, x /= 10;
     } while (x);
-    while (top) putchar(sta[--top] + '0');  // 48 ÊÇ '0'
+    while (top) putchar(sta[--top] + '0');  // 48 æ˜¯ '0'
     return;
 }
 
