@@ -41,10 +41,10 @@ struct City {
     ll attack, add, weight;
     City() : attack(0), add(0), weight(0), id(0), road({}) {}
 
-    City(ll _Attack, ll _Defend, ll _Weight) : attack(_Attack), add(_Defend), weight(_Weight), id(0), road({}) {}
+    City(ll _Attack, ll _Add, ll _Weight) : attack(_Attack), add(_Add), weight(_Weight), id(0), road({}) {}
 
     inline bool operator <(const City& other)const {
-        return this->weight < other.weight;
+        return this->weight > other.weight;
     }
 };
 
@@ -52,7 +52,7 @@ struct Path {
     ll u, v;//u -> v
 };
 
-Path paths[MAXN];
+Path paths[MAXM];
 City cities[MAXN];
 bool flag[MAXN];
 ll n, m, k, ans;
@@ -68,8 +68,7 @@ inline void slove() {
         //先是准备士兵
         if (k < cities[i].attack) {
             //目前的兵力不足以攻占这个城市
-            ll temp = cities[i].attack - k;
-            if (heap.size() < k) {
+            if (heap.size() < cities[i].attack - k) {
                 puts("-1");
                 exit(0);
             }
@@ -84,9 +83,17 @@ inline void slove() {
         k += cities[i].add;
         //现在进攻完成，部署防御
         for (auto& j : cities[i].road) {
-            if (!k) {
+            if (!k && !heap.empty() && heap.top().weight < cities[j].weight) {
+                //如果此时没有兵力可以使用了
+                //City top = heap.top();
+                ans -= heap.top().weight;
+                heap.pop();
+                ++k;
+            }
+            if (!k && (heap.empty() || (!heap.empty() && heap.top().weight >= cities[j].weight))) {
                 break;
             }
+
             ans += cities[j].weight;
             --k;
             heap.push(City(cities[j]));
@@ -118,7 +125,7 @@ int main() {
 
     std::sort(paths + 1, paths + 1 + m, [](const Path& a, const Path& b) {
         return a.u > b.u;
-    });
+        });
 
     for (size_t i = 1; i <= m; i++) {
         if (flag[paths[i].v] || paths[i].v > paths[i].u) {
@@ -134,7 +141,7 @@ int main() {
         }
         std::sort(cities[i].road.begin(), cities[i].road.end(), [](const size_t& a, const size_t& b) {
             return cities[a].weight > cities[b].weight;
-        });
+            });
     }
 
     slove();
