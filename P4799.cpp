@@ -11,79 +11,83 @@
 #include <algorithm>
 #include <numeric>
 #include <ctype.h>
-#include <bitset>
 #include <cstdarg>
 #include <climits>
 #include <time.h>
 #include <iostream>
 #include <stdint.h>
-#include <queue>
 
 #define _FREAD        true
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
-#define MAXN          (size_t)(3e4 + 5)
-#define MAXM          (size_t)(1e5 + 5)
+#define MAXN          45
+#define MAX_SIZE      2010000
 
 typedef long long int ll;
 typedef unsigned long long int ull;
+
 //快读函数声明
 template< typename Type >
-inline Type readf(Type* p = nullptr);
+inline Type fread(Type* p = nullptr);
 
 //快速输出函数
 template<typename Type>
 inline void writef(Type x);
 
-struct Graph {
-    struct Edge {
-        ll u, next;
-        Edge(): u(0), next(0){}
-        
-        Edge(ll _u, ll _next) : u(_u), next(_next) {}
-    };
+template<typename Type, size_t _MAX_SIZE>
+class StaticVector {
+public:
 
-    Edge edges[MAXM];
-    ll head[MAXN];
-    ll edge_cnt = 0;
-
-    Graph() {
-        memset(head, 0, sizeof(head));
+    StaticVector() {
+        size_ = 0;
         return;
     }
 
-    inline void add_edge(ll u, ll v) {
-        ++edge_cnt;
-        edges[edge_cnt] = Edge(v, head[u]);
-        head[u] = edge_cnt;
+    template<typename T>
+    inline Type& operator [] (T _Pos) {
+        return arr_[_Pos];
+    }
+
+    inline void push_back(Type _Value) {
+        arr_[size_++] = _Value;
         return;
     }
-};  
 
-Graph g, e;
-ll u[MAXM], v[MAXM], inDegree[MAXN], arr[MAXN];
-std::bitset<MAXN> s[MAXN], t[MAXN];
+    inline size_t size() {
+        return size_;
+    }
+
+    inline Type* begin() {
+        return arr_;
+    }
+
+    inline Type* end() {
+        return &arr_[size_];
+    }
+
+private:
+    Type arr_[_MAX_SIZE];
+    size_t size_;
+};
+
+using vec = StaticVector<size_t, MAX_SIZE>;
+
+vec va, vb;
+ll ticket[MAXN];
 ll n, m, ans = 0;
 
-inline void topo() {
-    std::queue<int> q; int tot = 0;
-    for (int i = 1; i <= n; ++i) {
-        if (!inDegree[i]) {
-            q.push(i);
-        } 
+inline void dfs(const ll &l, const ll &r, const uint64_t &sum, vec &_v) {
+    if (sum > m) {
+        return;
     }
-    while (!q.empty()) {
-        int u = q.front(); 
-        q.pop(); 
-        arr[++tot] = u;
-        //for (int v : G[u]) if (--in[v] == 0) q.push(v);
-        for (size_t i =g.head[u], v; i ; i = g.edges[i].next) {
-            v = g.edges[i].u;
-            if (--inDegree[v] == 0) {
-                q.push(v);
-            } 
-        }
+
+    if (l > r) {
+        _v.push_back(sum);
+        return;
     }
+    dfs(l + 1, r, sum + ticket[l], _v);
+    dfs(l + 1, r, sum, _v);
+    return;
 }
 
 int main() {
@@ -96,35 +100,20 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    readf(&n), readf(&m);
+    fread(&n), fread(&m);
 
-    for (size_t i = 1; i <= m; i++) {
-        readf(&u[i]), readf(&v[i]);
-        g.add_edge(u[i], v[i]);
-        e.add_edge(v[i], u[i]);
-        ++inDegree[v[i]];
+    for (size_t i = 1; i <= n; i++) {
+        fread(&ticket[i]);
     }
 
-    topo();
+    ll mid = (n >> 1);
 
-    for (size_t i = n; i >= 1; --i) {
-        size_t u = arr[i];
-        for (size_t i = g.head[u], v; i; i = g.edges[i].next) {
-            v = g.edges[i].u;
-            s[u][v] = 1, s[u] |= s[v];
-        }
-    }
+    dfs(1, mid, 0, va);
+    dfs(mid + 1, n, 0, vb);
 
-    for (int i = 1; i <= n; ++i) {
-        size_t u = arr[i];
-        for (size_t i = e.head[u], v; i; i = e.edges[i].next) {
-            v = e.edges[i].u;
-            t[u][v] = 1, t[u] |= t[v];
-        }
-    }
-
-    for (int i = 1; i <= m; ++i) { 
-        ans += (s[u[i]] & t[v[i]]).any(); 
+    std::sort(vb.begin(), vb.end());
+    for (auto& i : va) {        
+        ans += std::upper_bound(vb.begin(), vb.end(), m - i) - vb.begin();
     }
 
     printf("%lld\n", ans);
@@ -136,7 +125,7 @@ int main() {
 }
 
 template< typename Type >
-inline Type readf(Type* p) {
+inline Type fread(Type* p) {
 #if _FREAD
     Type ret = 0, sgn = 0, ch = getchar();
     while (!isdigit(ch)) {
@@ -192,4 +181,4 @@ inline void writef(Type x) {
  *  / ==ooooooooooooooo==.o.  ooo= //   /\--{)B     ,"
  * /_==__==========__==_ooo__ooo=_/'   /___________,"
  *
- */
+ */     

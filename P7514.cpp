@@ -11,22 +11,20 @@
 #include <algorithm>
 #include <numeric>
 #include <ctype.h>
-#include <bitset>
 #include <cstdarg>
 #include <climits>
 #include <time.h>
 #include <iostream>
 #include <stdint.h>
-#include <queue>
 
 #define _FREAD        true
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
-#define MAXN          (size_t)(3e4 + 5)
-#define MAXM          (size_t)(1e5 + 5)
+#define MAXN          (size_t)(1e6+6)
 
 typedef long long int ll;
 typedef unsigned long long int ull;
+
 //快读函数声明
 template< typename Type >
 inline Type readf(Type* p = nullptr);
@@ -35,56 +33,14 @@ inline Type readf(Type* p = nullptr);
 template<typename Type>
 inline void writef(Type x);
 
-struct Graph {
-    struct Edge {
-        ll u, next;
-        Edge(): u(0), next(0){}
-        
-        Edge(ll _u, ll _next) : u(_u), next(_next) {}
-    };
+struct Card {
+    ll id;
+    ll val;
+    bool tag;
+};
 
-    Edge edges[MAXM];
-    ll head[MAXN];
-    ll edge_cnt = 0;
-
-    Graph() {
-        memset(head, 0, sizeof(head));
-        return;
-    }
-
-    inline void add_edge(ll u, ll v) {
-        ++edge_cnt;
-        edges[edge_cnt] = Edge(v, head[u]);
-        head[u] = edge_cnt;
-        return;
-    }
-};  
-
-Graph g, e;
-ll u[MAXM], v[MAXM], inDegree[MAXN], arr[MAXN];
-std::bitset<MAXN> s[MAXN], t[MAXN];
-ll n, m, ans = 0;
-
-inline void topo() {
-    std::queue<int> q; int tot = 0;
-    for (int i = 1; i <= n; ++i) {
-        if (!inDegree[i]) {
-            q.push(i);
-        } 
-    }
-    while (!q.empty()) {
-        int u = q.front(); 
-        q.pop(); 
-        arr[++tot] = u;
-        //for (int v : G[u]) if (--in[v] == 0) q.push(v);
-        for (size_t i =g.head[u], v; i ; i = g.edges[i].next) {
-            v = g.edges[i].u;
-            if (--inDegree[v] == 0) {
-                q.push(v);
-            } 
-        }
-    }
-}
+Card cards[MAXN * 2];
+ll n, k;
 
 int main() {
 
@@ -96,38 +52,20 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    readf(&n), readf(&m);
+    readf(&n), readf(&k);
 
-    for (size_t i = 1; i <= m; i++) {
-        readf(&u[i]), readf(&v[i]);
-        g.add_edge(u[i], v[i]);
-        e.add_edge(v[i], u[i]);
-        ++inDegree[v[i]];
+    for (size_t i = 1; i <= n; i++) {
+        readf(&cards[i].val);
+        cards[i].id = i;
+        cards[i].tag = 1;
     }
 
-    topo();
-
-    for (size_t i = n; i >= 1; --i) {
-        size_t u = arr[i];
-        for (size_t i = g.head[u], v; i; i = g.edges[i].next) {
-            v = g.edges[i].u;
-            s[u][v] = 1, s[u] |= s[v];
-        }
+    for (size_t i = 1; i <= n; i++) {
+        readf(&cards[n + i].val);
+        cards[n + i].id = i;
     }
 
-    for (int i = 1; i <= n; ++i) {
-        size_t u = arr[i];
-        for (size_t i = e.head[u], v; i; i = e.edges[i].next) {
-            v = e.edges[i].u;
-            t[u][v] = 1, t[u] |= t[v];
-        }
-    }
-
-    for (int i = 1; i <= m; ++i) { 
-        ans += (s[u[i]] & t[v[i]]).any(); 
-    }
-
-    printf("%lld\n", ans);
+    //std::sort(cards + 1, cards + 1 + n, []( ))
 
 #ifdef _RUN_TIME
     printf("The running duration is not less than %ld ms\n", clock() - start);
