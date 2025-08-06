@@ -909,6 +909,7 @@
     <ClCompile Include="P7384 「EZEC-6」分组.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="P7395 弹珠游戏（2021 CoE-I C）.cpp" />
     <ClCompile Include="P7469 [NOI Online 2021 提高组] 积木小赛.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
