@@ -40,7 +40,8 @@ struct Card {
 };
 
 Card cards[MAXN * 2];
-ll n, k;
+bool used[MAXN];
+ll n, m, ans = INT32_MAX;
 
 int main() {
 
@@ -52,12 +53,12 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    readf(&n), readf(&k);
+    readf(&n), readf(&m);
 
     for (size_t i = 1; i <= n; i++) {
         readf(&cards[i].val);
         cards[i].id = i;
-        cards[i].tag = 1;
+        cards[i].tag;
     }
 
     for (size_t i = 1; i <= n; i++) {
@@ -65,7 +66,36 @@ int main() {
         cards[n + i].id = i;
     }
 
-    //std::sort(cards + 1, cards + 1 + n, []( ))
+    std::sort(cards + 1, cards + 1 + 2 * n, [](const Card& a, const Card& b) {
+        return a.val < b.val || (a.val == b.val && a.id < b.id);
+        }
+    );
+
+    ll l = 0, r = n * 2 + 1, cnt = 0;
+    while (!used[cards[l + 1].id] && cnt + cards[l + 1].tag <= m) {
+        ++l;
+        used[cards[l].id] = true;
+        cnt += cards[l].tag;
+    }
+    while (!used[cards[r - 1].id] && cnt + cards[r - 1].tag <= m) {
+        --r;
+        used[cards[r].id] = true;
+        cnt += cards[r].tag;
+    }
+
+    while (l >= 0) {
+        ans = std::min(cards[r - 1].val - cards[l + 1].val, ans);
+        used[cards[l].id] = false;
+        cnt -= cards[l].tag;
+        --l;
+        while (!used[cards[r - 1].id] && cnt + cards[r - 1].tag <= m) {
+            cnt += cards[r - 1].tag;
+            used[cards[r - 1].id] = 1;
+            r--;
+        }
+    }
+
+    printf("%lld\n", ans);
 
 #ifdef _RUN_TIME
     printf("The running duration is not less than %ld ms\n", clock() - start);
