@@ -91,7 +91,7 @@ int main() {
                 cnt++;
             }
         }
-        printf(_dfs(mask) ? "Possible.\n" : "Impossible.\n");
+        printf(dfs(mask) ? "Possible.\n" : "Impossible.\n");
     }
 
 

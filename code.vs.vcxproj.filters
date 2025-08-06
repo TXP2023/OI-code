@@ -1009,7 +1009,7 @@
       <Filter>源文件\已完成的题目\luogu</Filter>
     </ClCompile>
     <ClCompile Include="P7395 弹珠游戏（2021 CoE-I C）.cpp">
-      <Filter>源文件\待完成</Filter>
+      <Filter>源文件\已完成的题目\luogu</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
