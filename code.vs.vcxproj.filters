@@ -1029,6 +1029,9 @@
     <ClCompile Include="CF587C Duff in the Army.cpp">
       <Filter>源文件\已完成的题目\luogu</Filter>
     </ClCompile>
+    <ClCompile Include="CF229B.cpp">
+      <Filter>源文件\已完成的题目\CodeForces</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
