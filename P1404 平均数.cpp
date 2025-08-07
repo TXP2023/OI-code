@@ -75,15 +75,15 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    readf(&n), readf(&s), readf(&t);
+    readf(&n), readf(&s);
+    t = n;
 
     for (size_t i = 1; i <= n; i++) {
         readf(&arr[i]);
     }
 
-    for (double l = -1e4, r = 1e4; r - l >= 1e-4; ) {
+    for (double l = 0, r = 2e3; r - l >= 1e-1; ) {
         double mid = (l + r) / 2;
-        mid = -1;
         if (check(mid)) {
             ans = mid;
             l = mid;
@@ -93,7 +93,8 @@ int main() {
         }
     }
 
-    printf("%.3lf\n", (double)ans);
+    ans *= 1000;
+    printf("%lld\n", (ll)ans);
 
 #ifdef _RUN_TIME
     printf("The running duration is not less than %ld ms\n", clock() - start);

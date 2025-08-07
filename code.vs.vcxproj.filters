@@ -942,9 +942,6 @@
     <ClCompile Include="P3901 数列找不同.cpp">
       <Filter>源文件\已完成的题目\luogu</Filter>
     </ClCompile>
-    <ClCompile Include="P1419 寻找段落.cpp">
-      <Filter>源文件\待完成</Filter>
-    </ClCompile>
     <ClCompile Include="P12674 「LAOI-8」Count.cpp">
       <Filter>源文件\已完成的题目\luogu</Filter>
     </ClCompile>
@@ -1009,6 +1006,27 @@
       <Filter>源文件\已完成的题目\luogu</Filter>
     </ClCompile>
     <ClCompile Include="P7395 弹珠游戏（2021 CoE-I C）.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
+    <ClCompile Include="P2034 选择数字.cpp">
+      <Filter>源文件\待完成</Filter>
+    </ClCompile>
+    <ClCompile Include="P1404 平均数.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
+    <ClCompile Include="P1419 寻找段落.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
+    <ClCompile Include="P7306 [COCI 2018\2019 #1] Strah.cpp">
+      <Filter>源文件\待完成</Filter>
+    </ClCompile>
+    <ClCompile Include="P4513 小白逛公园.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
+    <ClCompile Include="CF1702G2 Passable Paths.cpp">
+      <Filter>源文件\待完成</Filter>
+    </ClCompile>
+    <ClCompile Include="CF587C Duff in the Army.cpp">
       <Filter>源文件\已完成的题目\luogu</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1187,6 +1205,7 @@
     <None Include="..\..\Downloads\P3366_1.in">
       <Filter>资源文件\洛谷测试点</Filter>
     </None>
+    <None Include="CF1702G2 Passable Pathshard version" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="output.txt">

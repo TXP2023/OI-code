@@ -14,56 +14,24 @@
 #include <cstdarg>
 #include <climits>
 #include <time.h>
-#include <queue>
 #include <iostream>
 #include <stdint.h>
 
 #define _FREAD        true
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
-#define MAXN          (size_t)(1e5+5)
 
 typedef long long int ll;
 typedef unsigned long long int ull;
 
 //快读函数声明
 template< typename Type >
-inline Type readf(Type* p = nullptr);
+inline Type fread(Type* p = nullptr);
 
 //快速输出函数
 template<typename Type>
-inline void writef(Type x);
+inline void fwrite(Type x);
 
-ll arr[MAXN];
-ll n, s, t;
-double ans = 0;
-
-inline bool check(double x) {
-    double _sum[MAXN];
-    ll que[MAXN];
-    _sum[0] = 0;
-    for (size_t i = 1; i <= n; i++) {
-        _sum[i] = _sum[i - 1] + (double)arr[i] - x;
-    }
-
-    ll _res = 0, l = 1, r = 0;
-    for (size_t i = 1; i <= n; i++) {
-        //先弹出超出的点
-        if (i >= s) {
-            while (r >= l && _sum[i - s] < _sum[que[r]]) {
-                r--;
-            }
-            que[++r] = i - s;
-        }
-        while (l <= r && que[l] < (ll)i - t) {
-            ++l;
-        }
-        if (l <= r && _sum[i] - _sum[que[l]] >= 0) {
-            return true;
-        }
-    }
-    return false;
-}
 
 int main() {
 
@@ -75,25 +43,9 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    readf(&n), readf(&s), readf(&t);
 
-    for (size_t i = 1; i <= n; i++) {
-        readf(&arr[i]);
-    }
 
-    for (double l = -1e4, r = 1e4; r - l >= 1e-4; ) {
-        double mid = (l + r) / 2;
-        mid = -1;
-        if (check(mid)) {
-            ans = mid;
-            l = mid;
-        }
-        else {
-            r = mid;
-        }
-    }
 
-    printf("%.3lf\n", (double)ans);
 
 #ifdef _RUN_TIME
     printf("The running duration is not less than %ld ms\n", clock() - start);
@@ -102,7 +54,7 @@ int main() {
 }
 
 template< typename Type >
-inline Type readf(Type* p) {
+inline Type fread(Type* p) {
 #if _FREAD
     Type ret = 0, sgn = 0, ch = getchar();
     while (!isdigit(ch)) {
@@ -127,13 +79,15 @@ inline Type readf(Type* p) {
 
 
 template<typename Type>
-inline void writef(Type x) {
+inline void fwrite(Type x) {
     int sta[MAX_NUM_SIZE];
     int top = 0;
     do {
         sta[top++] = x % 10, x /= 10;
     } while (x);
-    while (top) putchar(sta[--top] + '0');  // 48 是 '0'
+    while (top) {
+        putchar(sta[--top] + '0');
+    }  // 48 是 '0'
     return;
 }
 
