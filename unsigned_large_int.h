@@ -10,8 +10,59 @@
 #include <time.h>
 #include <iostream>
 #include <stdint.h>
+#include <complex>
+#include <cmath>
 
 typedef long long int ll;
+
+#define _FFT 1
+
+#if _FFT == 1
+//FFTå®ç°
+static void fft(std::vector<std::complex<double>>& a, bool invert) {
+    const double PI = std::acos(-1.0);
+    int n = a.size();
+
+    // ä½é€†åºç½®æ¢
+    for (int i = 1, j = 0; i < n; i++) {
+        int bit = n >> 1;
+        while (j & bit) {
+            j ^= bit;
+            bit >>= 1;
+        }
+        j ^= bit;
+
+        if (i < j) {
+            std::swap(a[i], a[j]);
+        }
+    }
+
+    // è´è¶æ“ä½œ
+    for (int len = 2; len <= n; len <<= 1) {
+        double ang = 2 * PI / len * (invert ? -1 : 1);
+        std::complex<double> wlen(std::cos(ang), std::sin(ang));
+        for (int i = 0; i < n; i += len) {
+            std::complex<double> w(1.0);
+            for (int j = 0; j < len / 2; j++) {
+                std::complex<double> u = a[i + j];
+                std::complex<double> v = w * a[i + j + len / 2];
+                a[i + j] = u + v;
+                a[i + j + len / 2] = u - v;
+                w *= wlen;
+            }
+        }
+    }
+
+    // é€†å˜æ¢æ—¶é™¤ä»¥n
+    if (invert) {
+        for (std::complex<double>& x : a) {
+            x /= n;
+        }
+    }
+}
+#endif // _FFT == 1
+
+
 
 class unsigned_large_int {
 public:
@@ -29,16 +80,16 @@ public:
 
     static inline unsigned_large_int min(unsigned_large_int a, unsigned_large_int b);
 
-    //ÔËËã·ûÖØÔØ²¿·Ö
-    //ÖØÔØ =
-    //¶ÔÓÚÒ»¸ö unsigned_large_int ¶ÔÏó
+    //è¿ç®—ç¬¦é‡è½½éƒ¨åˆ†
+    //é‡è½½ =
+    //å¯¹äºä¸€ä¸ª unsigned_large_int å¯¹è±¡
     void operator =(const unsigned_large_int other);
-    //¶ÔÓÚÒ»¸öÎŞ·ûºÅÕûÊı¶ÔÏó 
-    //Type ¿ÉÒÔÊÇ (unsigned)short/int/long
+    //å¯¹äºä¸€ä¸ªæ— ç¬¦å·æ•´æ•°å¯¹è±¡ 
+    //Type å¯ä»¥æ˜¯ (unsigned)short/int/long
     template< typename Type >
     void operator =(Type other);
 
-    //ÖØÔØ+
+    //é‡è½½+
     unsigned_large_int operator +(const unsigned_large_int other);
 
     unsigned_large_int operator -(const unsigned_large_int& other);
@@ -48,10 +99,10 @@ public:
     template<typename Type>
     unsigned_large_int operator /(Type other);
 
-    //ÖØÔØ*
+    //é‡è½½*
     unsigned_large_int operator *(const unsigned_large_int other);
 
-    //Type ¿ÉÒÔÊÇ (unsigned)short/int/long
+    //Type å¯ä»¥æ˜¯ (unsigned)short/int/long
     template< typename Type >
     unsigned_large_int operator *(Type other);
 
@@ -60,8 +111,8 @@ private:
 
     inline ll length();
 
-    // Ë½ÓĞ¸¨Öúº¯Êı£º±È½ÏÁ½¸öÊıµÄ´óĞ¡
-   // ·µ»Ø: 1 (this > other), 0 (ÏàµÈ), -1 (this < other)
+    // ç§æœ‰è¾…åŠ©å‡½æ•°ï¼šæ¯”è¾ƒä¸¤ä¸ªæ•°çš„å¤§å°
+   // è¿”å›: 1 (this > other), 0 (ç›¸ç­‰), -1 (this < other)
     int compare(const unsigned_large_int& other) const {
         if (number.length() > other.number.length()) return 1;
         if (number.length() < other.number.length()) return -1;
@@ -77,7 +128,7 @@ inline ll unsigned_large_int::length() {
     return number.length();
 }
 
-//ÊäÈëÒ»¸ö¸ß¾«¶ÈÀà
+//è¾“å…¥ä¸€ä¸ªé«˜ç²¾åº¦ç±»
 inline void unsigned_large_int::input() {
     std::string s;
     std::cin >> s;
@@ -89,7 +140,7 @@ inline void unsigned_large_int::input() {
     return;
 }
 
-//¶ÔÁ½¸ö¸ß¾«¶ÈÀà±È½Ï£¬ ·µ»Ø½Ï´óµÄÄÇ¸ö
+//å¯¹ä¸¤ä¸ªé«˜ç²¾åº¦ç±»æ¯”è¾ƒï¼Œ è¿”å›è¾ƒå¤§çš„é‚£ä¸ª
 inline unsigned_large_int unsigned_large_int::max(unsigned_large_int a, unsigned_large_int b) {
     if (a.length() == b.length()) {
         for (ll i = a.length(); i >= 0; i--) {
@@ -114,7 +165,7 @@ inline unsigned_large_int unsigned_large_int::min(unsigned_large_int a, unsigned
     return (a.length() < b.length()) ? a : b;
 }
 
-//Õâ¸ö¸ß¾«¶ÈÀàËù´ú±íµÄÊı×Ö×ª»¯Îª×Ö·û´®¸ñÊ½
+//è¿™ä¸ªé«˜ç²¾åº¦ç±»æ‰€ä»£è¡¨çš„æ•°å­—è½¬åŒ–ä¸ºå­—ç¬¦ä¸²æ ¼å¼
 inline const char* unsigned_large_int::show_to_const_char() {
     const char* p = number.data();
     return p;
@@ -137,7 +188,7 @@ void unsigned_large_int::operator=(const unsigned_large_int other) {
 template< typename Type >
 inline void unsigned_large_int::operator=(Type other) {
     unsigned_large_int num;
-    ll other_num = 0; //other¶ÔÏóµÄÎ»Êı
+    ll other_num = 0; //otherå¯¹è±¡çš„ä½æ•°
     (*this).number.clear();
 
     if (other == 0) {
@@ -162,12 +213,12 @@ unsigned_large_int unsigned_large_int::operator+(const unsigned_large_int other)
     summation.number.resize(num1.length() + 1);
     summation.number = num1.number;
 
-    //¼ÓºÍ
+    //åŠ å’Œ
     for (size_t i = 0; i < num2.length(); i++) {
         summation.number[i] += num2.number[i] - '0';
     }
 
-    //½øÎ»
+    //è¿›ä½
     for (size_t i = 0; i < summation.length() - 1; i++) {
         if (summation.number[i] - '0' >= 10) {
             summation.number[i + 1]++;
@@ -182,7 +233,80 @@ unsigned_large_int unsigned_large_int::operator+(const unsigned_large_int other)
     return summation;
 }
 
-//Ò»¸ö unsigned_large_int ÀàºÍÒ»¸ö unsigned_large_int ÀàÏà³Ë
+//ä¸€ä¸ª unsigned_large_int ç±»å’Œä¸€ä¸ª unsigned_large_int ç±»ç›¸ä¹˜
+#if _FFT 
+// ä½¿ç”¨FFTå®ç°ä¹˜æ³•
+unsigned_large_int unsigned_large_int::operator*(unsigned_large_int other) {
+    // å¤„ç†ä¹˜æ•°ä¸º0çš„æƒ…å†µ
+    if (number == "0" || other.number == "0") {
+        unsigned_large_int zero;
+        zero.number = "0";
+        return zero;
+    }
+
+    // å°†ä¸¤ä¸ªæ•°å­—è½¬æ¢ä¸ºå¤æ•°æ•°ç»„
+    std::vector<std::complex<double>> a, b;
+    for (char c : number) {
+        a.push_back(std::complex<double>(c - '0', 0));
+    }
+    for (char c : other.number) {
+        b.push_back(std::complex<double>(c - '0', 0));
+    }
+
+    // è®¡ç®—æ‰©å±•é•¿åº¦ï¼ˆ2çš„å¹‚ï¼‰
+    size_t n = 1;
+    while (n < a.size() + b.size()) {
+        n <<= 1;
+    }
+    a.resize(n);
+    b.resize(n);
+
+    // æ‰§è¡ŒFFT
+    fft(a, false);
+    fft(b, false);
+
+    // ç‚¹ä¹˜
+    for (size_t i = 0; i < n; i++) {
+        a[i] *= b[i];
+    }
+
+    // é€†FFT
+    fft(a, true);
+
+    // å°†ç»“æœè½¬æ¢ä¸ºæ•´æ•°å¹¶å¤„ç†è¿›ä½
+    std::vector<ll> res(n);
+    for (size_t i = 0; i < n; i++) {
+        res[i] = std::llround(a[i].real());
+    }
+
+    // è¿›ä½å¤„ç†
+    std::vector<ll> final_result;
+    ll carry = 0;
+    for (size_t i = 0; i < n; i++) {
+        ll num = res[i] + carry;
+        carry = num / 10;
+        final_result.push_back(num % 10);
+    }
+    while (carry) {
+        final_result.push_back(carry % 10);
+        carry /= 10;
+    }
+
+    // å»é™¤å‰å¯¼é›¶
+    while (final_result.size() > 1 && final_result.back() == 0) {
+        final_result.pop_back();
+    }
+
+    // è½¬æ¢ä¸ºå­—ç¬¦ä¸²ï¼ˆé€†åºå­˜å‚¨ï¼‰
+    unsigned_large_int product;
+    product.number.resize(final_result.size());
+    for (size_t i = 0; i < final_result.size(); i++) {
+        product.number[i] = '0' + final_result[i];
+    }
+
+    return product;
+}
+#else
 inline unsigned_large_int unsigned_large_int::operator*(unsigned_large_int other) {
     unsigned_large_int product, num1 = *this;
     if (num1.length() < other.length()) {
@@ -221,13 +345,16 @@ inline unsigned_large_int unsigned_large_int::operator*(unsigned_large_int other
 
     return product;
 }
+#endif // _FFT 
 
-//Ò»¸ö unsigned_large_int ÀàºÍÒ»¸öÎŞ·ûºÅÕûÊıÏà³Ë
+
+
+//ä¸€ä¸ª unsigned_large_int ç±»å’Œä¸€ä¸ªæ— ç¬¦å·æ•´æ•°ç›¸ä¹˜
 template< typename Type >
 unsigned_large_int unsigned_large_int::operator*(Type other) {
     unsigned_large_int num;
     num.number = "";
-    ll other_num = 0; //other¶ÔÏóµÄÎ»Êı
+    ll other_num = 0; //otherå¯¹è±¡çš„ä½æ•°
     while (other) {
         num.number.push_back((other % 10) + '0');
         other /= 10;
@@ -238,18 +365,18 @@ unsigned_large_int unsigned_large_int::operator*(Type other) {
 
 unsigned_large_int unsigned_large_int::operator -(const unsigned_large_int& other) {
     unsigned_large_int result;
-    // ¼ì²é±»¼õÊıÊÇ·ñĞ¡ÓÚ¼õÊı
+    // æ£€æŸ¥è¢«å‡æ•°æ˜¯å¦å°äºå‡æ•°
     if (this->compare(other) < 0) {
         std::cerr << "Error: Minuend is less than subtrahend." << std::endl;
         result.number = "0";
         return result;
     }
 
-    result.number = this->number; // ¸´ÖÆµ±Ç°¶ÔÏó
+    result.number = this->number; // å¤åˆ¶å½“å‰å¯¹è±¡
     int borrow = 0;
     size_t i;
 
-    // ÖğÎ»¼õ·¨
+    // é€ä½å‡æ³•
     for (i = 0; i < other.number.size(); ++i) {
         int digit_this = (result.number[i] - '0') - borrow;
         int digit_other = other.number[i] - '0';
@@ -262,7 +389,7 @@ unsigned_large_int unsigned_large_int::operator -(const unsigned_large_int& othe
         result.number[i] = '0' + (digit_this - digit_other);
     }
 
-    // ´¦ÀíÊ£Óà½èÎ»
+    // å¤„ç†å‰©ä½™å€Ÿä½
     while (borrow && i < result.number.size()) {
         if (result.number[i] > '0') {
             result.number[i]--;
@@ -274,7 +401,7 @@ unsigned_large_int unsigned_large_int::operator -(const unsigned_large_int& othe
         }
     }
 
-    // ÒÆ³ıÇ°µ¼Áã£¨´ÓÄ©Î²¿ªÊ¼£©
+    // ç§»é™¤å‰å¯¼é›¶ï¼ˆä»æœ«å°¾å¼€å§‹ï¼‰
     while (result.number.size() > 1 && result.number.back() == '0') {
         result.number.pop_back();
     }
@@ -282,10 +409,10 @@ unsigned_large_int unsigned_large_int::operator -(const unsigned_large_int& othe
     return result;
 }
 
-// ¸ß¾«¶È³ıÒÔ¸ß¾«¶ÈÊµÏÖ
+// é«˜ç²¾åº¦é™¤ä»¥é«˜ç²¾åº¦å®ç°
 unsigned_large_int unsigned_large_int::operator/(const unsigned_large_int& other) {
     unsigned_large_int quotient;
-    // ³ıÁã¼ì²é
+    // é™¤é›¶æ£€æŸ¥
     if (other.number == "0") {
         std::cerr << "Error: Division by zero." << std::endl;
         quotient.number = "0";
@@ -293,16 +420,16 @@ unsigned_large_int unsigned_large_int::operator/(const unsigned_large_int& other
     }
 
     int cmp = this->compare(other);
-    if (cmp < 0) { // ±»³ıÊıĞ¡ÓÚ³ıÊı
+    if (cmp < 0) { // è¢«é™¤æ•°å°äºé™¤æ•°
         quotient.number = "0";
         return quotient;
     }
-    if (cmp == 0) { // ±»³ıÊıµÈÓÚ³ıÊı
+    if (cmp == 0) { // è¢«é™¤æ•°ç­‰äºé™¤æ•°
         quotient.number = "1";
         return quotient;
     }
 
-    // ×ª»»ÎªÕıĞò×Ö·û´®£¨¸ßÎ»ÔÚÇ°£©
+    // è½¬æ¢ä¸ºæ­£åºå­—ç¬¦ä¸²ï¼ˆé«˜ä½åœ¨å‰ï¼‰
     std::string dividend = this->show_to_string();
     unsigned_large_int temp = other;
     std::string divisor_str = temp.show_to_string();
@@ -312,7 +439,7 @@ unsigned_large_int unsigned_large_int::operator/(const unsigned_large_int& other
     current.number = "0";
 
     for (size_t i = 0; i < dividend.size(); ++i) {
-        // ½«µ±Ç°Êı×Ö¼ÓÈëcurrent
+        // å°†å½“å‰æ•°å­—åŠ å…¥current
         if (current.number == "0") {
             current.number[0] = dividend[i];
         }
@@ -320,49 +447,49 @@ unsigned_large_int unsigned_large_int::operator/(const unsigned_large_int& other
             current.number.push_back(dividend[i]);
         }
 
-        // ÒÆ³ı¿ÉÄÜµÄÇ°µ¼Áã£¨ÔÚÕıĞòÖĞ£©
+        // ç§»é™¤å¯èƒ½çš„å‰å¯¼é›¶ï¼ˆåœ¨æ­£åºä¸­ï¼‰
         size_t start = 0;
         while (start < current.number.size() - 1 && current.number[start] == '0') {
             start++;
         }
         current.number = current.number.substr(start);
 
-        // ÊÔÉÌ
+        // è¯•å•†
         int digit = 0;
         unsigned_large_int temp = other;
         while (current.compare(temp) >= 0) {
             digit++;
-            temp = temp + other; // Ê¹ÓÃ¼Ó·¨Ä£Äâ³Ë·¨
+            temp = temp + other; // ä½¿ç”¨åŠ æ³•æ¨¡æ‹Ÿä¹˜æ³•
         }
 
         if (digit > 0) {
-            // ¸üĞÂcurrent
-            temp = temp - other; // »ØÍËµ½×îºóÒ»´ÎĞ¡ÓÚµÈÓÚcurrentµÄÖµ
+            // æ›´æ–°current
+            temp = temp - other; // å›é€€åˆ°æœ€åä¸€æ¬¡å°äºç­‰äºcurrentçš„å€¼
             current = current - temp;
         }
 
         quotient_str.push_back('0' + digit);
     }
 
-    // ÒÆ³ıÉÌµÄÇ°µ¼Áã
+    // ç§»é™¤å•†çš„å‰å¯¼é›¶
     size_t start = 0;
     while (start < quotient_str.size() - 1 && quotient_str[start] == '0') {
         start++;
     }
     quotient_str = quotient_str.substr(start);
 
-    // ×ª»»ÎªÄæĞò´æ´¢
+    // è½¬æ¢ä¸ºé€†åºå­˜å‚¨
     std::reverse(quotient_str.begin(), quotient_str.end());
     quotient.number = quotient_str;
 
     return quotient;
 }
 
-// ¸ß¾«¶È³ıÒÔÕûÊıÄ£°åÊµÏÖ
+// é«˜ç²¾åº¦é™¤ä»¥æ•´æ•°æ¨¡æ¿å®ç°
 template<typename Type>
 unsigned_large_int unsigned_large_int::operator/(Type other) {
     unsigned_large_int quotient;
-    // ³ıÁã¼ì²é
+    // é™¤é›¶æ£€æŸ¥
     if (other == 0) {
         std::cerr << "Error: Division by zero." << std::endl;
         quotient.number = "0";
@@ -373,7 +500,7 @@ unsigned_large_int unsigned_large_int::operator/(Type other) {
     Type remainder = 0;
     ll n = number.size();
 
-    // ´Ó×î¸ßÎ»£¨ÄæĞò´æ´¢µÄÄ©Î²£©¿ªÊ¼´¦Àí
+    // ä»æœ€é«˜ä½ï¼ˆé€†åºå­˜å‚¨çš„æœ«å°¾ï¼‰å¼€å§‹å¤„ç†
     for (ll i = n - 1; i >= 0; --i) {
         Type current = remainder * 10 + (number[i] - '0');
         Type digit = current / other;
@@ -381,7 +508,7 @@ unsigned_large_int unsigned_large_int::operator/(Type other) {
         quotient_str.push_back('0' + digit);
     }
 
-    // ÒÆ³ıÇ°µ¼Áã£¨ÕıĞò×Ö·û´®µÄ¿ªÍ·£©
+    // ç§»é™¤å‰å¯¼é›¶ï¼ˆæ­£åºå­—ç¬¦ä¸²çš„å¼€å¤´ï¼‰
     size_t start = 0;
     while (start < quotient_str.size() && quotient_str[start] == '0') {
         start++;
