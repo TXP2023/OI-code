@@ -85,11 +85,14 @@
     <Filter Include="源文件\比赛\AtCoder Beginner Contest 416">
       <UniqueIdentifier>{ff14e30a-39f3-43d6-a2aa-c8785a071548}</UniqueIdentifier>
     </Filter>
-    <Filter Include="源文件\比赛\北师大夏利营2024">
-      <UniqueIdentifier>{7a518bf6-10bd-42ab-a6bf-47e17e22aa2b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="源文件\已完成的题目\AtCoder">
       <UniqueIdentifier>{cd4416ce-cb1e-4450-a040-95004b1046e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\比赛\北师大夏利营2024入营测">
+      <UniqueIdentifier>{7a518bf6-10bd-42ab-a6bf-47e17e22aa2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\比赛\北师大夏利营2024测试一">
+      <UniqueIdentifier>{350946b6-8329-419f-9f33-3a87c24bc749}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -967,10 +970,10 @@
       <Filter>源文件\比赛\AtCoder Beginner Contest 416</Filter>
     </ClCompile>
     <ClCompile Include="B. 谨言慎行.cpp">
-      <Filter>源文件\比赛\北师大夏利营2024</Filter>
+      <Filter>源文件\比赛\北师大夏利营2024入营测</Filter>
     </ClCompile>
     <ClCompile Include="C. 运行超时.cpp">
-      <Filter>源文件\比赛\北师大夏利营2024</Filter>
+      <Filter>源文件\比赛\北师大夏利营2024入营测</Filter>
     </ClCompile>
     <ClCompile Include="P1485 火枪打怪.cpp">
       <Filter>源文件\待完成</Filter>
