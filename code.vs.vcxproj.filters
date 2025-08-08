@@ -999,9 +999,6 @@
     <ClCompile Include="CF1591F Non-equal Neighbours.cpp">
       <Filter>源文件\待完成</Filter>
     </ClCompile>
-    <ClCompile Include="P7514.cpp">
-      <Filter>源文件\已完成的题目\luogu</Filter>
-    </ClCompile>
     <ClCompile Include="P4147 玉蟾宫.cpp">
       <Filter>源文件\已完成的题目\luogu</Filter>
     </ClCompile>
@@ -1033,6 +1030,9 @@
       <Filter>源文件\已完成的题目\CodeForces</Filter>
     </ClCompile>
     <ClCompile Include="P3177 [HAOI2015] 树上染色.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
+    <ClCompile Include="P7514.cpp">
       <Filter>源文件\已完成的题目\luogu</Filter>
     </ClCompile>
   </ItemGroup>

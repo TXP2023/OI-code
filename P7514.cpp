@@ -58,7 +58,7 @@ int main() {
     for (size_t i = 1; i <= n; i++) {
         readf(&cards[i].val);
         cards[i].id = i;
-        cards[i].tag;
+        cards[i].tag = 1;
     }
 
     for (size_t i = 1; i <= n; i++) {
