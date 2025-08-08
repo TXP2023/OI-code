@@ -705,6 +705,9 @@
     <ClCompile Include="P3157 [CQOI2011] 动态逆序对.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="P3177 [HAOI2015] 树上染色.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="P3197 [HNOI2008] 越狱.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
@@ -1148,7 +1151,6 @@
     <None Include="..\..\Downloads\P4779_1.out" />
     <None Include="..\..\Downloads\P5663_6.in" />
     <None Include="..\..\Downloads\P5663_6.out" />
-    <None Include="CF1702G2 Passable Pathshard version" />
     <None Include="input.txt" />
   </ItemGroup>
   <ItemGroup>

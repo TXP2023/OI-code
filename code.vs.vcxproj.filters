@@ -1032,6 +1032,9 @@
     <ClCompile Include="CF229B.cpp">
       <Filter>源文件\已完成的题目\CodeForces</Filter>
     </ClCompile>
+    <ClCompile Include="P3177 [HAOI2015] 树上染色.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
@@ -1208,7 +1211,6 @@
     <None Include="..\..\Downloads\P3366_1.in">
       <Filter>资源文件\洛谷测试点</Filter>
     </None>
-    <None Include="CF1702G2 Passable Pathshard version" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="output.txt">
