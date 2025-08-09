@@ -1038,6 +1038,15 @@
     <ClCompile Include="P7514.cpp">
       <Filter>源文件\已完成的题目\luogu</Filter>
     </ClCompile>
+    <ClCompile Include="204725.第1题.cpp">
+      <Filter>源文件\比赛\北师大夏利营2024测试一</Filter>
+    </ClCompile>
+    <ClCompile Include="204726.第2题.cpp">
+      <Filter>源文件\比赛\北师大夏利营2024测试一</Filter>
+    </ClCompile>
+    <ClCompile Include="T2_dp.cpp">
+      <Filter>源文件\比赛\北师大夏利营2024测试一</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
