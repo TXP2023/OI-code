@@ -1008,17 +1008,11 @@
     <ClCompile Include="P7395 弹珠游戏（2021 CoE-I C）.cpp">
       <Filter>源文件\已完成的题目\luogu</Filter>
     </ClCompile>
-    <ClCompile Include="P2034 选择数字.cpp">
-      <Filter>源文件\待完成</Filter>
-    </ClCompile>
     <ClCompile Include="P1404 平均数.cpp">
       <Filter>源文件\已完成的题目\luogu</Filter>
     </ClCompile>
     <ClCompile Include="P1419 寻找段落.cpp">
       <Filter>源文件\已完成的题目\luogu</Filter>
-    </ClCompile>
-    <ClCompile Include="P7306 [COCI 2018\2019 #1] Strah.cpp">
-      <Filter>源文件\待完成</Filter>
     </ClCompile>
     <ClCompile Include="P4513 小白逛公园.cpp">
       <Filter>源文件\已完成的题目\luogu</Filter>
@@ -1046,6 +1040,12 @@
     </ClCompile>
     <ClCompile Include="T2_dp.cpp">
       <Filter>源文件\比赛\北师大夏利营2024测试一</Filter>
+    </ClCompile>
+    <ClCompile Include="P2034 选择数字.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
+    <ClCompile Include="P7306 [COCI 2018 2019 #1] Strah.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

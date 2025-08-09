@@ -11,17 +11,17 @@
 #include <algorithm>
 #include <numeric>
 #include <ctype.h>
-#include <queue>
 #include <cstdarg>
 #include <climits>
 #include <time.h>
 #include <iostream>
+#include <queue>
 #include <stdint.h>
 
 #define _FREAD        true
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
-#define MAXN          (size_t)(2e5+5)
+#define MAXN          (size_t)(1e5+5)
 
 typedef long long int ll;
 typedef unsigned long long int ull;
@@ -34,27 +34,8 @@ inline Type fread(Type* p = nullptr);
 template<typename Type>
 inline void fwrite(Type x);
 
-ll arr[MAXN], sum[MAXN];
-ll n, k, ans = 0;
-
-inline void slove() {
-    //让队列递增
-    std::queue<ll> que;
-    que.push(0);
-    for (size_t i = 1; i <= n; i++) {
-        //先弹出超出的点
-        while (!que.empty() && i - que.front() > k) {
-            que.pop();
-        }
-
-        ans = std::max(sum[i] - que.front(), ans);
-        while (!que.empty() && sum[i] < que.front()) {
-            que.pop();
-        }
-        que.push(i);
-    }
-    return;
-}
+ll dp[MAXN], arr[MAXN], sum;
+ll n, k;
 
 int main() {
 
@@ -69,12 +50,30 @@ int main() {
     fread(&n), fread(&k);
 
     for (size_t i = 1; i <= n; i++) {
-        sum[i] = sum[i - 1] + fread<ll>();
+        fread(&arr[i]);
+        sum += arr[i];
     }
 
-    slove();
+    std::deque<ll> que;
+    que.push_front(0);
+    for (size_t i = 1; i <= n; i++) {
+        while (!que.empty() && i - que.front() > k + 1) {
+            que.pop_front();
+        }
+        dp[i] = dp[que.front()] + arr[i];
+        while (!que.empty() && dp[i] < dp[que.back()]) {
+            que.pop_back();
+        }
+        que.push_back(i);
+    }
 
-    printf("%lld\n", ans);
+    ll minest = MAX_INF;
+    for (size_t i = n; i >= n - k; i--) {
+        minest = std::min(dp[i], minest);
+    }
+
+    printf("%lld\n", sum - minest);
+
 
 #ifdef _RUN_TIME
     printf("The running duration is not less than %ld ms\n", clock() - start);
@@ -124,7 +123,7 @@ inline void fwrite(Type x) {
 
 /**
  *              ,----------------,              ,---------,
- *         ,-----------------------,          ,"        ,"|
+ *         ,--------h---------------,          ,"        ,"|
  *       ,"                      ,"|        ,"        ,"  |
  *      +-----------------------+  |      ,"        ,"    |
  *      |  .-----------------.  |  |     +---------+      |
