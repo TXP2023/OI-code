@@ -21,7 +21,7 @@
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
 #define MAXN          (size_t)(4e5+5)
-#define GET_BIT(x, y) ((x >> y) & 1)
+#define GET_BIT(x, y) ((x >> (31-y)) & 1)
 
 typedef long long int ll;
 typedef unsigned long long int ull;
@@ -38,7 +38,10 @@ template<size_t _SIZE_SUM>
 struct Trie {
     struct _Trie_node {
         ll ind[2]; //子节点下标
-        Trie_node() : ind[0](0), ind[1](0) {}
+        _Trie_node() {
+            memset(ind, 0, sizeof(ind));
+            return;
+        }
     };
 
     _Trie_node _trie[_SIZE_SUM];
@@ -62,9 +65,9 @@ ll Trie<_SIZE_SUM>::query(ll pos, ll val, ll cnt) {
     if (cnt == 32) {
         return 0;
     }
-    ll res = 0;
+    ll res = 0, temp = GET_BIT(val, cnt);
     if (_trie[pos].ind[GET_BIT(val, cnt) ^ 1]) {
-        res += (1 << 31 - cnt);
+        res += (1 << (31 - cnt));
         res += query(_trie[pos].ind[GET_BIT(val, cnt) ^ 1], val, cnt + 1);
     }
     else {
