@@ -28,7 +28,7 @@
 typedef long long int ll;
 typedef unsigned long long int unill;
 
-//¿ì¶Áº¯ÊýÉùÃ÷
+//å¿«è¯»å‡½æ•°å£°æ˜Ž
 #if READ
 template< typename T >
 inline T readf();
@@ -37,7 +37,7 @@ template< typename Type >
 inline Type readf(Type* p = nullptr);
 #endif
 
-//¿ìËÙÊä³öº¯Êý
+//å¿«é€Ÿè¾“å‡ºå‡½æ•°
 template<typename Type>
 inline void writef(Type x);
 
@@ -149,7 +149,7 @@ inline void writef(Type x) {
     do {
         sta[top++] = x % 10, x /= 10;
     } while (x);
-    while (top) putchar(sta[--top] + '0');  // 48 ÊÇ '0'
+    while (top) putchar(sta[--top] + '0');  // 48 æ˜¯ '0'
     return;
 }
 

@@ -3,214 +3,189 @@
 //      By txp2024 www.luogu.com.cn  TXP2023 www.github.com
 // 
 //+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+
 #pragma once
 #include <vector>
 #include <stdio.h>
-#include <string.h>
+#include <std::string.h>
 #include <algorithm>
+#include <numeric>
 #include <ctype.h>
 #include <cstdarg>
 #include <climits>
+#include <string>
+#include <queue>
 #include <time.h>
 #include <iostream>
 #include <stdint.h>
-#include <queue>
 
-#define READ          false
+#define _FREAD        true
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
-#define MAX_LENGTH    (uint32_t)(2e6+5)
-#define MAXN          (uint32_t)(2e6+5)
+#define MAX_LENGTH    2000005
 #define ROOT          0
 
 typedef long long int ll;
-typedef unsigned long long int unill;
+typedef unsigned long long int ull;
 
-//¿ì¶Áº¯ÊıÉùÃ÷
-#if READ
-template< typename T >
-inline T readf();
-#else
+//å¿«è¯»å‡½æ•°å£°æ˜
 template< typename Type >
-inline Type readf(Type* p = nullptr);
-#endif
+inline Type fread(Type* p = nullptr);
 
-//¿ìËÙÊä³öº¯Êı
+//å¿«é€Ÿè¾“å‡ºå‡½æ•°
 template<typename Type>
-inline void writef(Type x);
+inline void fwrite(Type x);
 
-struct trie_node {
-    uint32_t index[26];
-    uint32_t cnt, str_id;
+// AC è‡ªåŠ¨æœºæ•°ç»„
+ll trie_index[MAX_LENGTH][26]; // å­èŠ‚ç‚¹ç¼–å·
+ll fail[MAX_LENGTH];           // å¤±é…æŒ‡é’ˆ
+ll trie_cnt_arr[MAX_LENGTH];   // èŠ‚ç‚¹åŒ¹é…æ¬¡æ•°
+ll end_id[MAX_LENGTH];         // ç»ˆæ­¢èŠ‚ç‚¹å¯¹åº”çš„æ¨¡å¼ä¸²IDï¼ˆé¦–æ¬¡å‡ºç°ï¼‰
+ll strPos[MAX_LENGTH];         // æ¯ä¸ªæ¨¡å¼ä¸²é¦–æ¬¡å‡ºç°çš„ID
+ll ans[MAX_LENGTH];            // æ¯ä¸ªæ¨¡å¼ä¸²çš„åŒ¹é…æ¬¡æ•°
+ll inDegree[MAX_LENGTH];       // å…¥åº¦
 
-    trie_node() {
-        memset(index, 0, sizeof(index));
-        cnt = 0;
-        return;
+ll trie_cnt = 0; // èŠ‚ç‚¹è®¡æ•°ï¼ˆ0æ˜¯æ ¹èŠ‚ç‚¹ï¼‰
+ll n;            // æ¨¡å¼ä¸²æ•°é‡
+std::string text;      // æ–‡æœ¬ä¸²
+
+// æ’å…¥æ¨¡å¼ä¸²ï¼ˆè¿­ä»£ç‰ˆæœ¬ï¼‰
+void insertMod(const std::string& s, ll str_id) {
+    ll u = ROOT;
+    for (char ch : s) {
+        ll c = ch - 'a';
+        if (!trie_index[u][c]) trie_index[u][c] = ++trie_cnt;
+        u = trie_index[u][c];
     }
-};
-
-char str[MAX_LENGTH];
-size_t fail[MAX_LENGTH], strPos[MAXN], ans[MAXN], inDegree[MAX_LENGTH], trie_cnt = 0; //Ê§ÅäÖ¸Õë 
-//fail[u]ÎªtrieÖĞ½ÚµãuµÄÊ§ÅäÖ¸ÕëµÄË÷Òı£¬strPos[i]ÎªµÚi¸öÄ£Ê½´®Ëù³öÏÖµÄ×îÕÒÏàÍ¬Ä£Ê½´®µÄid£¬inDegree[u]ÎªÔÚtrieÖĞ£¬½Úµãu±»¶àÉÙ¸öÊ§ÅäÖ¸ÕëËùÖ¸Ïò
-trie_node trie[MAX_LENGTH];
-ll n, textLength;
-//½«Ò»¸öÄ£Ê½´®ÊäÈëµÄ´ÎĞòµÄ±àºÅ³ÆÎªÕâ¸öÄ£Ê½´®µÄid
-
-//½«Ä£Ê½´®str²åÈëµ½trieµÄpos½Úµã£¬Õâ¸öÄ£Ê½´®µÄidÎªstr_id
-void insert(const char* str, const size_t &pos, const size_t& str_id) {
-    if (*str == '\0') { //ÒÑ¾­µ½ÁËÄ£Ê½´®µÄ½áÊø·û'\0'
-        if (!trie[pos].str_id) { //ÒÔÇ°Ã»ÓĞ´Ó¸ù½Úµãµ±Ç°trie½ÚµãµÄÄ£Ê½´®
-            trie[pos].str_id = str_id;  //¼ÇÂ¼´Ó¸ù½Úµãµ±Ç°trie½ÚµãµÄÄ£Ê½´®µÄid
-        }
-        strPos[str_id] = trie[pos].str_id;  //¼ÇÂ¼µ±Ç°Ä£Ê½´®Ê×´Î³öÏÖµÄid
-        //Èç¹ûÕâ´ÎÊÇÊ×´Î³öÏÖ£¬ÄÇÃ´ strPos[str_id] = trie[pos].str_id = str_id
-        //Èç¹ûÒÑ¾­³öÏÖ¹ıÏàÍ¬µÄÄ£Ê½´® strPos[str_id] = trie[pos].str_id = Ê×´Î³öÏÖµÄid
-        return;
-    }
-    if (!trie[pos].index[*str - 'a']) {
-        trie[pos].index[*str - 'a'] = ++trie_cnt;
-    }
-    insert(str + 1, trie[pos].index[*str - 'a'], str_id);
-    return;
+    if (!end_id[u]) end_id[u] = str_id; // è®°å½•é¦–æ¬¡å‡ºç°çš„æ¨¡å¼ä¸²ID
+    strPos[str_id] = end_id[u];         // æ‰€æœ‰ç›¸åŒçš„æ¨¡å¼ä¸²æŒ‡å‘é¦–æ¬¡å‡ºç°çš„ID
 }
 
-//¼ÆËãÊ§ÅäÖ¸Õë
-inline void get_fail() {
-    std::queue<uint32_t> que;
-    //Ò»¸ö½ÚµãuËù´ú±íµÄ×ÖÄ¸w£¬Õâ¸ö½ÚµãµÄÊ§ÅäÖ¸ÕëÎªÕâ¸ö½ÚµãµÄ¸¸½ÚµãµÄÊ§ÅäÖ¸ÕëËùÖ¸Ïò×ÖÄ¸wµÄ¶ÔÓ¦½Úµã
-    //ËùÓĞ¸ù½ÚµãµÄ×Ó½ÚµãµÄÊ§ÅäÖ¸ÕëÎª¸ù½Úµã
-    for (size_t i = 0; i <= 25; i++) {
-        if (trie[ROOT].index[i]) {
-            fail[trie[ROOT].index[i]] = ROOT;
-            que.push(trie[ROOT].index[i]);
+// æ„å»ºå¤±é…æŒ‡é’ˆï¼ˆBFSï¼‰
+void get_fail() {
+    std::queue<ll> que;
+
+    // æ ¹èŠ‚ç‚¹çš„å­èŠ‚ç‚¹å¤±é…æŒ‡é’ˆæŒ‡å‘æ ¹èŠ‚ç‚¹
+    for (ll i = 0; i < 26; i++) {
+        if (trie_index[ROOT][i]) {
+            fail[trie_index[ROOT][i]] = ROOT;
+            que.push(trie_index[ROOT][i]);
         }
     }
+
+    // BFS æ„å»ºå¤±é…æŒ‡é’ˆ
     while (!que.empty()) {
-        uint32_t u = que.front();
+        ll u = que.front();
         que.pop();
-        for (size_t i = 0; i <= 25; i++) {
-            //Í¨¹ıÒ»¸ö½Úµã×÷Îª¸¸½Úµã£¬¼ÆËã×Ó½ÚµãµÄÊ§ÅäÖ¸Õë
-            if (trie[u].index[i]) {
-                fail[trie[u].index[i]] = trie[fail[u]].index[i]; 
-                //Õâ¸ö½ÚµãµÄÊ§ÅäÖ¸ÕëÎªÕâ¸ö½ÚµãµÄ¸¸½ÚµãµÄÊ§ÅäÖ¸ÕëËùÖ¸Ïò¶ÔÓ¦×ÖÄ¸µÄ¶ÔÓ¦½Úµã
-                ++inDegree[trie[fail[u]].index[i]]; //inDegree[i]¼ÇÂ¼½Úµãi±»¶àÉÙ¸öÊ§ÅäÖ¸ÕëËùÖ¸Ïò
-                //Õâ¸ö½ÚµãµÄÊ§ÅäÖ¸ÕëÒÑ¾­±»¼ÆËã£¬ÄÇÃ´ÆäµÄ×Ó½ÚµãµÄÊ§ÅäÖ¸Õë¿ÉÒÔÓÉÕâ¸ö½Úµã¼ÆËã
-                que.push(trie[u].index[i]);
+
+        for (ll i = 0; i < 26; i++) {
+            if (trie_index[u][i]) {
+
+                // å­èŠ‚ç‚¹çš„å¤±é…æŒ‡é’ˆæŒ‡å‘çˆ¶èŠ‚ç‚¹å¤±é…æŒ‡é’ˆçš„å¯¹åº”å­—ç¬¦å­èŠ‚ç‚¹
+                fail[trie_index[u][i]] = trie_index[fail[u]][i];
+                // // å¢åŠ å…¥åº¦ï¼ˆè¢«å¤šå°‘å¤±é…æŒ‡é’ˆæŒ‡å‘ï¼‰
+                inDegree[trie_index[fail[u]][i]]++;
+                //// å­èŠ‚ç‚¹å…¥é˜Ÿï¼Œç»§ç»­ BFS
+                que.push(trie_index[u][i]);
             }
             else {
-                trie[u].index[i] = trie[fail[u]].index[i]; //Ã»ÓĞÕâ¸ö½ÚµãµÄ»°£¬Ôò×Ó½ÚµãË÷ÒıÖ¸ÏòÊ§ÅäÖ¸Õë
+                // å¦‚æœæ²¡æœ‰è¯¥å­—ç¬¦å­èŠ‚ç‚¹ï¼Œåˆ™ç›´æ¥è·³åˆ°å¤±é…èŠ‚ç‚¹å¯¹åº”çš„å­èŠ‚ç‚¹
+                trie_index[u][i] = trie_index[fail[u]][i];
             }
         }
     }
-    return;
 }
 
-//½«ÎÄ±¾´®²åÈëµ½trieÖĞ
-inline void insert_text() {
-    //ÓÉÓÚÒÑ¾­ÔÚ³ÌĞòµÄµÚ101ĞĞÖĞ°´ÕÕÊ§ÅäÖ¸Õë¼ÆËã·½·¨´¦ÀíÁËÃ»ÓĞ×Ó½ÚµãµÄÇé¿ö£¬Òò´ËÖ±½Ó²åÈë£¬²»»áĞÂ½¨½Úµã¡£
-    size_t u = ROOT;
-    for (size_t i = 1; i <= textLength; i++) {
-        u = trie[u].index[str[i] - 'a'];
-        ++trie[u].cnt;
+// å°†æ–‡æœ¬ä¸²åŒ¹é…è¿› AC è‡ªåŠ¨æœº
+void insert_text() {
+    ll u = ROOT;
+    for (char c : text) {
+        u = trie_index[u][c - 'a'];
+        trie_cnt_arr[u]++;
     }
-    return;
 }
 
-inline void getAnswer() {
-    std::queue<uint32_t> que;
-    for (size_t i = 0; i <= trie_cnt; i++) {
+// ç»Ÿè®¡æ‰€æœ‰æ¨¡å¼ä¸²çš„åŒ¹é…æ¬¡æ•°ï¼ˆæ‹“æ‰‘æ’åº + å¤±é…æŒ‡é’ˆå›æº¯ï¼‰
+void getAnswer() {
+    std::queue<ll> que;
+    for (ll i = 0; i <= trie_cnt; i++) {
+        //// å…¥åº¦ä¸º 0 çš„èŠ‚ç‚¹å…¥é˜Ÿ
         if (!inDegree[i]) {
             que.push(i);
         }
     }
+
     while (!que.empty()) {
-        size_t u = que.front(), v;
+        ll u = que.front();
         que.pop();
-        ans[trie[u].str_id] = trie[u].cnt;
-        v = fail[u];
-        trie[v].cnt += trie[u].cnt;
+        // // å¦‚æœè¯¥èŠ‚ç‚¹æ˜¯æŸä¸ªæ¨¡å¼ä¸²çš„ç»“å°¾ï¼Œåˆ™è®°å½•åŒ¹é…æ¬¡æ•°
+        ans[end_id[u]] = trie_cnt_arr[u]; // å¦‚æœæ˜¯æ¨¡å¼ä¸²ç»“å°¾èŠ‚ç‚¹ï¼Œè®°å½•åŒ¹é…æ¬¡æ•°
+        ll v = fail[u];
+        trie_cnt_arr[v] += trie_cnt_arr[u];
+        // å¤±é…èŠ‚ç‚¹å…¥åº¦å‡ 1ï¼Œè‹¥å…¥åº¦ä¸º 0ï¼Œåˆ™å…¥é˜Ÿ
         if (!(--inDegree[v])) {
             que.push(v);
         }
     }
-    return;
 }
 
-int main() {
-#ifdef _FREOPEN
-    freopen("input.txt", "r", stdin);
-#endif // _FREOPEN
+ll main() {
 
-#ifdef _RUN_TIME
-    clock_t start = clock();
-#endif // _RUN_TIME
-
-    
-    readf(&n);
-
-    for (size_t i = 1; i <= n; i++) {
-        scanf("%s", str + 1);
-        insert(str + 1, ROOT, i);
+    fread(&n);
+    for (ll i = 1; i <= n; i++) {
+        std::string mod;
+        std::cin >> mod;
+        insertMod(mod, i);
     }
 
-    scanf("%s", str + 1);
-    textLength = strlen(str + 1);
-    get_fail();
+    std::cin >> text;
 
+    get_fail();
     insert_text();
     getAnswer();
-    for (size_t i = 1; i <= n; i++) {
+
+    for (ll i = 1; i <= n; i++) {
         printf("%lld\n", ans[strPos[i]]);
     }
-
-#ifdef _RUN_TIME
-    printf("The running duration is not less than %ld ms\n", clock() - start);
-#endif // _RUN_TIME
     return 0;
 }
 
-#if READ
-template< typename T >
-inline T readf() {
-#if false
-    T sum = 0;
-    char ch = getchar();
-    while (ch > '9' || ch < '0') ch = getchar();
-    while (ch >= '0' && ch <= '9') sum = sum * 10 + ch - 48, ch = getchar();
-    return sum;
-#else
-    T ret = 0, sgn = 0, ch = getchar();
-    while (!isdigit(ch)) {
-        sgn |= ch == '-', ch = getchar();
-    }
-    while (isdigit(ch)) ret = ret * 10 + ch - '0', ch = getchar();
-    return sgn ? -ret : ret;
-#endif
-}
-#else
+
 template< typename Type >
-inline Type readf(Type* p) {
+inline Type fread(Type* p) {
+#if _FREAD
     Type ret = 0, sgn = 0, ch = getchar();
     while (!isdigit(ch)) {
         sgn |= ch == '-', ch = getchar();
     }
     while (isdigit(ch)) ret = ret * 10 + ch - '0', ch = getchar();
-    if (p != NULL) {
+    if (p != nullptr) {
         *p = Type(sgn ? -ret : ret);
     }
     return sgn ? -ret : ret;
+#else
+    if (p == nullptr) {
+        Type temp;
+        p = &temp;
+    }
+    scanf("%lld", p);
+    return *p;
+
+
+#endif // _FREAD
 }
-#endif
+
 
 template<typename Type>
-inline void writef(Type x) {
-    int sta[MAX_NUM_SIZE];
-    int top = 0;
+inline void fwrite(Type x) {
+    ll sta[MAX_NUM_SIZE];
+    ll top = 0;
     do {
         sta[top++] = x % 10, x /= 10;
     } while (x);
-    while (top) putchar(sta[--top] + '0');  // 48 ÊÇ '0'
+    while (top) {
+        putchar(sta[--top] + '0');
+    }  // 48 æ˜¯ '0'
     return;
 }
 
@@ -223,9 +198,9 @@ inline void writef(Type x) {
  *      +-----------------------+  |      ,"        ,"    |
  *      |  .-----------------.  |  |     +---------+      |
  *      |  |                 |  |  |     | -==----'|      |
- *      |  |  By txp2024     |  |  |     |         |      |
- *      |  |                 |  |  |     |`---=    |      |
- *      |  |  C:\>_          |  |  |     |==== ooo |      ;
+ *      |  |                 |  |  |     |         |      |
+ *      |  |  C:\>rp++       |  |  |     |`---=    |      |
+ *      |  |                 |  |  |     |==== ooo |      ;
  *      |  |                 |  |  |     |(((( [33]|    ,"
  *      |  `-----------------'  | /      |((((     |  ,"
  *      +-----------------------+/       |         |,"

@@ -94,6 +94,9 @@
     <Filter Include="源文件\比赛\北师大夏利营2024测试一">
       <UniqueIdentifier>{350946b6-8329-419f-9f33-3a87c24bc749}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\比赛\北师大集训 结营测试">
+      <UniqueIdentifier>{8c9c1c47-bc97-4c6a-99d8-4a7fc79aef44}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="模板.cpp">
@@ -1046,6 +1049,24 @@
     </ClCompile>
     <ClCompile Include="P7306 [COCI 2018 2019 #1] Strah.cpp">
       <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
+    <ClCompile Include="A题.cpp">
+      <Filter>源文件\比赛\北师大集训 结营测试</Filter>
+    </ClCompile>
+    <ClCompile Include="B题.cpp">
+      <Filter>源文件\比赛\北师大集训 结营测试</Filter>
+    </ClCompile>
+    <ClCompile Include="C题.cpp">
+      <Filter>源文件\比赛\北师大集训 结营测试</Filter>
+    </ClCompile>
+    <ClCompile Include="A题暴力.cpp">
+      <Filter>源文件\比赛\北师大集训 结营测试</Filter>
+    </ClCompile>
+    <ClCompile Include="B题暴力.cpp">
+      <Filter>源文件\比赛\北师大集训 结营测试</Filter>
+    </ClCompile>
+    <ClCompile Include="C题暴力.cpp">
+      <Filter>源文件\比赛\北师大集训 结营测试</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
