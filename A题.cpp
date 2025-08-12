@@ -23,6 +23,7 @@
 #define MAXN          (size_t)(4e5+5)
 #define GET_BIT(x, y) ((x >> (31-y)) & 1)
 
+typedef unsigned int uint;
 typedef long long int ll;
 typedef unsigned long long int ull;
 
@@ -37,7 +38,7 @@ inline void fwrite(Type x);
 template<size_t _SIZE_SUM>
 struct Trie {
     struct _Trie_node {
-        ll ind[2]; //子节点下标
+        uint ind[2]; //子节点下标
         _Trie_node() {
             memset(ind, 0, sizeof(ind));
             return;
@@ -53,6 +54,8 @@ struct Trie {
     ll query(ll pos, ll val, ll cnt);
 
     inline void clear();
+
+    Trie() = default;
 };
 
 Trie<32 * MAXN> trie;
@@ -85,7 +88,7 @@ void Trie<_SIZE_SUM>::insert(ll pos, ll val, ll deep) {
     if (!_trie[pos].ind[GET_BIT(val, deep)]) {
         _trie[pos].ind[GET_BIT(val, deep)] = ++trie_cnt;
     }
-    insert(_trie[pos].ind[GET_BIT(val, deep)] = ++trie_cnt, val, deep + 1);
+    insert(_trie[pos].ind[GET_BIT(val, deep)], val, deep + 1);
     return;
 }
 
@@ -121,13 +124,13 @@ int main() {
 
     trie.clear();
     trie.insert(0, 0, 0);
-    for (size_t i = 1; i <= n; i++) {
-        bestL[i] = std::max(bestL[i + 1], trie.query(0, preXor[i], 0));
+    for (size_t i = n; i >= 1; --i) {
+        bestL[i] = std::max(bestL[i + 1], trie.query(0, preXor[n] ^ preXor[i - 1], 0));
         trie.insert(0, preXor[n] ^ preXor[i - 1], 0);
     }
 
     for (size_t i = 1; i < n; i++) {
-        ans = std::max(bestR[i], bestL[i + 1]);
+        ans = std::max(ans, bestR[i] + bestL[i + 1]);
     }
 
     printf("%lld\n", ans);
