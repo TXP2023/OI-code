@@ -1071,6 +1071,12 @@
     <ClCompile Include="17111 Xor.cpp">
       <Filter>源文件\已完成的题目\shsbnu</Filter>
     </ClCompile>
+    <ClCompile Include="P1240 诸侯安置.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
+    <ClCompile Include="P1686 挑战.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
