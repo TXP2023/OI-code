@@ -299,7 +299,9 @@
     <ClCompile Include="ABC417C.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="ABC417E.cpp" />
+    <ClCompile Include="ABC417E.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="AGC032E.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
@@ -1200,7 +1202,6 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="output.txt" />
-    <Text Include="思路.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="unsigned_large_int.h">
