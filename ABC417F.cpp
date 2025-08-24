@@ -20,8 +20,10 @@
 #define _FREAD        true
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
-#define MAXN          (size_t)(1e4+5)
-#define MAX_VAL       1000
+#define MAXN          (size_t)(2e5+5)
+#define LS(x)         ((x) << 1)
+#define RS(x)         ((x) << 1 | 1)
+#define MOD           998244353
 
 typedef long long int ll;
 typedef unsigned long long int ull;
@@ -34,14 +36,91 @@ inline Type fread(Type* p = nullptr);
 template<typename Type>
 inline void fwrite(Type x);
 
-struct Gift {
-    ll p, a, b;
+template<typename Type>
+inline Type fpow(Type a, Type n, Type _Mod);
+
+template<typename Type>
+inline Type inv(Type val, Type mod) {
+    return fpow(val, mod - 2, mod);
+}
+
+struct SegNode {
+    ll sum;
+    ll tag;//-1为无tag
+    SegNode() : sum(0), tag(-1) {}
 };
 
-Gift gifts[MAXN];
-ll preSum[MAXN];
-ll dp[MAXN][MAX_VAL + 5];
-ll n, q;
+SegNode seg_tree[MAXN << 2];
+ll arr[MAXN];
+ll n, m;
+
+inline void add_tag(ll pos, ll l, ll r, ll val) {
+    seg_tree[pos].tag = val;
+    seg_tree[pos].sum = (r - l + 1) * val % MOD;
+    return;
+}
+
+inline void push_up(ll p) {
+    seg_tree[p].sum = seg_tree[LS(p)].sum + seg_tree[RS(p)].sum;
+    return;
+}
+
+inline void push_down(ll p, ll l, ll r) {
+    if (seg_tree[p].tag == -1) {
+        return;
+    }
+    ll mid = (l + r) >> 1;
+    add_tag(LS(p), l, mid, seg_tree[p].tag);
+    add_tag(RS(p), mid + 1, r, seg_tree[p].tag);
+    seg_tree[p].tag = -1;
+    return;
+}
+
+inline void build(ll pos = 1, ll l = 1, ll r = n) {
+    if (l == r) {
+        seg_tree[pos].sum = arr[l];
+        return;
+    }
+    ll mid = (l + r) >> 1;
+    build(LS(pos), l, mid);
+    build(RS(pos), mid + 1, r);
+    push_up(pos);
+    return;
+}
+
+inline ll query(ll rangeL, ll rangeR, ll pos = 1, ll l = 1, ll r = n) {
+    if (rangeL <= l && r <= rangeR) {
+        return seg_tree[pos].sum % MOD;
+    }
+    push_down(pos, l, r);
+    ll mid = (l + r) >> 1, res = 0;
+    if (rangeL <= mid) {
+        res += query(rangeL, rangeR, LS(pos), l, mid);
+        res %= MOD;
+    }
+    if (mid + 1 <= rangeR) {
+        res += query(rangeL, rangeR, RS(pos), mid + 1, r);
+        res %= MOD;
+    }
+    return res;
+}
+
+inline void modify(ll rangeL, ll rangeR, ll val, ll pos = 1, ll l = 1, ll r = n) {
+    if (rangeL <= l && r <= rangeR) {
+        add_tag(pos, l, r, val);
+        return;
+    }
+    push_down(pos, l, r);
+    ll mid = (l + r) >> 1, res = 0;
+    if (rangeL <= mid) {
+        modify(rangeL, rangeR, val, LS(pos), l, mid);
+    }
+    if (mid + 1 <= rangeR) {
+        modify(rangeL, rangeR, val, RS(pos), mid + 1, r);
+    }
+    push_up(pos);
+    return;
+}
 
 int main() {
 
@@ -53,44 +132,25 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    fread(&n);
+    fread(&n), fread(&m);
 
     for (size_t i = 1; i <= n; i++) {
-        fread(&gifts[i].p), fread(&gifts[i].a), fread(&gifts[i].b);
-        preSum[i] = preSum[i - 1] + gifts[i].b;
+        fread(&arr[i]);
     }
 
-    for (size_t i = 0; i <= MAX_VAL; i++) {
-        dp[n + 1][i] = i;
+    build();
+    while (m--) {
+        ll l, r;
+        fread(&l), fread(&r);
+        ll sum = query(l, r), len = r - l + 1;
+        ll temp = sum * inv(len, (ll)MOD) % MOD;
+        modify(l, r, temp);
     }
 
-    for (ll i = n; i >= 1; --i) {
-        for (ll j = 0; j <= MAX_VAL; j++) {
-            if (j > gifts[i].p) {
-                dp[i][j] = dp[i + 1][std::max(j - gifts[i].b, (ll)0)];
-            }
-            else {
-                dp[i][j] = dp[i + 1][j + gifts[i].a];
-            }
-        }
+    for (size_t i = 1; i <= n; i++) {
+        printf("%lld ", query(i, i));
     }
-
-    fread(&q);
-
-    while (q--) {
-        ll val = fread<ll>();
-        if (val - preSum[n] > MAX_VAL) {
-            printf("%lld\n", val - preSum[n]);
-            continue;
-        }
-        if (val <= MAX_VAL) {
-            printf("%lld\n", dp[1][val]);
-            continue;
-        }
-        ll pos = std::lower_bound(preSum + 1, preSum + 1 + n, val - MAX_VAL) - preSum;
-        printf("%lld\n", dp[pos + 1][val - preSum[pos]]);
-    }
-
+    puts("");
 
 #ifdef _RUN_TIME
     printf("The running duration is not less than %ld ms\n", clock() - start);
@@ -117,8 +177,6 @@ inline Type fread(Type* p) {
     }
     scanf("%lld", p);
     return *p;
-
-
 #endif // _FREAD
 }
 
@@ -136,7 +194,20 @@ inline void fwrite(Type x) {
     return;
 }
 
-
+template<typename Type>
+inline Type fpow(Type a, Type n, Type _Mod) {
+    Type base = a, ret = 1;
+    while (n) {
+        if (n & 1) {
+            ret = ret * base;
+            ret %= _Mod;
+        }
+        base = base * base;
+        base %= _Mod;
+        n >>= 1;
+    }
+    return ret % _Mod;
+}
 
 /**
  *              ,----------------,              ,---------,
