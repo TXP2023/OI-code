@@ -269,6 +269,7 @@
     <ClCompile Include="17112 小猫吃柿子.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="17113 mark的问题.cpp" />
     <ClCompile Include="1734 Sightseeing trip.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
