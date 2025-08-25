@@ -51,17 +51,21 @@ inline void get_hash() {
 }
 
 inline ll get_sub_hash(ll l, ll r) {
-    return hash[r] - hash[l - 1] * fpow((unsigned long long)131, (unsigned long long)(r - l + 1), (unsigned long long)ULLONG_MAX);
+    return hash[r] - hash[l - 1] * fpow((ull)131, (ull)(r - l + 1), (ull)ULLONG_MAX);
 }
 
 inline void slove() {
+
+	memset(hash, 0, sizeof(hash));
+	memset(cnt, 0, sizeof(cnt));
+    
 	scanf("%s", str + 1);
 	length = strlen(str + 1);
 
 	get_hash();
     
     for (size_t i = 2; i <= length; ++i) {
-        for (size_t j = i-1; j >= 1; j-=2) {
+        for (ll j = i-1; j >= 1; j-=2) {
 			ll mid = (i + j) >> 1;
             if (get_sub_hash(j, mid) == get_sub_hash(mid + 1, i)) {
                 ++cnt[i];
@@ -69,21 +73,16 @@ inline void slove() {
         }
     }
 
-    for (size_t i = 2; i <= length; ++i) {
-        for (size_t j = i - 1; j >= 1; j -= 2) {
+    ll ans = 0;
+    for (size_t i = 1; i <= length; i++) {//i是右端点              j  i      ******####
+        for (ll j = i - 1; j >= 1; j -= 2) {//[j][i]构成BB     ****
             ll mid = (i + j) >> 1;
-            if (get_sub_hash(j, mid) == get_sub_hash(mid + 1, i)) {
-                ++cnt[i];
-            }
+            if (get_sub_hash(j, mid) == get_sub_hash(mid + 1, i))
+                ans += cnt[j - 1];
         }
     }
 
-    for (size_t i = 2; i <= length; ++i) {
-        for (size_t j = i - 1; j >= 1; j -= 2) {
-            ll mid = (i + j) >> 1;
-            
-        }
-    }
+	printf("%lld\n", ans);
 
     return;
 }
@@ -101,10 +100,8 @@ int main() {
     fread(&t);
 
     while (t--) {
-
+		slove();
     }
-
-
 
 #ifdef _RUN_TIME
     printf("The running duration is not less than %ld ms\n", clock() - start);
