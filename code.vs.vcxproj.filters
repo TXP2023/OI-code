@@ -1086,6 +1086,21 @@
     <ClCompile Include="ABC417E.cpp">
       <Filter>源文件\待完成</Filter>
     </ClCompile>
+    <ClCompile Include="ABC384E.cpp">
+      <Filter>源文件\已完成的题目\AtCoder</Filter>
+    </ClCompile>
+    <ClCompile Include="ABC416F.cpp">
+      <Filter>源文件\已完成的题目\AtCoder</Filter>
+    </ClCompile>
+    <ClCompile Include="ABC417D.cpp">
+      <Filter>源文件\已完成的题目\AtCoder</Filter>
+    </ClCompile>
+    <ClCompile Include="ABC417F.cpp">
+      <Filter>源文件\待完成</Filter>
+    </ClCompile>
+    <ClCompile Include="P6281 [USACO20OPEN] Social Distancing S.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
@@ -1265,9 +1280,6 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="output.txt">
-      <Filter>资源文件</Filter>
-    </Text>
-    <Text Include="思路.txt">
       <Filter>资源文件</Filter>
     </Text>
   </ItemGroup>
