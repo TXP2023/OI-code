@@ -1110,6 +1110,9 @@
     <ClCompile Include="P13015 [GESP202506 六级] 学习小组.cpp">
       <Filter>源文件\已完成的题目\luogu</Filter>
     </ClCompile>
+    <ClCompile Include="P13016 [GESP202506 六级] 最大因数.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
