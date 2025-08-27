@@ -1119,6 +1119,9 @@
     <ClCompile Include="abc415_e.cpp">
       <Filter>源文件\待完成</Filter>
     </ClCompile>
+    <ClCompile Include="poj2976.cpp">
+      <Filter>源文件\待完成</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
