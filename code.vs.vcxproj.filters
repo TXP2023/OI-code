@@ -1122,6 +1122,9 @@
     <ClCompile Include="poj2976.cpp">
       <Filter>源文件\待完成</Filter>
     </ClCompile>
+    <ClCompile Include="P1450 [HAOI2008] 硬币购物.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">

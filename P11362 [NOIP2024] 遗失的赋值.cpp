@@ -16,7 +16,7 @@
 typedef long long int ll;
 typedef unsigned long long int ull;
 
-//¿ì¶Áº¯ÊıÉùÃ÷
+//å¿«è¯»å‡½æ•°å£°æ˜
 #if READ
 template< typename T >
 inline T readf();
@@ -69,7 +69,7 @@ int main() {
             }
         }
 
-        //¶ÔÓÚÒ»ÔªÏŞÖÆËùÓ°ÏìµÄ²¿·Ö
+        //å¯¹äºä¸€å…ƒé™åˆ¶æ‰€å½±å“çš„éƒ¨åˆ†
         for (size_t i = 0; i < m - 1; i++) {
             if (limits[i].c != limits[i + 1].c) {
                 ans *= f(i, i + 1);
@@ -77,7 +77,7 @@ int main() {
             }
         }
 
-        //¶ÔÓÚÒ»ÔªÏŞÖÆ²»Ó°ÏìµÄ²¿·Ö
+        //å¯¹äºä¸€å…ƒé™åˆ¶ä¸å½±å“çš„éƒ¨åˆ†
         ans *= fast_pow(v, 2 * (limits.front().c - 1));
         ans %= mod;
         ans *= fast_pow(v, 2 * (n - limits.back().c));
