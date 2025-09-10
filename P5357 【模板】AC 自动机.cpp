@@ -7,7 +7,7 @@
 #pragma once
 #include <vector>
 #include <stdio.h>
-#include <std::string.h>
+#include <string>
 #include <algorithm>
 #include <numeric>
 #include <ctype.h>
