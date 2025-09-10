@@ -46,6 +46,8 @@ inline Type fread(Type* p = nullptr);
 template<typename Type>
 inline void fwrite(Type x);
 
+ll n, m, k;
+
 int main() {
 
 #ifdef _FREOPEN

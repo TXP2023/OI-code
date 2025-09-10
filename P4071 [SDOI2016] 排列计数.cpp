@@ -11,6 +11,7 @@
 #include <algorithm>
 #include <numeric>
 #include <ctype.h>
+#include <queue>
 #include <cstdarg>
 #include <climits>
 #include <time.h>
@@ -20,6 +21,8 @@
 #define _FREAD        true
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
+#define MAXN          (size_t)(1e6)
+#define MOD           (size_t)(1e9+7)
 
 typedef long long int ll;
 typedef unsigned long long int ull;
@@ -46,6 +49,29 @@ inline Type fread(Type* p = nullptr);
 template<typename Type>
 inline void fwrite(Type x);
 
+ll mul[MAXN + 5], inv[MAXN + 5], f[MAXN + 5];
+ll t, n, m;
+
+inline void init() {
+    mul[0] = 1;
+    for (size_t i = 1; i <= MAXN; i++) {
+        mul[i] = i * mul[i - 1] % MOD;
+    }
+    inv[0] = 1;
+    inv[MAXN] = fpow(mul[MAXN], MOD - 2, MOD);
+    for (size_t i = MAXN - 1; i >= 1; --i) {
+        inv[i] = (i + 1) * inv[i + 1] % MOD;
+    }
+    f[0] = 1;
+    f[1] = 0;
+    f[2] = 1;
+    f[3] = 2;
+    for (size_t i = 4; i <= MAXN; i++) {
+        f[i] = (i - 1) * (f[i - 1] + f[i - 2]) % MOD;
+    }
+    return;
+}
+
 int main() {
 
 #ifdef _FREOPEN
@@ -56,7 +82,30 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
+    fread(&t);
 
+    init();
+    while (t--) {
+        //        fread(&n), fread(&m);
+        //        if (n - m == 1) {
+        //            puts("0");
+        //            continue;
+        //        }
+        //        if (n - m == 2) {
+        //            puts("1");
+        //            continue;
+        //        }
+        //        if (n - m == 0) {
+        //            puts("1");
+        //            continue;
+        //        }
+        //        if (m == 0) {
+        //            printf("%lld\n", f[n]);
+        //            continue;
+        //        }
+        fread(&n), fread(&m);//scanf("%lld%lld",&n,&m);//cin>>n>>m;
+        printf("%lld\n", mul[n] * inv[m] % MOD * inv[n - m] % MOD * f[n - m] % MOD);
+    }
 
 
 

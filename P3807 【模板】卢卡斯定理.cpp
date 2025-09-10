@@ -20,9 +20,21 @@
 #define _FREAD        true
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
+#define MAXN          (size_t)(1e5+5)
 
 typedef long long int ll;
 typedef unsigned long long int ull;
+
+//快读函数声明
+template< typename Type >
+inline Type fread(Type* p = nullptr);
+
+//快速输出函数
+template<typename Type>
+inline void fwrite(Type x);
+
+ll f[MAXN];
+ll n, m, p, t;
 
 inline int64_t fpow(int64_t a, int64_t n, int64_t mod) {
     int64_t base = a, ret = 1;
@@ -38,13 +50,14 @@ inline int64_t fpow(int64_t a, int64_t n, int64_t mod) {
     return ret % mod;
 }
 
-//快读函数声明
-template< typename Type >
-inline Type fread(Type* p = nullptr);
+ll C(ll _n, ll _m, ll _p) {
+    return (_m > _n) ? 0 : ((f[_n] * fpow(f[_m], _p - 2, _p)) % _p * fpow(f[_n - _m], _p - 2, _p) % _p);
+}
 
-//快速输出函数
-template<typename Type>
-inline void fwrite(Type x);
+ll lucas(ll _n, ll _m, ll _p) {
+    return (_m == 0) ? 1 : C(_n % _p, _m % _p, _p) * lucas(_n / _p, _m / _p, _p) % _p;
+}
+
 
 int main() {
 
@@ -56,9 +69,17 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
+    fread(&t);
 
+    f[0] = 1;
 
-
+    while (t--) {
+        fread(&n), fread(&m), fread(&p);
+        for (size_t i = 1; i <= p; i++) {
+            f[i] = f[i - 1] * i % p;
+        }
+        printf("%lld\n", lucas(n + m, n, p));
+    }
 
 #ifdef _RUN_TIME
     printf("The running duration is not less than %ld ms\n", clock() - start);

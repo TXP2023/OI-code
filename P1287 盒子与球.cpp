@@ -46,6 +46,35 @@ inline Type fread(Type* p = nullptr);
 template<typename Type>
 inline void fwrite(Type x);
 
+template<size_t _size>
+struct Factorial {
+    ll num[_size + 1];
+    Factorial() {
+        num[0] = 1;
+        for (size_t i = 1; i <= _size; i++) {
+            num[i] = i * num[i - 1];
+        }
+        return;
+    }
+
+    template<typename T>
+    inline ll operator [](const T pos) {
+        return num[pos];
+    }
+};
+
+Factorial<20> fact;
+
+ll c(ll _n, ll _m) {
+    if (_n < _m) {
+        return 0;
+    }
+    return fact[_n] / fact[_m] / fact[_n - _m];
+}
+
+ll dp[100][100] = { 1 };
+ll n, r;
+
 int main() {
 
 #ifdef _FREOPEN
@@ -56,9 +85,16 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
+    fread(&n), fread(&r);
 
+    for (size_t i = 1; i <= n; i++) {
+        for (size_t j = 1; j <= r; j++) {
 
+            dp[i][j] = dp[i - 1][j - 1] + dp[i - 1][j] * j;
+        }
+    }
 
+    printf("%lld\n", dp[n][r] * fact[r]);
 
 #ifdef _RUN_TIME
     printf("The running duration is not less than %ld ms\n", clock() - start);

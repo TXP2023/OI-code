@@ -46,6 +46,8 @@ inline Type fread(Type* p = nullptr);
 template<typename Type>
 inline void fwrite(Type x);
 
+ll n, m;
+
 int main() {
 
 #ifdef _FREOPEN
@@ -56,7 +58,9 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
+    fread(&n), fread(&m);
 
+    printf("%lld\n", fpow(fpow(2, m, 998244353) - 1, n, 998244353));
 
 
 

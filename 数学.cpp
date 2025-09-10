@@ -4,7 +4,7 @@
 
 using ll = long long int;
 
-inline int64_t fast_pow(int64_t a, int64_t n, int64_t mod) {
+inline int64_t fpow(int64_t a, int64_t n, int64_t mod) {
     int64_t base = a, ret = 1;
     while (n) {
         if (n & 1) {
@@ -20,30 +20,30 @@ inline int64_t fast_pow(int64_t a, int64_t n, int64_t mod) {
 
 template <typename T>
 T gcd(T a, T b) {
-	if (b == 0) {
-		return a;
-	} 
-	return gcd(b, a % b);
+    if (b == 0) {
+        return a;
+    }
+    return gcd(b, a % b);
 }
 
 template <typename T>
 T lcm(T a, T b) {
-	return a * b / gcd(b, a % b);
+    return a * b / gcd(b, a % b);
 }
 
-//¼ÆËã×éºÏÊı£¬ÔÚÊµ¼ÊÓ¦ÓÃÖĞ¿ÉÒÔÄÃÒ»¸öcÊı×é¼ÇÂ¼Ò»ÏÂ´ğ°¸
+//è®¡ç®—ç»„åˆæ•°ï¼Œåœ¨å®é™…åº”ç”¨ä¸­å¯ä»¥æ‹¿ä¸€ä¸ªcæ•°ç»„è®°å½•ä¸€ä¸‹ç­”æ¡ˆ
 ll get_combinations(ll _n, ll _m) {
     if (!_m) {
-        //×Ó¼¯´óĞ¡Îªm=0Ê±, ×Ó¼¯Ö»ÄÜÊÇ¿ÕµÄ1ÖÖÇé¿ö
+        //å­é›†å¤§å°ä¸ºm=0æ—¶, å­é›†åªèƒ½æ˜¯ç©ºçš„1ç§æƒ…å†µ
         return 1;
         //return c[_n][_m] = 1;
     }
     if (_m == 1) {
-        //×Ó¼¯´óĞ¡Îªm=1Ê±£¬n¸öÔªËØÖĞÃ¿¸ö¸÷ÓĞ1ÖĞ¿ÉÄÜ
+        //å­é›†å¤§å°ä¸ºm=1æ—¶ï¼Œnä¸ªå…ƒç´ ä¸­æ¯ä¸ªå„æœ‰1ä¸­å¯èƒ½
         return _n;
         //return c[_n][_m] = n;
     }
-    //ÀûÓÃ ÅÁË¹¿¨/Ñî»ÔÈı½Ç¹«Ê½ ¼ÆËã
+    //åˆ©ç”¨ å¸•æ–¯å¡/æ¨è¾‰ä¸‰è§’å…¬å¼ è®¡ç®—
     if (_n - _m < _m) {
         _m = _n - _m;
     }
