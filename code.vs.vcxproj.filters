@@ -1137,6 +1137,9 @@
     <ClCompile Include="P8557 炼金术（Alchemy）.cpp">
       <Filter>源文件\已完成的题目\luogu</Filter>
     </ClCompile>
+    <ClCompile Include="P5182 棋盘覆盖.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
