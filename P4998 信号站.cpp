@@ -3,11 +3,13 @@
 //      By txp2024 www.luogu.com.cn  TXP2023 www.github.com
 // 
 //+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+
 #pragma once
 #include <vector>
 #include <stdio.h>
 #include <string.h>
 #include <algorithm>
+#include <numeric>
 #include <ctype.h>
 #include <cstdarg>
 #include <climits>
@@ -15,7 +17,7 @@
 #include <iostream>
 #include <stdint.h>
 
-#define READ          false
+#define _FREAD        true
 #define MAX_INF       1e18
 #define MAX_NUM_SIZE  35
 #define MAXN          (size_t)(1e6+5)
@@ -23,45 +25,33 @@
 typedef long long int ll;
 typedef unsigned long long int ull;
 
-//¿ì¶Áº¯ÊýÉùÃ÷
-#if READ
-template< typename T >
-inline T readf();
-#else
-template< typename Type >
-inline Type readf(Type* p = nullptr);
-#endif
-
-//¿ìËÙÊä³öº¯Êý
-template<typename Type>
-inline void writef(Type x);
-
-struct task {
-    ll beg, las;
-    ll num;
-};
-
-task tasks[MAXN];
-ll plant[MAXN];
-ll diff[MAXN], need[MAXN], l[MAXN], r[MAXN], d[MAXN], rest[MAXN];
-ll n, m;
-
-inline bool check(ll x) {
-    memset(diff, 0, sizeof(diff));
-    for (int i = 1; i <= x; i++) {
-        diff[l[i]] += d[i];
-        diff[r[i] + 1] -= d[i];
-    }
-    for (int i = 1; i <= n; i++) {
-        need[i] = need[i - 1] + diff[i];
-        if (need[i] > rest[i]) {
-            return false;
+inline int64_t fpow(int64_t a, int64_t n, int64_t mod) {
+    int64_t base = a, ret = 1;
+    while (n) {
+        if (n & 1) {
+            ret = ret * base;
+            ret %= mod;
         }
+        base = base * base;
+        base %= mod;
+        n >>= 1;
     }
-    return true;
+    return ret % mod;
 }
 
+//å¿«è¯»å‡½æ•°å£°æ˜Ž
+template< typename Type >
+inline Type fread(Type* p = nullptr);
+
+//å¿«é€Ÿè¾“å‡ºå‡½æ•°
+template<typename Type>
+inline void fwrite(Type x);
+
+ll pos[MAXN], sum[MAXN], val[(ll)2e6 + 5];
+ll n, k, ans;
+
 int main() {
+
 #ifdef _FREOPEN
     freopen("input.txt", "r", stdin);
 #endif // _FREOPEN
@@ -70,30 +60,40 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    readf(&n), readf(&m);
+    fread(&n), fread(&k);
 
     for (size_t i = 1; i <= n; i++) {
-        readf(&plant[i]);
+        pos[i] = fread<ll>() + 1e6;
     }
 
-    for (size_t i = 1; i <= m; i++) {
-		readf(&tasks[i].beg), readf(&tasks[i].las), readf(&tasks[i].num);
+    std::sort(pos + 1, pos + 1 + n);
+
+    for (size_t i = 1; i <= n; i++) {
+        sum[i] = sum[i - 1] + pos[i];
     }
-    if (check(m)) {
-		puts("0");
-    }
-    size_t left = 1, right = m;
-    for ( left = 1, right = m; left < right; ) {
-        int mid = (left + right) / 2;
-        if (check(mid)) {
-            left = mid + 1;
+
+    for (size_t i = 0; i <= 2e6; i++) {
+        ll temp = (std::lower_bound(pos + 1, pos + 1 + n, i) - pos - 1);
+        if (temp != n + 1 && temp != 0) {
+            val[i] += i * temp - sum[temp];
         }
-        else {
-            right = mid;
+        temp = (std::upper_bound(pos + 1, pos + 1 + n, i) - pos);
+        if (temp != n + 1) {
+            val[i] += sum[n] - sum[temp - 1] - i * (n - temp + 1);
         }
     }
-    puts("-1");
-	printf("%lld\n", left);
+
+    std::sort(val, val + (ll)2e6);
+
+    for (size_t i = 0; i < k; i++) {
+        ans += val[i];
+    }
+
+    printf("%lld\n", ans);
+
+
+
+
 
 
 #ifdef _RUN_TIME
@@ -102,47 +102,41 @@ int main() {
     return 0;
 }
 
-#if READ
-template< typename T >
-inline T readf() {
-#if false
-    T sum = 0;
-    char ch = getchar();
-    while (ch > '9' || ch < '0') ch = getchar();
-    while (ch >= '0' && ch <= '9') sum = sum * 10 + ch - 48, ch = getchar();
-    return sum;
-#else
-    T ret = 0, sgn = 0, ch = getchar();
-    while (!isdigit(ch)) {
-        sgn |= ch == '-', ch = getchar();
-    }
-    while (isdigit(ch)) ret = ret * 10 + ch - '0', ch = getchar();
-    return sgn ? -ret : ret;
-#endif
-}
-#else
 template< typename Type >
-inline Type readf(Type* p) {
+inline Type fread(Type* p) {
+#if _FREAD
     Type ret = 0, sgn = 0, ch = getchar();
     while (!isdigit(ch)) {
         sgn |= ch == '-', ch = getchar();
     }
     while (isdigit(ch)) ret = ret * 10 + ch - '0', ch = getchar();
-    if (p != NULL) {
+    if (p != nullptr) {
         *p = Type(sgn ? -ret : ret);
     }
     return sgn ? -ret : ret;
+#else
+    if (p == nullptr) {
+        Type temp;
+        p = &temp;
+    }
+    scanf("%lld", p);
+    return *p;
+
+
+#endif // _FREAD
 }
-#endif
+
 
 template<typename Type>
-inline void writef(Type x) {
+inline void fwrite(Type x) {
     int sta[MAX_NUM_SIZE];
     int top = 0;
     do {
         sta[top++] = x % 10, x /= 10;
     } while (x);
-    while (top) putchar(sta[--top] + '0');  // 48 ÊÇ '0'
+    while (top) {
+        putchar(sta[--top] + '0');
+    }  // 48 æ˜¯ '0'
     return;
 }
 
@@ -155,9 +149,9 @@ inline void writef(Type x) {
  *      +-----------------------+  |      ,"        ,"    |
  *      |  .-----------------.  |  |     +---------+      |
  *      |  |                 |  |  |     | -==----'|      |
- *      |  |  By txp2024     |  |  |     |         |      |
- *      |  |                 |  |  |     |`---=    |      |
- *      |  |  C:\>_          |  |  |     |==== ooo |      ;
+ *      |  |                 |  |  |     |         |      |
+ *      |  |  C:\>rp++       |  |  |     |`---=    |      |
+ *      |  |                 |  |  |     |==== ooo |      ;
  *      |  |                 |  |  |     |(((( [33]|    ,"
  *      |  `-----------------'  | /      |((((     |  ,"
  *      +-----------------------+/       |         |,"
