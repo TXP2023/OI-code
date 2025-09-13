@@ -1140,6 +1140,9 @@
     <ClCompile Include="P4998 信号站.cpp">
       <Filter>源文件\已完成的题目\luogu</Filter>
     </ClCompile>
+    <ClCompile Include="P3140 [USACO16FEB] Circular Barn Revisited G.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
