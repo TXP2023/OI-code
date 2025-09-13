@@ -25,8 +25,9 @@
 typedef long long int ll;
 typedef unsigned long long int ull;
 
-inline int64_t fpow(int64_t a, int64_t n, int64_t mod) {
-    int64_t base = a, ret = 1;
+template<typename _T>
+inline _T fpow(_T a, _T n, _T mod) {
+    _T base = a, ret = 1;
     while (n) {
         if (n & 1) {
             ret = ret * base;
