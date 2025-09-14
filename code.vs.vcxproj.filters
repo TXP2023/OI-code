@@ -1143,6 +1143,9 @@
     <ClCompile Include="P3140 [USACO16FEB] Circular Barn Revisited G.cpp">
       <Filter>源文件\已完成的题目\luogu</Filter>
     </ClCompile>
+    <ClCompile Include="abc422_c.cpp">
+      <Filter>源文件\已完成的题目\AtCoder</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
