@@ -57,11 +57,15 @@ struct Edge {
     Edge(ll _v, ll _w, ll _next) : v(_v), w(_w), next(_next) {}
 };
 
-struct queData {
+struct heapData {
     ll u, w;
-    bool operator <(const queData& other)const {
+    bool operator <(const heapData& other)const {
         return w > other.w;
     }
+
+    heapData() = default;
+
+    heapData(ll _u, ll _w) : u(_u), w(_w) {}
 };
 
 ll head[MAXN];
@@ -77,27 +81,24 @@ inline void add_edge(ll u, ll v, ll w) {
 }
 
 void djstl() {
-    bool flag[MAXN] = { 0 };
-    memset(dist, MAX_INF, sizeof(dist));
+    memset(dist, 0x7f7f7f7f7f7f7f7f, sizeof(dist));
     dist[1][0] = 0;
-    std::priority_queue<queData> heap;
+    std::priority_queue<heapData> heap;
     heap.push({ 1, 0 });
     while (!heap.empty()) {
-        queData now = heap.top();
+        heapData now = heap.top();
         heap.pop();
-        flag[now.u] = true;
         for (size_t i = head[now.u]; i; i = e[i].next) {
             ll v = e[i].v, w = e[i].w;
-            if (flag[v]) {
-                continue;
-            }
             if (now.w + w < dist[v][0]) {
                 dist[v][1] = dist[v][0];
                 dist[v][0] = now.w + w;
+                heap.push(heapData(v, dist[v][0]));
             }
             else {
-                if (dist[v][1] == MAX_INF) {
+                if (now.w + w < dist[v][1]) {
                     dist[v][1] = now.w + w;
+                    heap.push(heapData(v, dist[v][1]));
                 }
             }
         }
