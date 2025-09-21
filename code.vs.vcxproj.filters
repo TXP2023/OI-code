@@ -1146,6 +1146,21 @@
     <ClCompile Include="abc422_c.cpp">
       <Filter>源文件\已完成的题目\AtCoder</Filter>
     </ClCompile>
+    <ClCompile Include="abc422_f.cpp">
+      <Filter>源文件\待完成</Filter>
+    </ClCompile>
+    <ClCompile Include="abc423_c.cpp">
+      <Filter>源文件\已完成的题目\AtCoder</Filter>
+    </ClCompile>
+    <ClCompile Include="abc423_d.cpp">
+      <Filter>源文件\待完成</Filter>
+    </ClCompile>
+    <ClCompile Include="abc423_e.cpp">
+      <Filter>源文件\已完成的题目\AtCoder</Filter>
+    </ClCompile>
+    <ClCompile Include="P2865 [USACO06NOV] Roadblocks G.cpp">
+      <Filter>源文件\待完成</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
