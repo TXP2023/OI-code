@@ -96,7 +96,7 @@ void djstl() {
                 heap.push(heapData(v, dist[v][0]));
             }
             else {
-                if (now.w + w < dist[v][1]) {
+                if (now.w + w < dist[v][1] && dist[v][0] != now.w + w) {
                     dist[v][1] = now.w + w;
                     heap.push(heapData(v, dist[v][1]));
                 }

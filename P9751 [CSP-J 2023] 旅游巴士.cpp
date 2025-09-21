@@ -14,12 +14,16 @@
 #include <cstdarg>
 #include <climits>
 #include <time.h>
+#include <queue>
 #include <iostream>
 #include <stdint.h>
 
 #define _FREAD        true
 #define MAX_INF       0x7f7f7f7f7f7f7f7f
 #define MAX_NUM_SIZE  35
+#define MAXN          (size_t)(1e4+5)
+#define MAXM          (size_t)(2e4+5)
+#define MAXK          105
 
 typedef long long int ll;
 typedef unsigned long long int ull;
@@ -46,6 +50,66 @@ inline Type fread(Type* p = nullptr);
 template<typename Type>
 inline void fwrite(Type x);
 
+struct Edge {
+    ll u, t, next;
+
+    Edge() = default;
+
+    Edge(ll _u, ll _t, ll _next) : u(_u), t(_t), next(_next) {}
+};
+
+struct heapData {
+    ll u, w;
+
+    heapData() = default;
+
+    heapData(ll _u, ll _w) : u(_u), w(_w) {}
+
+    bool operator <(const heapData& other)const {
+        return w > other.w;
+    }
+};
+
+ll head[MAXN], dist[MAXN][MAXK];
+bool flag[MAXN][MAXK];
+Edge e[MAXM << 1];
+ll n, m, k, cnt = 0;
+
+void add_edge(ll u, ll v, ll t) {
+    ++cnt;
+    e[cnt] = Edge(v, t, head[u]);
+    head[u] = cnt;
+    return;
+}
+
+inline void djstl() {
+    memset(dist, 0x7f, sizeof(dist));
+    dist[1][0] = 0;
+    std::priority_queue<heapData> heap;
+    heap.push(heapData(1, 0));
+    while (!heap.empty()) {
+        ll u = heap.top().u, w = heap.top().w;
+        heap.pop();
+        if (flag[u][w % k]) {
+            continue;
+        }
+        flag[u][w % k] = 1;
+        for (size_t i = head[u]; i; i = e[i].next) {
+            ll temp;
+            if (w >= e[i].t) {
+                temp = w;
+            }
+            else {
+                temp = ((e[i].t - w + k - 1) / k) * k + w;
+            }
+            if (temp + 1 < dist[e[i].u][(temp + 1) % k]) {
+                dist[e[i].u][(temp + 1) % k] = temp + 1;
+                heap.push(heapData(e[i].u, temp + 1));
+            }
+        }
+    }
+}
+
 int main() {
 
 #ifdef _FREOPEN
@@ -56,7 +120,17 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
+    fread(&n), fread(&m), fread(&k);
 
+    for (size_t i = 0; i < m; i++) {
+        ll u, v, t;
+        fread(&u), fread(&v), fread(&t);
+        add_edge(u, v, t);
+    }
+
+    djstl();
+
+    printf("%lld\n", dist[n][0] != MAX_INF ? dist[n][0] : -1);
 
 
 
