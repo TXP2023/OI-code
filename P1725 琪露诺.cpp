@@ -5,25 +5,23 @@
 //+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 
 #pragma once
+#include <vector>
 #include <stdio.h>
 #include <string.h>
 #include <algorithm>
 #include <numeric>
+#include <queue>
 #include <ctype.h>
 #include <cstdarg>
-#include <queue>
 #include <climits>
 #include <time.h>
 #include <iostream>
 #include <stdint.h>
-#include <vector>
 
 #define _FREAD        true
 #define MAX_INF       0x7f7f7f7f7f7f7f7f
 #define MAX_NUM_SIZE  35
-#define MAXN          (size_t)(1e3+5)
-#define MAX_VAL       (size_t)(2e4)
-#define MOD            998244353
+#define MAXN          (size_t)(2e5+5)
 
 typedef long long int ll;
 typedef unsigned long long int ull;
@@ -50,8 +48,17 @@ inline Type fread(Type* p = nullptr);
 template<typename Type>
 inline void fwrite(Type x);
 
-ll dp[MAXN][MAX_VAL];
-ll n, h[MAXN], ans = 0;
+struct queData {
+    ll pos, w;
+
+    queData() = default;
+
+    queData(ll _pos, ll _w) : pos(_pos), w(_w) {}
+};
+
+std::deque<queData> que;
+ll dp[MAXN], arr[MAXN];
+ll n, l, r, ans = LLONG_MIN, cnt;
 
 int main() {
 
@@ -63,25 +70,42 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    fread(&n);
+    fread(&n), fread(&l), fread(&r);
 
-    for (size_t i = 1; i <= n; i++) {
-        fread(&h[i]);
+    for (size_t i = 0; i <= n; i++) {
+        fread(&arr[i]);
     }
 
-    memset(dp[1], 1, sizeof(dp[1]));
+    que.push_back(queData(0, arr[0]));
 
-    for (size_t i = 2; i <= n; i++) {
-        for (size_t j = i - 1; j >= 1; --j) {
-            dp[i][i - j] += dp[j][i - j];
-            ans += dp[j][i - j];
-            dp[i][i - j] %= MOD;
-            ans %= MOD;
+    for (size_t i = 0; i < l; i++) {
+        dp[i] = arr[i];
+    }
+
+    cnt = l;
+    std::fill(dp, dp + 1 + n, -1e18);
+    for (size_t i = l; i <= n; i++) {
+        while (!que.empty() && que.front().pos < ll(i - r)) {
+            que.pop_front();
         }
+        if (!que.empty()) {
+            dp[i] = arr[i] + que.front().w;
+        }
+        if (i - l + 1 < cnt) {
+            continue;
+        }
+        while (!que.empty() && dp[cnt] > que.back().w) {
+            que.pop_back();
+        }
+        que.push_back(queData(cnt, dp[cnt]));
+        ++cnt;
+    }
+
+    for (size_t i = n - r + 1; i <= n; i++) {
+        ans = std::max(ans, dp[i]);
     }
 
     printf("%lld\n", ans);
-
 
 
 
