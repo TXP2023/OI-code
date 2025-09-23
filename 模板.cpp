@@ -21,9 +21,6 @@
 #define _FREAD        true
 #define MAX_INF       0x7f7f7f7f7f7f7f7f
 #define MAX_NUM_SIZE  35
-#define MAXN          (size_t)(1e3+5)
-#define MAX_VAL       (size_t)(2e4)
-#define MOD            998244353
 
 typedef long long int ll;
 typedef unsigned long long int ull;
@@ -50,8 +47,7 @@ inline Type fread(Type* p = nullptr);
 template<typename Type>
 inline void fwrite(Type x);
 
-ll dp[MAXN][MAX_VAL];
-ll n, h[MAXN], ans = 0;
+
 
 int main() {
 
@@ -62,26 +58,6 @@ int main() {
 #ifdef _RUN_TIME
     clock_t start = clock();
 #endif // _RUN_TIME
-
-    fread(&n);
-
-    for (size_t i = 1; i <= n; i++) {
-        fread(&h[i]);
-    }
-
-    memset(dp[1], 1, sizeof(dp[1]));
-
-    for (size_t i = 2; i <= n; i++) {
-        for (size_t j = i - 1; j >= 1; --j) {
-            dp[i][i - j] += dp[j][i - j];
-            ans += dp[j][i - j];
-            dp[i][i - j] %= MOD;
-            ans %= MOD;
-        }
-    }
-
-    printf("%lld\n", ans);
-
 
 
 
