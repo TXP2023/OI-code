@@ -621,9 +621,6 @@
     <ClCompile Include="P3811 【模板】模意义下的乘法逆元.cpp">
       <Filter>源文件\已完成的题目\luogu</Filter>
     </ClCompile>
-    <ClCompile Include="P12213 [蓝桥杯 2023 国 Python B] 最长回文前后缀.cpp">
-      <Filter>源文件\已投降</Filter>
-    </ClCompile>
     <ClCompile Include="P3865 【模板】ST 表 &amp;&amp; RMQ 问题.cpp">
       <Filter>源文件\已完成的题目\luogu</Filter>
     </ClCompile>
@@ -1168,6 +1165,9 @@
       <Filter>源文件\已完成的题目\luogu</Filter>
     </ClCompile>
     <ClCompile Include="P4933 大师.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
+    <ClCompile Include="P12213 [蓝桥杯 2023 国 Python B] 最长回文前后缀.cpp">
       <Filter>源文件\已完成的题目\luogu</Filter>
     </ClCompile>
   </ItemGroup>
