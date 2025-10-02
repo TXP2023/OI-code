@@ -21,7 +21,7 @@
 #define _FREAD        true
 #define MAX_INF       0x7f7f7f7f7f7f7f7f
 #define MAX_NUM_SIZE  35
-#define lower_bit(x)    (x & -x)
+#define lower_bit(x)    ((x) & (-(x)))
 #define MAXN          (size_t)(2e6+5)
 
 typedef long long int ll;
