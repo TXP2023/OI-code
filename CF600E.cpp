@@ -21,8 +21,7 @@
 #define _FREAD        true
 #define MAX_INF       0x7f7f7f7f7f7f7f7f
 #define MAX_NUM_SIZE  35
-#define lower_bit(x)    ((x) & (-(x)))
-#define MAXN          (size_t)(2e6+5)
+#define MAXN          (size_t)(1e5+5)
 
 typedef long long int ll;
 typedef unsigned long long int ull;
@@ -49,36 +48,104 @@ inline Type fread(Type* p = nullptr);
 template<typename Type>
 inline void fwrite(Type x);
 
-struct node {
-    ll l, r, val, id;
+struct Edge {
+    ll v, next;
 
-    node() = default;
+    Edge() = default;
 
-    node(ll _l, ll _r, ll _val, ll _id) : l(_l), r(_r), val(_val), id(_id) {}
+    Edge(ll _v, ll _next) : v(_v), next(_next) {}
 };
 
+Edge edges[MAXN << 1];
+ll size[MAXN], heavy[MAXN]; //以节点为根的子树的大小   重儿子
+ll head[MAXN], edge_cnt = 0;
+ll c[MAXN], sumId[MAXN], ans[MAXN], cnt[MAXN]; //颜色 出现次数的颜色编号和  答案  颜色出现次数
+ll n, max_cnt = 0;
 
-ll bit_tre[MAXN];
-node arr[MAXN];
-node tasks[MAXN];
-ll n, m;
-
-void add(ll x, ll val) {
-    while (x <= n) {
-        bit_tre[x] += val;
-        x += lower_bit(x);
-    }
+void add_edge(ll u, ll v) {
+    ++edge_cnt;
+    edges[edge_cnt] = Edge(v, head[u]);
+    head[u] = edge_cnt;
 }
 
-ll ask(ll x) {
-    ll ans = 0;
-    while (x) {
-        ans += bit_tre[x]; x -= x & -x;
+void dfs_size(ll u, ll fa) {
+    size[u] = 1;
+    ll max_szie = -1;
+    for (size_t i = head[u]; i; i = edges[i].next) {
+        if (edges[i].v == fa) {
+            continue;
+        }
+        dfs_size(edges[i].v, u);
+        size[u] += size[edges[i].v];
+        if (size[edges[i].v] > max_szie) {
+            max_szie = size[edges[i].v];
+            heavy[u] = edges[i].v;
+        }
     }
-    return ans;
+    return;
 }
-ll query(ll l, ll r) {
-    return ask(r) - ask(l - 1);
+
+void upd(ll u, ll fa, ll val, ll skip) {
+    sumId[cnt[c[u]]] -= c[u];
+    cnt[c[u]] += val;
+    sumId[cnt[c[u]]] += c[u];
+
+    if (val > 0 && cnt[c[u]] > max_cnt) {
+        max_cnt = cnt[c[u]];
+    }
+    if (!sumId[max_cnt] && max_cnt) {
+        --max_cnt;
+    }
+    for (size_t i = head[u]; i; i = edges[i].next) {
+        if (edges[i].v == fa || edges[i].v == skip) {
+            continue;
+        }
+        upd(edges[i].v, u, val, 0);
+        //如果要跳过重儿子， 此时已经跳过完成了， 不用再跳了
+    }
+    return;
+}
+
+//节点 父节点 是否保存信息
+void solve(ll u, ll fa, bool keep) {
+    //先计算所有的轻儿子
+    for (size_t i = head[u]; i; i = edges[i].next) {
+        if (edges[i].v == fa || edges[i].v == heavy[u]) {
+            continue;
+        }
+        solve(edges[i].v, u, false);
+        //如果要跳过重儿子， 此时已经跳过完成了， 不用再跳了
+    }
+
+    //计算重儿子
+    if (heavy[u]) {
+        solve(heavy[u], u, true);
+    }
+
+    sumId[cnt[c[u]]] -= c[u];
+    ++cnt[c[u]];
+    sumId[cnt[c[u]]] += c[u];
+    if (cnt[c[u]] > max_cnt) {
+        max_cnt = cnt[c[u]];
+    }
+
+
+    //接下来是合并操作
+    //合并所有轻儿子的贡献
+    for (size_t i = head[u]; i; i = edges[i].next) {
+        if (edges[i].v == fa || edges[i].v == heavy[u]) {
+            continue;
+        }
+        upd(edges[i].v, u, 1, 0);
+    }
+
+    ans[u] = sumId[max_cnt];
+
+    if (!keep) {
+        upd(u, fa, -1, 0);
+    }
+
+    return;
 }
 
 int main() {
@@ -91,32 +158,28 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    fread(&n), fread(&m);
+    fread(&n);
 
     for (size_t i = 1; i <= n; i++) {
-        ll val;
-        fread(&val);
-        arr[i] = node(0, 0, val, i);
+        fread(&c[i]);
     }
 
-    for (size_t i = 1; i <= m; i++) {
-        ll l, r, val;
-        fread(&l), fread(&r), fread(&val);
-        tasks[i] = node(l, r, val, i);
+    for (size_t i = 0; i < n - 1; i++) {
+        ll u, v;
+        fread(&u), fread(&v);
+        add_edge(u, v);
+        add_edge(v, u);
     }
 
-    std::sort(arr + 1, arr + 1 + n, [](const node& a, const node& b) {
-        return a.val < b.val;
-    });
+    dfs_size(1, 0);
+    max_cnt = 0;
+    solve(1, 0, false);
 
-    std::sort(tasks + 1, tasks + 1 + n, [](const node& a, const node& b) {
-        return a.val < b.val;
-    });
+    for (size_t i = 1; i <= n; i++) {
+        printf("%lld ", ans[i]);
+    }
 
-    ll now = 1;
-
-
-
+    puts("");
 
 #ifdef _RUN_TIME
     printf("The running duration is not less than %ld ms\n", clock() - start);

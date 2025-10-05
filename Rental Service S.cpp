@@ -21,8 +21,7 @@
 #define _FREAD        true
 #define MAX_INF       0x7f7f7f7f7f7f7f7f
 #define MAX_NUM_SIZE  35
-#define lower_bit(x)    ((x) & (-(x)))
-#define MAXN          (size_t)(2e6+5)
+#define MAXN          (size_t)(1e5+5)
 
 typedef long long int ll;
 typedef unsigned long long int ull;
@@ -49,36 +48,31 @@ inline Type fread(Type* p = nullptr);
 template<typename Type>
 inline void fwrite(Type x);
 
-struct node {
-    ll l, r, val, id;
+struct shop {
+    ll cost, weigh;
 
-    node() = default;
 
-    node(ll _l, ll _r, ll _val, ll _id) : l(_l), r(_r), val(_val), id(_id) {}
 };
 
+shop shops[MAXN];
+ll farm[MAXN];
+ll c[MAXN];
+ll farm_cnt = 1, shop_cnt = 1;
+ll n, m, r, ans = 0;
 
-ll bit_tre[MAXN];
-node arr[MAXN];
-node tasks[MAXN];
-ll n, m;
-
-void add(ll x, ll val) {
-    while (x <= n) {
-        bit_tre[x] += val;
-        x += lower_bit(x);
+ll get_shop(ll val) {
+    if (val <= shops[shop_cnt].weigh) {
+        return val * shops[shop_cnt].weigh;
     }
-}
-
-ll ask(ll x) {
-    ll ans = 0;
-    while (x) {
-        ans += bit_tre[x]; x -= x & -x;
+    else {
+        ll res = 0, cnt = shop_cnt;
+        while (val && cnt <= m) {
+            res += std::min(val, shops[cnt].weigh) * shops[cnt].cost;
+            val -= std::min(val, shops[cnt].weigh);
+            ++cnt;
+        }
+        return res;
     }
-    return ans;
-}
-ll query(ll l, ll r) {
-    return ask(r) - ask(l - 1);
 }
 
 int main() {
@@ -91,30 +85,54 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    fread(&n), fread(&m);
+    fread(&n), fread(&m), fread(&r);
 
     for (size_t i = 1; i <= n; i++) {
-        ll val;
-        fread(&val);
-        arr[i] = node(0, 0, val, i);
+        fread(&c[i]);
     }
 
     for (size_t i = 1; i <= m; i++) {
-        ll l, r, val;
-        fread(&l), fread(&r), fread(&val);
-        tasks[i] = node(l, r, val, i);
+        fread(&shops[i].weigh), fread(&shops[i].cost);
     }
 
-    std::sort(arr + 1, arr + 1 + n, [](const node& a, const node& b) {
-        return a.val < b.val;
+    for (size_t i = 1; i <= r; i++) {
+        fread(&farm[i]);
+    }
+
+    std::sort(c + 1, c + 1 + n);
+
+    std::sort(farm + 1, farm + 1 + r, [](const ll& a, const ll& b) {
+        return a > b;
     });
 
-    std::sort(tasks + 1, tasks + 1 + n, [](const node& a, const node& b) {
-        return a.val < b.val;
+    std::sort(shops + 1, shops + 1 + m, [](const shop& a, const shop& b) {
+        return a.cost > b.cost;
     });
 
-    ll now = 1;
+    for (size_t i = 1; i <= n; i++) {
+        //处理第i头牛
 
+        if (get_shop(c[i]) < farm[farm_cnt]) {
+            ans += farm[farm_cnt];
+            ++farm_cnt;
+        }
+        else {
+            while (c[i]) {
+                ans += std::min(c[i], shops[shop_cnt].weigh) * shops[shop_cnt].cost;
+                if (c[i] > shops[shop_cnt].weigh) {
+                    c[i] -= shops[shop_cnt].weigh;
+                    shops[shop_cnt].weigh -= shops[shop_cnt].weigh;
+                    ++shop_cnt;
+                }
+                else {
+                    shops[shop_cnt].weigh -= c[i];
+                    c[i] = 0;
+                }
+            }
+        }
+    }
+
+    printf("%lld\n", ans);
 
 
 

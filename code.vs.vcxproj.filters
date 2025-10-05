@@ -97,6 +97,9 @@
     <Filter Include="源文件\比赛\北师大集训 结营测试">
       <UniqueIdentifier>{8c9c1c47-bc97-4c6a-99d8-4a7fc79aef44}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\比赛\十一假期测试">
+      <UniqueIdentifier>{ab53b6a2-7f00-4c4d-884d-9a133ca4e788}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="模板.cpp">
@@ -1184,6 +1187,36 @@
     </ClCompile>
     <ClCompile Include="P3089 [USACO13NOV] Pogo-Cow S.cpp">
       <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
+    <ClCompile Include="CF600E.cpp">
+      <Filter>源文件\待完成</Filter>
+    </ClCompile>
+    <ClCompile Include="abc424_g.cpp">
+      <Filter>源文件\待完成</Filter>
+    </ClCompile>
+    <ClCompile Include="Medical Checkup.cpp">
+      <Filter>源文件\比赛\十一假期测试</Filter>
+    </ClCompile>
+    <ClCompile Include="Rental Service S.cpp">
+      <Filter>源文件\比赛\十一假期测试</Filter>
+    </ClCompile>
+    <ClCompile Include="Vrsta.cpp">
+      <Filter>源文件\比赛\十一假期测试</Filter>
+    </ClCompile>
+    <ClCompile Include="T2_第二做法.cpp">
+      <Filter>源文件\比赛\十一假期测试</Filter>
+    </ClCompile>
+    <ClCompile Include="Reordering the Documents.cpp">
+      <Filter>源文件\比赛\十一假期测试</Filter>
+    </ClCompile>
+    <ClCompile Include="abc426_c.cpp">
+      <Filter>源文件\已完成的题目\AtCoder</Filter>
+    </ClCompile>
+    <ClCompile Include="abc426_b.cpp">
+      <Filter>源文件\已完成的题目\AtCoder</Filter>
+    </ClCompile>
+    <ClCompile Include="abc426_a.cpp">
+      <Filter>源文件\已完成的题目\AtCoder</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

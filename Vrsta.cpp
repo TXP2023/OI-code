@@ -17,12 +17,15 @@
 #include <iostream>
 #include <stdint.h>
 #include <vector>
+#include <map>
 
 #define _FREAD        true
 #define MAX_INF       0x7f7f7f7f7f7f7f7f
 #define MAX_NUM_SIZE  35
-#define lower_bit(x)    ((x) & (-(x)))
-#define MAXN          (size_t)(2e6+5)
+#define MAX_VAL       (ll)(200005)
+#define MAXN          (ll)(200005)
+#define LS(x)         ((x) << 1)
+#define RS(x)         ((x) << 1 | 1)
 
 typedef long long int ll;
 typedef unsigned long long int ull;
@@ -49,36 +52,62 @@ inline Type fread(Type* p = nullptr);
 template<typename Type>
 inline void fwrite(Type x);
 
-struct node {
-    ll l, r, val, id;
+ll seg[MAX_VAL << 2];
+ll n, cnt;
+std::map<ll, ll> map, reMap;
 
-    node() = default;
-
-    node(ll _l, ll _r, ll _val, ll _id) : l(_l), r(_r), val(_val), id(_id) {}
+struct Task {
+    ll h, tot;
 };
 
+Task tasks[MAXN];
+ll size;
 
-ll bit_tre[MAXN];
-node arr[MAXN];
-node tasks[MAXN];
-ll n, m;
-
-void add(ll x, ll val) {
-    while (x <= n) {
-        bit_tre[x] += val;
-        x += lower_bit(x);
+void dis() {
+    ll arr[MAXN] = { 0 };
+    for (size_t i = 1; i <= n; i++) {
+        arr[i] = tasks[i].h;
     }
+
+    std::sort(arr + 1, arr + 1 + n);
+    size = std::unique(arr + 1, arr + 1 + n) - (arr + 1);
+    for (size_t i = 1; i <= size; i++) {
+        map[arr[i]] = i;
+        reMap[i] = arr[i];
+    }
+
+    for (size_t i = 1; i <= n; i++) {
+        tasks[i].h = map[tasks[i].h];
+    }
+    return;
 }
 
-ll ask(ll x) {
-    ll ans = 0;
-    while (x) {
-        ans += bit_tre[x]; x -= x & -x;
+void ins(ll p, ll lp, ll rp, ll pos, ll val) {
+    if (lp == rp) {
+        seg[p] += val;
+        return;
     }
-    return ans;
+    ll mid = (lp + rp) >> 1;
+    if (pos <= mid) {
+        ins(LS(p), lp, mid, pos, val);
+    }
+    else {
+        ins(RS(p), mid + 1, rp, pos, val);
+    }
+    seg[p] = seg[LS(p)] + seg[RS(p)];
 }
-ll query(ll l, ll r) {
-    return ask(r) - ask(l - 1);
+
+ll query(ll p, ll lp, ll rp, ll pos) {
+    if (lp == rp) {
+        return lp;
+    }
+    ll mid = (lp + rp) >> 1;
+    if (pos <= seg[LS(p)]) {
+        return query(LS(p), lp, mid, pos);
+    }
+    else {
+        return query(RS(p), mid + 1, rp, pos - seg[LS(p)]);
+    }
 }
 
 int main() {
@@ -91,30 +120,28 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    fread(&n), fread(&m);
+    fread(&n);
 
     for (size_t i = 1; i <= n; i++) {
-        ll val;
-        fread(&val);
-        arr[i] = node(0, 0, val, i);
+        ll h, tot;
+        fread(&h), fread(&tot);
+        tasks[i] = { h, tot };
     }
 
-    for (size_t i = 1; i <= m; i++) {
-        ll l, r, val;
-        fread(&l), fread(&r), fread(&val);
-        tasks[i] = node(l, r, val, i);
+    dis();
+
+    for (size_t i = 1; i <= n; i++) {
+        ll h = tasks[i].h, tot = tasks[i].tot;
+        cnt += tot;
+        ins(1, 1, size, h, tot);
+        if (cnt & 1) {
+            // 存在奇数个人
+            printf("%lld\n", reMap[query(1, 1, size, (cnt >> 1) + 1)]);
+        }
+        else {
+            printf("%lld\n", reMap[query(1, 1, size, (cnt >> 1))]);
+        }
     }
-
-    std::sort(arr + 1, arr + 1 + n, [](const node& a, const node& b) {
-        return a.val < b.val;
-    });
-
-    std::sort(tasks + 1, tasks + 1 + n, [](const node& a, const node& b) {
-        return a.val < b.val;
-    });
-
-    ll now = 1;
-
 
 
 

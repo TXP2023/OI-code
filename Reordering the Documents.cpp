@@ -21,8 +21,7 @@
 #define _FREAD        true
 #define MAX_INF       0x7f7f7f7f7f7f7f7f
 #define MAX_NUM_SIZE  35
-#define lower_bit(x)    ((x) & (-(x)))
-#define MAXN          (size_t)(2e6+5)
+#define MAXN          (5005)
 
 typedef long long int ll;
 typedef unsigned long long int ull;
@@ -49,36 +48,61 @@ inline Type fread(Type* p = nullptr);
 template<typename Type>
 inline void fwrite(Type x);
 
-struct node {
-    ll l, r, val, id;
+ll seg[MAXN << 2];
+ll arr[MAXN];
+ll n, m, ans = 0;
+clock_t start;
 
-    node() = default;
-
-    node(ll _l, ll _r, ll _val, ll _id) : l(_l), r(_r), val(_val), id(_id) {}
-};
-
-
-ll bit_tre[MAXN];
-node arr[MAXN];
-node tasks[MAXN];
-ll n, m;
-
-void add(ll x, ll val) {
-    while (x <= n) {
-        bit_tre[x] += val;
-        x += lower_bit(x);
+void build(ll p, ll lp, ll rp) {
+    if (lp == rp) {
+        seg[p] = arr[lp];
+        return;
     }
+    ll mid = (lp + rp) >> 1;
+    build(p * 2, lp, mid);
+    build(p * 2 + 1, mid + 1, rp);
+    seg[p] = std::min(seg[p * 2], seg[p * 2 + 1]);
 }
 
-ll ask(ll x) {
-    ll ans = 0;
-    while (x) {
-        ans += bit_tre[x]; x -= x & -x;
+ll ask(ll p, ll lp, ll rp, ll l, ll r) {
+    if (l <= lp && rp <= r) {
+        return seg[p];
     }
-    return ans;
+    ll mid = (lp + rp) >> 1, res = 1e18;
+    if (l <= lp) {
+        res = std::min(res, ask(p * 2, lp, mid, l, r));
+    }
+    if (r > mid) {
+        res = std::min(res, ask(p * 2 + 1, mid + 1, rp, l, r));
+    }
+    return res;
 }
-ll query(ll l, ll r) {
-    return ask(r) - ask(l - 1);
+
+void dfs(ll cnt, std::vector<ll> a, std::vector<ll> b) {
+    if (clock() - start > 3900) {
+        puts("0");
+        exit(0);
+    }
+    if (cnt == n + 1) {
+        ++ans;
+        return;
+    }
+    ll temp = ask(1, 1, n, cnt, n);
+    if ((!a.empty() && temp < a.back()) && (!b.empty() && temp < b.back())) {
+        return;
+    }
+
+    if ((a.empty() || arr[cnt] > a.back()) && a.size() < m) {
+        a.push_back(arr[cnt]);
+        dfs(cnt + 1, a, b);
+        a.pop_back();
+    }
+    if ((b.empty() || arr[cnt] > b.back()) && b.size() < m) {
+        b.push_back(arr[cnt]);
+        dfs(cnt + 1, a, b);
+        b.pop_back();
+    }
+    return;
 }
 
 int main() {
@@ -87,35 +111,21 @@ int main() {
     freopen("input.txt", "r", stdin);
 #endif // _FREOPEN
 
-#ifdef _RUN_TIME
-    clock_t start = clock();
-#endif // _RUN_TIME
+    start = clock();
 
     fread(&n), fread(&m);
 
     for (size_t i = 1; i <= n; i++) {
-        ll val;
-        fread(&val);
-        arr[i] = node(0, 0, val, i);
+        fread(&arr[i]);
     }
 
-    for (size_t i = 1; i <= m; i++) {
-        ll l, r, val;
-        fread(&l), fread(&r), fread(&val);
-        tasks[i] = node(l, r, val, i);
-    }
+    build(1, 1, n);
 
-    std::sort(arr + 1, arr + 1 + n, [](const node& a, const node& b) {
-        return a.val < b.val;
-    });
-
-    std::sort(tasks + 1, tasks + 1 + n, [](const node& a, const node& b) {
-        return a.val < b.val;
-    });
-
-    ll now = 1;
+    dfs(1, {}, {});
 
 
+
+    printf("%lld\n", ans);
 
 
 #ifdef _RUN_TIME

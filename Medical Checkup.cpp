@@ -21,8 +21,7 @@
 #define _FREAD        true
 #define MAX_INF       0x7f7f7f7f7f7f7f7f
 #define MAX_NUM_SIZE  35
-#define lower_bit(x)    ((x) & (-(x)))
-#define MAXN          (size_t)(2e6+5)
+#define MAXN          (size_t)(1e5+5)
 
 typedef long long int ll;
 typedef unsigned long long int ull;
@@ -49,37 +48,8 @@ inline Type fread(Type* p = nullptr);
 template<typename Type>
 inline void fwrite(Type x);
 
-struct node {
-    ll l, r, val, id;
-
-    node() = default;
-
-    node(ll _l, ll _r, ll _val, ll _id) : l(_l), r(_r), val(_val), id(_id) {}
-};
-
-
-ll bit_tre[MAXN];
-node arr[MAXN];
-node tasks[MAXN];
-ll n, m;
-
-void add(ll x, ll val) {
-    while (x <= n) {
-        bit_tre[x] += val;
-        x += lower_bit(x);
-    }
-}
-
-ll ask(ll x) {
-    ll ans = 0;
-    while (x) {
-        ans += bit_tre[x]; x -= x & -x;
-    }
-    return ans;
-}
-ll query(ll l, ll r) {
-    return ask(r) - ask(l - 1);
-}
+ll h[MAXN], maxx[MAXN], sum[MAXN];
+ll n, t;
 
 int main() {
 
@@ -91,29 +61,22 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    fread(&n), fread(&m);
+    fread(&n), fread(&t);
+
+    for (ll i = 1; i <= n; i++) {
+        fread(&h[i]);
+        maxx[i] = std::max(maxx[i - 1], h[i]);
+        sum[i] = sum[i - 1] + h[i];
+    }
 
     for (size_t i = 1; i <= n; i++) {
-        ll val;
-        fread(&val);
-        arr[i] = node(0, 0, val, i);
+        if (t < sum[i]) {
+            printf("1\n");
+            continue;
+        }
+        printf("%lld\n", (t - sum[i]) / maxx[i] + 2);
     }
 
-    for (size_t i = 1; i <= m; i++) {
-        ll l, r, val;
-        fread(&l), fread(&r), fread(&val);
-        tasks[i] = node(l, r, val, i);
-    }
-
-    std::sort(arr + 1, arr + 1 + n, [](const node& a, const node& b) {
-        return a.val < b.val;
-    });
-
-    std::sort(tasks + 1, tasks + 1 + n, [](const node& a, const node& b) {
-        return a.val < b.val;
-    });
-
-    ll now = 1;
 
 
 
