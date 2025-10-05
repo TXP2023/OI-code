@@ -1218,6 +1218,12 @@
     <ClCompile Include="abc426_a.cpp">
       <Filter>源文件\已完成的题目\AtCoder</Filter>
     </ClCompile>
+    <ClCompile Include="P4552 [Poetize6] IncDec Sequence.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
+    <ClCompile Include="P3572 [POI 2014] PTA-Little Bird.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
