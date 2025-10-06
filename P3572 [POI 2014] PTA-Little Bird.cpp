@@ -52,7 +52,7 @@ inline void fwrite(Type x);
 ll h[MAXN], dis[MAXN], dp[MAXN];
 ll n, q;
 
-void slove(ll x) {
+void solve(ll x) {
     memset(dp, 0x7f, sizeof dp);
     dp[1] = 0;
     std::deque<std::pair<ll, ll>> que; //第一位存权值 第二位存位置  单调队列递增
@@ -92,7 +92,7 @@ int main() {
 
     for (size_t i = 1; i <= q; i++) {
         fread(&dis[i]);
-        slove(i);
+        solve(i);
     }
 
 #ifdef _RUN_TIME
