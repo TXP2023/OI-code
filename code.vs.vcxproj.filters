@@ -1224,6 +1224,9 @@
     <ClCompile Include="P3572 [POI 2014] PTA-Little Bird.cpp">
       <Filter>源文件\已完成的题目\luogu</Filter>
     </ClCompile>
+    <ClCompile Include="P4053 [JSOI2007] 建筑抢修.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
