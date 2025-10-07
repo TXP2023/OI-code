@@ -1233,6 +1233,12 @@
     <ClCompile Include="P10496 The Luckiest Number.cpp">
       <Filter>源文件\已完成的题目\luogu</Filter>
     </ClCompile>
+    <ClCompile Include="P7302 [NOI1998] 免费的馅饼.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
+    <ClCompile Include="P2949 [USACO09OPEN] Work Scheduling G.cpp">
+      <Filter>源文件\待完成</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
