@@ -21,7 +21,8 @@
 #define _FREAD        true
 #define MAX_INF       0x7f7f7f7f7f7f7f7f
 #define MAX_NUM_SIZE  35
-#define MAXN          (size_t)(1e5+5)
+#define MAXM          (size_t)(2e5+5)
+#define MAXN          (size_t)(2e5+5)
 
 typedef long long int ll;
 typedef unsigned long long int ull;
@@ -48,20 +49,71 @@ inline Type fread(Type* p = nullptr);
 template<typename Type>
 inline void fwrite(Type x);
 
-struct Task {
-    ll val, end;
+struct Graph {
+    struct Edge {
+        ll v, next;
+    };
 
-    Task() = default;
+    Edge e[MAXM];
+    ll head[MAXN], cnt;
 
-    Task(ll _v, ll _e) : val(_v), end(_e) {}
+    Graph() {
+        cnt = 0;
+        memset(head, 0, sizeof head);
+        return;
+    }
 
-    bool operator <(const Task& other)const {
-        return val > other.val;
+    void add_edge(ll u, ll v) {
+        ++cnt;
+        e[cnt] = { v, head[u] };
+        head[u] = cnt;
+        return;
     }
 };
 
-Task t[MAXN];
-ll n;
+struct queData {
+    ll u, w, tag; //tag = 0 正图 1反图
+
+    queData() = default;
+
+    queData(ll _u, ll _w, ll _tag) : u(_u), w(_w), tag(_tag) {}
+
+    bool operator <(const queData& other)const {
+        return w > other.w;
+    }
+};
+
+Graph g, suf;
+ll dist[MAXN][2];
+ll flag[MAXN][2];
+ll n, m, x;
+
+void djstl() {
+    memset(dist, 0x7f, sizeof dist);
+    dist[1][0] = 0;
+    std::priority_queue<queData> que;
+    que.push(queData(1, 0, 0));
+    while (!que.empty()) {
+        ll u = que.top().u, w = que.top().w, tag = que.top().tag;
+        que.pop();
+        flag[u][tag] = true;
+        //走正图
+        for (size_t i = g.head[u]; i; i = g.e[i].next) {
+            if (w + 1 + (tag == 0 ? 0 : x) < dist[g.e[i].v][0]) {
+                dist[g.e[i].v][0] = w + 1 + (tag == 0 ? 0 : x);
+                que.push({ g.e[i].v , dist[g.e[i].v][0], 0 });
+            }
+        }
+        //走返图
+        for (size_t i = suf.head[u]; i; i = suf.e[i].next) {
+            if (w + 1 + (tag == 1 ? 0 : x) < dist[suf.e[i].v][1]) {
+                dist[suf.e[i].v][1] = w + 1 + (tag == 1 ? 0 : x);
+                que.push({ suf.e[i].v , dist[suf.e[i].v][1], 1 });
+            }
+        }
+    }
+    return;
+}
 
 int main() {
 
@@ -73,43 +125,18 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    fread(&n);
+    fread(&n), fread(&m), fread(&x);
 
-    for (size_t i = 1; i <= n; i++) {
-        ll val, end;
-        fread(&end), fread(&val);
-        t[i] = Task(val, end);
+    for (size_t i = 0; i < m; i++) {
+        ll u, v;
+        fread(&u), fread(&v);
+        g.add_edge(u, v);
+        suf.add_edge(v, u);
     }
 
-    //按照结束时间排序
-    std::sort(t + 1, t + 1 + n, [](const Task& a, const Task& b) {
-        if (a.end == b.end) {
-            return a.val > b.val;
-        }
-        return a.end < b.end;
-    });
+    djstl();
 
-    ll tot = 0, ans = 0;
-    std::priority_queue<ll, std::vector<ll>, std::greater<ll>> heap;
-    for (size_t i = 1; i <= n; i++) {
-        if (tot < t[i].end) {
-            ++tot;
-            ans += t[i].val;
-            heap.push(t[i].val);
-        }
-        else {
-            ll temp = heap.top();
-            if (temp < t[i].val) {
-                ans += t[i].val - heap.top();
-                heap.pop();
-                heap.push(t[i].val);
-            }
-        }
-    }
-
-    printf("%lld\n", ans);
-
-
+    printf("%lld\n", std::min(dist[n][0], dist[n][1]));
 
 #ifdef _RUN_TIME
     printf("The running duration is not less than %ld ms\n", clock() - start);

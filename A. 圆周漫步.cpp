@@ -13,6 +13,8 @@
 #include <cstdarg>
 #include <queue>
 #include <climits>
+#include <math.h>
+#include <cmath>
 #include <time.h>
 #include <iostream>
 #include <stdint.h>
@@ -21,7 +23,7 @@
 #define _FREAD        true
 #define MAX_INF       0x7f7f7f7f7f7f7f7f
 #define MAX_NUM_SIZE  35
-#define MAXN          (size_t)(1e5+5)
+#define MAXN          (size_t)(3005)
 
 typedef long long int ll;
 typedef unsigned long long int ull;
@@ -48,20 +50,90 @@ inline Type fread(Type* p = nullptr);
 template<typename Type>
 inline void fwrite(Type x);
 
-struct Task {
-    ll val, end;
+struct Point {
+    ll x, y;
+};
 
-    Task() = default;
+struct Circle {
+    ll x, y, r;
+};
 
-    Task(ll _v, ll _e) : val(_v), end(_e) {}
+struct  Edge {
+    ll v, next;
+};
 
-    bool operator <(const Task& other)const {
-        return val > other.val;
+struct queData {
+    ll u, w;
+
+    bool operator <(const queData& other)const {
+        return w > other.w;
     }
 };
 
-Task t[MAXN];
+Circle c[MAXN];
+Edge e[MAXN * MAXN];
+ll head[MAXN], cnt;
+ll dist[MAXN];
+bool flag[MAXN];
+Point s, t;
+std::priority_queue<queData> que;
 ll n;
+
+void add_edge(ll u, ll v) {
+    ++cnt;
+    e[cnt] = { v, head[u] };
+    head[u] = cnt;
+    return;
+}
+
+ll f(Point a, Point b) {
+    return std::sqrt(std::pow(a.x - b.x, 2) + std::pow(a.y - b.y, 2));
+}
+
+void djstl() {
+
+    while (!que.empty()) {
+        ll u = que.top().u, w = que.top().w;
+        que.pop();
+        flag[u] = true;
+        for (size_t i = head[u]; i; i = e[i].next) {
+            if (w + 1 < dist[e[i].v]) {
+                dist[e[i].v] = w + 1;
+                que.push({ e[i].v , dist[e[i].v] });
+            }
+        }
+    }
+    return;
+}
+
+
+
+bool isCos
+(ll x1, ll y1, ll r1, ll x2, ll y2, ll r2) {
+
+    ll dx = x1 - x2;
+    ll dy = y1 - y2;
+    ll distanceSq = dx * dx + dy * dy;
+    ll radiusSum = r1 + r2;
+    ll radiusDiff = fabs(r1 - r2);
+
+    return distanceSq <= radiusSum * radiusSum &&
+        distanceSq >= radiusDiff * radiusDiff;
+}
+
+// 判断两个圆是否相交（包括相切）
+bool circlesIntersect(ll x1, ll y1, ll r1,
+                     ll x2, ll y2, ll r2) {
+    // 计算圆心距离
+    ll dx = x1 - x2;
+    ll dy = y1 - y2;
+    ll distance = sqrt(dx * dx + dy * dy);
+
+    // 判断是否相交
+    // 相交条件：|r1 - r2| <= distance <= r1 + r2
+    return (distance <= r1 + r2) && (distance >= fabs(r1 - r2));
+}
+
 
 int main() {
 
@@ -75,42 +147,45 @@ int main() {
 
     fread(&n);
 
+    fread(&s.x), fread(&s.y), fread(&t.x), fread(&t.y);
+
     for (size_t i = 1; i <= n; i++) {
-        ll val, end;
-        fread(&end), fread(&val);
-        t[i] = Task(val, end);
+        ll x, y, r;
+        fread(&x), fread(&y), fread(&r);
+        c[i] = { x, y, r };
     }
 
-    //按照结束时间排序
-    std::sort(t + 1, t + 1 + n, [](const Task& a, const Task& b) {
-        if (a.end == b.end) {
-            return a.val > b.val;
-        }
-        return a.end < b.end;
-    });
-
-    ll tot = 0, ans = 0;
-    std::priority_queue<ll, std::vector<ll>, std::greater<ll>> heap;
-    for (size_t i = 1; i <= n; i++) {
-        if (tot < t[i].end) {
-            ++tot;
-            ans += t[i].val;
-            heap.push(t[i].val);
-        }
-        else {
-            ll temp = heap.top();
-            if (temp < t[i].val) {
-                ans += t[i].val - heap.top();
-                heap.pop();
-                heap.push(t[i].val);
+    for (size_t i = 2; i <= n; i++) {
+        for (size_t j = 1; j < i; j++) {
+            if (isCos(c[i].x, c[i].y, c[i].r, c[j].x, c[j].y, c[j].r)) {
+                add_edge(i, j);
+                add_edge(j, i);
             }
         }
     }
 
-    printf("%lld\n", ans);
+    memset(dist, 0x7f, sizeof dist);
+    //判断s处于那个圆上
+    for (size_t i = 1; i <= n; i++) {
+        if (c[i].r == f({ c[i].x,c[i].y }, s)) {
+            dist[i] = 0;
+            que.push(queData{ (ll)i, 0 });
+        }
+    }
 
+    djstl();
 
+    //判断是否到达终点
+    for (size_t i = 1; i <= n; i++) {
+        if (c[i].r == f({ c[i].x,c[i].y }, t)) {
+            if (dist[i] != MAX_INF) {
+                puts("Yes");
+                return 0;
+            }
+        }
+    }
 
+    puts("No");
 #ifdef _RUN_TIME
     printf("The running duration is not less than %ld ms\n", clock() - start);
 #endif // _RUN_TIME

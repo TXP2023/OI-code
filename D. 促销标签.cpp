@@ -15,8 +15,11 @@
 #include <climits>
 #include <time.h>
 #include <iostream>
+#include <math.h>
+#include <cmath>
 #include <stdint.h>
 #include <vector>
+#include <set>
 
 #define _FREAD        true
 #define MAX_INF       0x7f7f7f7f7f7f7f7f
@@ -48,20 +51,48 @@ inline Type fread(Type* p = nullptr);
 template<typename Type>
 inline void fwrite(Type x);
 
-struct Task {
-    ll val, end;
+ll c[MAXN];
+ll t, n, y;
 
-    Task() = default;
-
-    Task(ll _v, ll _e) : val(_v), end(_e) {}
-
-    bool operator <(const Task& other)const {
-        return val > other.val;
+ll get_val(ll w) {
+    ll temp[MAXN], res = 0;
+    std::multiset<ll> s;
+    memcpy(temp, c, sizeof c);
+    for (size_t i = 1; i <= n; i++) {
+        temp[i] = std::ceil(double(((double)temp[i]) / w));
+        res += temp[i];
+        s.insert(temp[i]);
     }
-};
+    for (size_t i = 1; i <= n; i++) {
+        if (s.count(c[i]) > 0) {
+            s.erase(s.find(c[i]));
+        }
+    }
 
-Task t[MAXN];
-ll n;
+    res -= s.size() * y;
+
+
+    return res;
+}
+
+void solve() {
+    memset(c, 0, sizeof c);
+    fread(&n), fread(&y);
+    ll max_w = 0, ans = LLONG_MIN;
+    for (size_t i = 1; i <= n; i++) {
+        fread(&c[i]);
+        max_w = std::max(c[i], max_w);
+    }
+    for (size_t i = 2; i <= max_w + 1; ++i) {
+        ll temp = get_val(i);
+        if (temp > ans) {
+            ans = temp;
+        }
+    }
+    printf("%lld\n", ans);
+    return;
+}
+
 
 int main() {
 
@@ -73,42 +104,10 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    fread(&n);
-
-    for (size_t i = 1; i <= n; i++) {
-        ll val, end;
-        fread(&end), fread(&val);
-        t[i] = Task(val, end);
+    fread(&t);
+    while (t--) {
+        solve();
     }
-
-    //按照结束时间排序
-    std::sort(t + 1, t + 1 + n, [](const Task& a, const Task& b) {
-        if (a.end == b.end) {
-            return a.val > b.val;
-        }
-        return a.end < b.end;
-    });
-
-    ll tot = 0, ans = 0;
-    std::priority_queue<ll, std::vector<ll>, std::greater<ll>> heap;
-    for (size_t i = 1; i <= n; i++) {
-        if (tot < t[i].end) {
-            ++tot;
-            ans += t[i].val;
-            heap.push(t[i].val);
-        }
-        else {
-            ll temp = heap.top();
-            if (temp < t[i].val) {
-                ans += t[i].val - heap.top();
-                heap.pop();
-                heap.push(t[i].val);
-            }
-        }
-    }
-
-    printf("%lld\n", ans);
-
 
 
 #ifdef _RUN_TIME

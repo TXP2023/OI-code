@@ -21,14 +21,14 @@
 #define _FREAD        true
 #define MAX_INF       0x7f7f7f7f7f7f7f7f
 #define MAX_NUM_SIZE  35
-#define MAXN          (size_t)(1e5+5)
+#define MAXN          20
 
 typedef long long int ll;
 typedef unsigned long long int ull;
 
 template<typename _T>
-inline _T fpow(_T a, _T n, _T mod) {
-    _T base = a, ret = 1;
+inline _T fpow(_T c, _T n, _T mod) {
+    _T base = c, ret = 1;
     while (n) {
         if (n & 1) {
             ret = ret * base;
@@ -48,73 +48,114 @@ inline Type fread(Type* p = nullptr);
 template<typename Type>
 inline void fwrite(Type x);
 
-struct Task {
-    ll val, end;
+struct City {
+    ll x, y, z;
+};
 
-    Task() = default;
+#pragma once
+#include <stdint.h>
+template<typename Type, size_t _MAX_SIZE>
+class Vector {
+public:
 
-    Task(ll _v, ll _e) : val(_v), end(_e) {}
+    Vector() {
+        size_ = 0;
+        return;
+    }
 
-    bool operator <(const Task& other)const {
-        return val > other.val;
+    template<typename T>
+    inline Type& operator [] (T _Pos) {
+        return arr_[_Pos];
+    }
+
+    inline void push_back(Type _Value) {
+        arr_[size_++] = _Value;
+        return;
+    }
+
+    inline size_t size() {
+        return size_;
+    }
+
+    inline Type* begin() {
+        return arr_;
+    }
+
+    inline Type* end() {
+        return &arr_[size_];
+    }
+
+    inline void clera() {
+        size_ = 0;
+        return;
+    }
+
+private:
+    Type arr_[_MAX_SIZE];
+    size_t size_;
+};
+
+struct queData {
+    ll tag, end, val; //状态和权值
+
+    bool operator <(const queData& other)const {
+        //return val > other.val;
+        if (tag == other.tag) {
+            return val > other.val;
+        }
+        return tag < other.tag;
     }
 };
 
-Task t[MAXN];
+City c[MAXN];
+ll dp[(1 << MAXN)][MAXN];
+bool flag[(1 << MAXN)][MAXN];
+Vector<ll, MAXN> v, v1, v2;
 ll n;
 
-int main() {
+ll get_path(City a, City b) {
+    return std::abs(a.x - b.x) + std::abs(a.y - b.y) + std::max(0ll, b.z - a.z);
+}
 
+int main() {
 #ifdef _FREOPEN
     freopen("input.txt", "r", stdin);
 #endif // _FREOPEN
-
-#ifdef _RUN_TIME
-    clock_t start = clock();
-#endif // _RUN_TIME
-
+    ll n;
     fread(&n);
-
-    for (size_t i = 1; i <= n; i++) {
-        ll val, end;
-        fread(&end), fread(&val);
-        t[i] = Task(val, end);
+    for (ll i = 0; i < n; i++) {
+        fread(&c[i].x), fread(&c[i].y), fread(&c[i].z);
     }
 
-    //按照结束时间排序
-    std::sort(t + 1, t + 1 + n, [](const Task& a, const Task& b) {
-        if (a.end == b.end) {
-            return a.val > b.val;
-        }
-        return a.end < b.end;
-    });
-
-    ll tot = 0, ans = 0;
-    std::priority_queue<ll, std::vector<ll>, std::greater<ll>> heap;
-    for (size_t i = 1; i <= n; i++) {
-        if (tot < t[i].end) {
-            ++tot;
-            ans += t[i].val;
-            heap.push(t[i].val);
-        }
-        else {
-            ll temp = heap.top();
-            if (temp < t[i].val) {
-                ans += t[i].val - heap.top();
-                heap.pop();
-                heap.push(t[i].val);
+    memset(dp, 0x7f, sizeof dp);
+    dp[1][0] = 0;
+    for (size_t i = 1; i < (1 << n); i++) {
+        for (size_t u = 0; u < n; u++) {
+            if (dp[i][u] == MAX_INF || !(i & (1 << u))) {
+                continue;
             }
+            for (size_t v = 0; v < n; v++) {
+                if (i & (1 << v)) {
+                    continue;
+                }
+                ll temp = i | (1 << v);
+                ll w = get_path(c[u], c[v]);
+                if (dp[temp][v] > dp[i][u] + w) {
+                    dp[temp][v] = dp[i][u] + w;
+                }
+            }
+        }
+    }
+    ll ans = MAX_INF;
+    ll temp = (1 << n) - 1;
+
+    for (size_t u = 1; u < n; u++) {
+        if (dp[temp][u] != MAX_INF) {
+            ans = std::min(ans, dp[temp][u] + get_path(c[u], c[0]));
         }
     }
 
     printf("%lld\n", ans);
-
-
-
-#ifdef _RUN_TIME
-    printf("The running duration is not less than %ld ms\n", clock() - start);
-#endif // _RUN_TIME
-    return 0;
 }
 
 template< typename Type >
@@ -144,8 +185,8 @@ inline Type fread(Type* p) {
 
 template<typename Type>
 inline void fwrite(Type x) {
-    int sta[MAX_NUM_SIZE];
-    int top = 0;
+    ll sta[MAX_NUM_SIZE];
+    ll top = 0;
     do {
         sta[top++] = x % 10, x /= 10;
     } while (x);

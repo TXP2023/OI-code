@@ -15,13 +15,15 @@
 #include <climits>
 #include <time.h>
 #include <iostream>
+#include <math.h>
+#include <cmath>
 #include <stdint.h>
 #include <vector>
+#include <map>
 
 #define _FREAD        true
 #define MAX_INF       0x7f7f7f7f7f7f7f7f
 #define MAX_NUM_SIZE  35
-#define MAXN          (size_t)(1e5+5)
 
 typedef long long int ll;
 typedef unsigned long long int ull;
@@ -48,20 +50,29 @@ inline Type fread(Type* p = nullptr);
 template<typename Type>
 inline void fwrite(Type x);
 
-struct Task {
-    ll val, end;
+std::map<ll, bool> map;
+ll n, k, tot, cnt;
 
-    Task() = default;
-
-    Task(ll _v, ll _e) : val(_v), end(_e) {}
-
-    bool operator <(const Task& other)const {
-        return val > other.val;
+void solve() {
+    for (size_t i = 2; i * i * i <= n; i++) {
+        ll t = i * i, m = 2;
+        while (t <= n / i) {
+            t *= i;
+            m++;
+            if (m < k) {
+                continue;
+            }
+            if (map[t]) {
+                continue;
+            }
+            if ((ll)sqrtl(t) * sqrtl(t) == t) {
+                tot++;//是完全平方数
+            }
+            map[t] = 1;
+            cnt++;
+        }
     }
-};
-
-Task t[MAXN];
-ll n;
+}
 
 int main() {
 
@@ -73,43 +84,21 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    fread(&n);
+    fread(&n), fread(&k);
 
-    for (size_t i = 1; i <= n; i++) {
-        ll val, end;
-        fread(&end), fread(&val);
-        t[i] = Task(val, end);
+    if (k == 1) {
+        printf("%lld\n", n);
+        return 0;
     }
 
-    //按照结束时间排序
-    std::sort(t + 1, t + 1 + n, [](const Task& a, const Task& b) {
-        if (a.end == b.end) {
-            return a.val > b.val;
-        }
-        return a.end < b.end;
-    });
+    solve();
 
-    ll tot = 0, ans = 0;
-    std::priority_queue<ll, std::vector<ll>, std::greater<ll>> heap;
-    for (size_t i = 1; i <= n; i++) {
-        if (tot < t[i].end) {
-            ++tot;
-            ans += t[i].val;
-            heap.push(t[i].val);
-        }
-        else {
-            ll temp = heap.top();
-            if (temp < t[i].val) {
-                ans += t[i].val - heap.top();
-                heap.pop();
-                heap.push(t[i].val);
-            }
-        }
+    if (k >= 3) {
+        printf("%lld\n", cnt + 1);
     }
-
-    printf("%lld\n", ans);
-
-
+    else {
+        printf("%lld\n", (ll)sqrtl(n) + cnt - tot);
+    }
 
 #ifdef _RUN_TIME
     printf("The running duration is not less than %ld ms\n", clock() - start);

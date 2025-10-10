@@ -100,6 +100,9 @@
     <Filter Include="源文件\比赛\十一假期测试">
       <UniqueIdentifier>{ab53b6a2-7f00-4c4d-884d-9a133ca4e788}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\比赛\S组模拟">
+      <UniqueIdentifier>{5d10a9cc-635b-4393-93cc-ff478e33d000}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="模板.cpp">
@@ -1236,8 +1239,26 @@
     <ClCompile Include="P7302 [NOI1998] 免费的馅饼.cpp">
       <Filter>源文件\已完成的题目\luogu</Filter>
     </ClCompile>
+    <ClCompile Include="A. 圆周漫步.cpp">
+      <Filter>源文件\比赛\S组模拟</Filter>
+    </ClCompile>
+    <ClCompile Include="B. 边的翻转.cpp">
+      <Filter>源文件\比赛\S组模拟</Filter>
+    </ClCompile>
+    <ClCompile Include="C. 空中旅行.cpp">
+      <Filter>源文件\比赛\S组模拟</Filter>
+    </ClCompile>
+    <ClCompile Include="D. 促销标签.cpp">
+      <Filter>源文件\比赛\S组模拟</Filter>
+    </ClCompile>
+    <ClCompile Include="C. 空中旅行2.cpp">
+      <Filter>源文件\比赛\S组模拟</Filter>
+    </ClCompile>
     <ClCompile Include="P2949 [USACO09OPEN] Work Scheduling G.cpp">
-      <Filter>源文件\待完成</Filter>
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
+    <ClCompile Include="P9118 [春季测试 2023] 幂次.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
