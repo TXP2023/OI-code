@@ -351,9 +351,6 @@
     <ClCompile Include="P3293 [SCOI2016] 美味.cpp">
       <Filter>源文件\已完成的题目\luogu</Filter>
     </ClCompile>
-    <ClCompile Include="P3369 【模板】普通平衡树    Splay方法.cpp">
-      <Filter>源文件\已完成的题目\luogu</Filter>
-    </ClCompile>
     <ClCompile Include="P3369 【模板】普通平衡树  权值线段树方法.cpp">
       <Filter>源文件\已完成的题目\luogu</Filter>
     </ClCompile>
@@ -1259,6 +1256,9 @@
     </ClCompile>
     <ClCompile Include="P9118 [春季测试 2023] 幂次.cpp">
       <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
+    <ClCompile Include="P3369 【模板】普通平衡树   Splay方法.cpp">
+      <Filter>源文件\待完成</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
