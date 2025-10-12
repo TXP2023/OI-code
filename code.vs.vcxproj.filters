@@ -103,6 +103,9 @@
     <Filter Include="源文件\比赛\S组模拟">
       <UniqueIdentifier>{5d10a9cc-635b-4393-93cc-ff478e33d000}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\比赛\2025_10_12测试">
+      <UniqueIdentifier>{cd5a2e11-aa15-4f74-bb7a-52f62f2210ec}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="模板.cpp">
@@ -1259,6 +1262,27 @@
     </ClCompile>
     <ClCompile Include="P3369 【模板】普通平衡树   Splay方法.cpp">
       <Filter>源文件\待完成</Filter>
+    </ClCompile>
+    <ClCompile Include="abc427_d.cpp">
+      <Filter>源文件\待完成</Filter>
+    </ClCompile>
+    <ClCompile Include="abc427_a.cpp">
+      <Filter>源文件\已完成的题目\AtCoder</Filter>
+    </ClCompile>
+    <ClCompile Include="abc427_b.cpp">
+      <Filter>源文件\已完成的题目\AtCoder</Filter>
+    </ClCompile>
+    <ClCompile Include="abc427_c.cpp">
+      <Filter>源文件\已完成的题目\AtCoder</Filter>
+    </ClCompile>
+    <ClCompile Include="T2 学校问题.cpp">
+      <Filter>源文件\比赛\2025_10_12测试</Filter>
+    </ClCompile>
+    <ClCompile Include="Inside information.cpp">
+      <Filter>源文件\比赛\2025_10_12测试</Filter>
+    </ClCompile>
+    <ClCompile Include="abc427_e.cpp">
+      <Filter>源文件\已完成的题目\AtCoder</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
