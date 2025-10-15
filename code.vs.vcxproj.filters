@@ -1284,6 +1284,24 @@
     <ClCompile Include="abc427_e.cpp">
       <Filter>源文件\已完成的题目\AtCoder</Filter>
     </ClCompile>
+    <ClCompile Include="Autobus.cpp">
+      <Filter>源文件\比赛\2025_10_12测试</Filter>
+    </ClCompile>
+    <ClCompile Include="Tornjevi.cpp">
+      <Filter>源文件\比赛\2025_10_12测试</Filter>
+    </ClCompile>
+    <ClCompile Include="P4677 山区建小学.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
+    <ClCompile Include="P14078 [GESP202509 七级] 金币收集.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
+    <ClCompile Include="P3173 [HAOI2009] 巧克力.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
+    <ClCompile Include="P3118 [USACO15JAN] Moovie Mooving G.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">

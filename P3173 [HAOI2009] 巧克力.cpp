@@ -21,7 +21,7 @@
 #define _FREAD        true
 #define MAX_INF       0x7f7f7f7f7f7f7f7f
 #define MAX_NUM_SIZE  35
-#define MAXN          (size_t)(1.2*1e5 + 5)
+#define MAXN          50005
 
 typedef long long int ll;
 typedef unsigned long long int ull;
@@ -48,43 +48,10 @@ inline Type fread(Type* p = nullptr);
 template<typename Type>
 inline void fwrite(Type x);
 
-ll set[MAXN], size[MAXN];
-ll n, k;
-
-ll find(ll x) {
-    if (set[x] == x) {
-
-        return x;
-    }
-    else {
-        return set[x] = find(set[x]);
-    }
-}
-
-// 合并操作，按集合大小优化
-void merge(int x, int y) {
-    int rootX = find(x);
-    int rootY = find(y);
-
-    if (rootX == rootY) { // 已经是同一个集合，无需合并
-        return;
-    }
-
-    // 将小树合并到大树中以优化结构深度
-    if (size[rootX] < size[rootY]) {
-        set[rootX] = rootY; // 小树的根指向大树的根
-        size[rootY] += size[rootX]; // 更新大树的大小
-    }
-    else {
-        set[rootY] = rootX;
-        size[rootX] += size[rootY];
-    }
-}
-
-// 查询操作，返回指定元素所在集合的大小
-int get_size(int x) {
-    return size[find(x)]; // 先找到根节点，再返回该根对应的大小值
-}
+//ll dp[MAXN][MAXN];
+//std::vector<std::vector<ll>> dp;
+ll h[MAXN], w[MAXN];
+ll n, m, ans = 0;
 
 int main() {
 
@@ -96,35 +63,50 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    fread(&n), fread(&k);
+    fread(&n), fread(&m);
+    --n, --m;
 
-    std::iota(set + 1, set + 1 + n, 1);
+    if (n == 0 && m == 0) {
+        puts("0");
+        return 0;
+    }
 
-    while (k--) {
-        char opt;
-        ll a, b;
-        std::cin >> opt;
-        switch (opt) {
-        case 'S':
-            std::cin >> a >> b;
-            //set[find(a)] = find(b);
-            merge(a, b);
-            break;
-        case 'Q':
-            std::cin >> a >> b;
-            if (find(a) == find(b)) {
-                puts("yes");
-            }
-            else {
-                puts("no");
-            }
-            break;
-        case 'C':
-            std::cin >> a;
-            printf("%lld\n", get_size(a));
-            break;
+    for (size_t i = 1; i <= n; i++) {
+        fread(&h[i]);
+
+    }
+    std::sort(h + 1, h + 1 + n, std::greater<ll>());
+
+    for (size_t i = 1; i <= m; i++) {
+        fread(&w[i]);
+    }
+    std::sort(w + 1, w + 1 + m, std::greater<ll>());
+
+    ll cnt = 1, tot = 1;
+
+    size_t i, j;
+    for (i = 1, j = 1; i <= n && j <= m; ) {
+        if (h[i] >= w[j]) {
+            ans += h[i++] * tot;
+            ++cnt;
+        }
+        else {
+            ans += w[j++] * cnt;
+            ++tot;
         }
     }
+
+    while (i <= n) {
+        ans += h[i++] * tot;
+        ++cnt;
+    }
+    while (j <= m) {
+        ans += w[j++] * cnt;
+        ++tot;
+    }
+
+
+    printf("%lld\n", ans);
 
 
 

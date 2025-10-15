@@ -21,7 +21,7 @@
 #define _FREAD        true
 #define MAX_INF       0x7f7f7f7f7f7f7f7f
 #define MAX_NUM_SIZE  35
-#define MAXN          (size_t)(1.2*1e5 + 5)
+#define MAXN          505
 
 typedef long long int ll;
 typedef unsigned long long int ull;
@@ -48,43 +48,9 @@ inline Type fread(Type* p = nullptr);
 template<typename Type>
 inline void fwrite(Type x);
 
-ll set[MAXN], size[MAXN];
-ll n, k;
-
-ll find(ll x) {
-    if (set[x] == x) {
-
-        return x;
-    }
-    else {
-        return set[x] = find(set[x]);
-    }
-}
-
-// 合并操作，按集合大小优化
-void merge(int x, int y) {
-    int rootX = find(x);
-    int rootY = find(y);
-
-    if (rootX == rootY) { // 已经是同一个集合，无需合并
-        return;
-    }
-
-    // 将小树合并到大树中以优化结构深度
-    if (size[rootX] < size[rootY]) {
-        set[rootX] = rootY; // 小树的根指向大树的根
-        size[rootY] += size[rootX]; // 更新大树的大小
-    }
-    else {
-        set[rootY] = rootX;
-        size[rootX] += size[rootY];
-    }
-}
-
-// 查询操作，返回指定元素所在集合的大小
-int get_size(int x) {
-    return size[find(x)]; // 先找到根节点，再返回该根对应的大小值
-}
+ll dp[MAXN][MAXN], f[MAXN][MAXN];
+ll v[MAXN], pos[MAXN], sum[MAXN]; //village
+ll n, m;
 
 int main() {
 
@@ -96,35 +62,42 @@ int main() {
     clock_t start = clock();
 #endif // _RUN_TIME
 
-    fread(&n), fread(&k);
+    fread(&n), fread(&m);
 
-    std::iota(set + 1, set + 1 + n, 1);
+    for (size_t i = 1; i < n; i++) {
+        fread(&v[i]);
+        pos[i + 1] = pos[i] + v[i];
+        sum[i + 1] = sum[i] + pos[i + 1];
+        f[i][i] = 0;
+    }
+    f[n][n] = 0;
 
-    while (k--) {
-        char opt;
-        ll a, b;
-        std::cin >> opt;
-        switch (opt) {
-        case 'S':
-            std::cin >> a >> b;
-            //set[find(a)] = find(b);
-            merge(a, b);
-            break;
-        case 'Q':
-            std::cin >> a >> b;
-            if (find(a) == find(b)) {
-                puts("yes");
-            }
-            else {
-                puts("no");
-            }
-            break;
-        case 'C':
-            std::cin >> a;
-            printf("%lld\n", get_size(a));
-            break;
+    for (size_t i = 1; i < n; i++) {
+        for (size_t j = i + 1; j <= n; j++) {
+            ll len = j - i + 1;
+            //取中点的位置
+            ll k = (i + j) >> 1;
+            //len是奇数
+            //中点就位于某个村庄上
+            //对于位于位置左边的情况
+            f[i][j] = pos[k] * (k - i + 1) - sum[k] + sum[i - 1];
+            //对于位于位置右边的情况
+            f[i][j] += sum[j] - sum[k] - pos[k] * (j - k);
         }
     }
+
+    memset(dp, 0x7f, sizeof dp);
+    dp[0][0] = 0;
+    std::fill(dp[0] + 1, dp[0] + 1 + m, 0);
+    for (size_t i = 1; i <= n; i++) {
+        for (size_t j = 1; j <= m; j++) {
+            for (size_t k = 0; k < i; k++) {
+                dp[i][j] = std::min(dp[k][j - 1] + f[k + 1][i], dp[i][j]);
+            }
+        }
+    }
+
+    printf("%lld\n", dp[n][m]);
 
 
 
