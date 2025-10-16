@@ -1302,6 +1302,12 @@
     <ClCompile Include="P3118 [USACO15JAN] Moovie Mooving G.cpp">
       <Filter>源文件\已完成的题目\luogu</Filter>
     </ClCompile>
+    <ClCompile Include="P4163 [SCOI2007] 排列.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
+    <ClCompile Include="P4090 [USACO17DEC] Greedy Gift Takers P.cpp">
+      <Filter>源文件\已完成的题目\luogu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
