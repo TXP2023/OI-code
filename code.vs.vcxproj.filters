@@ -1308,6 +1308,9 @@
     <ClCompile Include="P4090 [USACO17DEC] Greedy Gift Takers P.cpp">
       <Filter>源文件\已完成的题目\luogu</Filter>
     </ClCompile>
+    <ClCompile Include="abc428_e.cpp">
+      <Filter>源文件\已完成的题目\AtCoder</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="input.txt">
